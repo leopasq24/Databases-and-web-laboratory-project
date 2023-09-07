@@ -38,7 +38,7 @@ html,body{
 .wrapper form .field{
   height: 50px;
   width: 100%;
-  margin-top: 20px;
+  margin-top: 32px;
   position: relative;
 }
 .wrapper form .field input{
@@ -64,6 +64,17 @@ form .field input:valid{
   font-size: 17px;
   pointer-events: none;
   transform: translateY(-50%);
+  transition: all 0.3s ease;
+}
+.wrapper form .field label.error{
+  position: relative;
+  bottom: 80%;
+  left: 5px;
+  color: red;
+  font-weight: 400;
+  font-size: 13px;
+  pointer-events: none;
+  transform: translateY(80%);
   transition: all 0.3s ease;
 }
 form .field input:focus ~ label,
