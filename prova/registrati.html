@@ -11,6 +11,10 @@
             $(document).ready(function(){
                $("#registrati").validate({
                   rules : {
+                     mail: {
+                        required : true,
+                        email: true
+                     },
                      username : {
                         required : true,
                         minlength : 5,
@@ -22,11 +26,15 @@
                      }
                   },
                   messages : {
-                     username :{
-                     required : "Inserire un nome utente",
-                     minlength : "Il nome utente deve essere di almeno 5 caratteri"
+                     mail: {
+				            required: "La mail è obbligatoria",
+				            email: "La mail non ha il formato corretto"
+			         },
+                     username : {
+                        required : "Inserire un nome utente",
+                        minlength : "Il nome utente deve essere di almeno 5 caratteri"
                   },
-                     password:{
+                     password: {
                         required: "Inserire una password",
                         minlength: "La password deve essere di almeno 4 caratteri"
                      }
@@ -42,7 +50,7 @@
          </div>
          <form id="registrati" action="#" method="post">
             <div class="field">
-               <input type="text">
+               <input type="text" name="mail">
                <label>Indirizzo Email</label>
             </div>
             <div class="field">
