@@ -72,6 +72,7 @@ form .field input:valid{
   font-weight: 400;
   font-size: 13px;
   pointer-events: none;
+  white-space: nowrap;
 }
 
 form .field input[type="submit"]{ /* pulsante LOGIN */
