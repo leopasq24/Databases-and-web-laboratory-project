@@ -47,9 +47,8 @@ html,body{
   outline: none;
   font-size: 17px;
   padding-left: 20px;
-  border: 1px solid lightgrey;
+  border: 1px solid #e0960b;
   border-radius: 25px;
-  transition: all 0.3s ease;
 }
 .wrapper form .field input:focus, 
 form .field input:valid{
@@ -57,30 +56,24 @@ form .field input:valid{
 }
 .wrapper form .field label{ /* etichette campi del form */
   position: absolute;
-  top: 50%;
   left: 20px;
-  color: #999999;
+  color: #e0960b;
+  background: #fff;
   font-weight: 400;
   font-size: 17px;
   pointer-events: none;
+  transform: translateY(-50%);
 }
 .wrapper form .field label.error{
-  position: relative;
-  bottom: 80%;
+  position: absolute;
+  top: 130%;
   left: 5px;
   color: red;
   font-weight: 400;
   font-size: 13px;
   pointer-events: none;
 }
-form .field input:focus ~ label,
-form .field input:valid ~ label{
-  top: 0%;
-  font-size: 16px;
-  color: #e0960b;
-  background: #fff;
-  transform: translateY(-50%);
-}
+
 form .field input[type="submit"]{ /* pulsante LOGIN */
   color: #fff;
   border: none;
