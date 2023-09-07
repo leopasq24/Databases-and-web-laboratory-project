@@ -12,36 +12,36 @@ html,body{
   place-items: center;
   background: linear-gradient(-135deg, #f0e445, #e0960b);
 }
-::selection{
-  background: #e0960b;
-  color: #fff;
+::selection{ /* EVIDENZIAZIONE TESTO */
+  background: #e0960b; /* colore evidenziatore */
+  color: #fff; /* colore testo evidenziato */
 }
-.wrapper{
+.wrapper{ /* CONTENITORE DEL FORM */
   width: 380px;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
 }
-.wrapper .title{
+.wrapper .title{ /* TITOLO DEL CONTENITORE */
   font-size: 35px;
   font-weight: 600;
   text-align: center;
   line-height: 100px;
   color: #fff;
-  user-select: none;
+  user-select: none; /* testo non evidenziabile */
   border-radius: 15px 15px 0 0;
   background: linear-gradient(-135deg, #f0e445, #e0960b);
 }
 .wrapper form{
   padding: 20px 30px 50px 30px;
 }
-.wrapper form .field{
+.wrapper form .field{ /* CAMPI DEL FORM */
   height: 50px;
   width: 100%;
   margin-top: 35px;
   position: relative;
 }
-.wrapper form .field input{
+.wrapper form .field input{ /* CONTENUTO DEI CAMPI */
   height: 100%;
   width: 100%;
   outline: none;
@@ -50,21 +50,17 @@ html,body{
   border: 1px solid #e0960b;
   border-radius: 25px;
 }
-.wrapper form .field input:focus, 
-form .field input:valid{
-  border-color: #e0960b;
-}
-.wrapper form .field label{ /* etichette campi del form */
+.wrapper form .field label{ /* TITOLI/ETICHETTE DEI CAMPI */
   position: absolute;
   left: 20px;
   color: #e0960b;
-  background: #fff;
+  background: #fff; 
   font-weight: 400;
   font-size: 17px;
-  pointer-events: none;
+  user-select: none;
   transform: translateY(-50%);
 }
-.wrapper form .field label.error{
+.wrapper form .field label.error{ /* MESSAGGI DI ERRORE DEL FORM */
   position: absolute;
   top: 130%;
   left: 5px;
@@ -75,7 +71,7 @@ form .field input:valid{
   white-space: nowrap;
 }
 
-form .field input[type="submit"]{ /* pulsante LOGIN */
+form .field input[type="submit"]{ /* PULSANTE LOGIN (form login) e PULSANTE SALVA (form registrazione) */
   color: #fff;
   border: none;
   padding-left: 0;
@@ -86,7 +82,7 @@ form .field input[type="submit"]{ /* pulsante LOGIN */
   background: linear-gradient(-135deg, #f0e445, #e0960b);
   transition: all 0.3s ease;
 }
-form .field input[type="submit"]:active{
+form .field input[type="submit"]:active{ /* PULSANTE LOGIN e SALVA se cliccati */
   transform: scale(0.95);
 }
 form .signup-link{
