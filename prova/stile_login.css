@@ -63,8 +63,6 @@ form .field input:valid{
   font-weight: 400;
   font-size: 17px;
   pointer-events: none;
-  transform: translateY(-50%);
-  transition: all 0.3s ease;
 }
 .wrapper form .field label.error{
   position: relative;
@@ -74,8 +72,6 @@ form .field input:valid{
   font-weight: 400;
   font-size: 13px;
   pointer-events: none;
-  transform: translateY(80%);
-  transition: all 0.3s ease;
 }
 form .field input:focus ~ label,
 form .field input:valid ~ label{
