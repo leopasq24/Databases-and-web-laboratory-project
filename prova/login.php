@@ -51,7 +51,7 @@ session_unset();
                <input type="submit" value="Login">
             </div>
             <div class="signup-link">
-               Non hai un account? <a href="registrati.php">Registrati</a>
+               Non hai un account? <a href="registrazione.php">Registrati</a>
             </div>
          </form>
       </div>
