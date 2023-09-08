@@ -38,7 +38,7 @@ html,body{
 .wrapper form .field{ /* CAMPI DEL FORM */
   height: 50px;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 37px;
   position: relative;
 }
 .wrapper form .field input{ /* CONTENUTO DEI CAMPI */
@@ -60,13 +60,23 @@ html,body{
   user-select: none;
   transform: translateY(-50%);
 }
-.wrapper form .field label.error, #error_message{ /* MESSAGGI DI ERRORE DEL FORM */
+.wrapper form .field label.error{ /* MESSAGGI DI ERRORE DEL FORM */
   position: absolute;
   top: 130%;
   left: 5px;
   color: red;
   font-weight: 400;
   font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#error_message{ 
+  position: relative;
+  text-align: center;
+  color: red;
+  font-weight: 400;
+  font-size: 15px;
   pointer-events: none;
   white-space: nowrap;
 }
