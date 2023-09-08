@@ -38,7 +38,7 @@ html,body{
 .wrapper form .field{ /* CAMPI DEL FORM */
   height: 50px;
   width: 100%;
-  margin-top: 35px;
+  margin-top: 40px;
   position: relative;
 }
 .wrapper form .field input{ /* CONTENUTO DEI CAMPI */
@@ -60,7 +60,7 @@ html,body{
   user-select: none;
   transform: translateY(-50%);
 }
-.wrapper form .field label.error{ /* MESSAGGI DI ERRORE DEL FORM */
+.wrapper form .field label.error, #error_message{ /* MESSAGGI DI ERRORE DEL FORM */
   position: absolute;
   top: 130%;
   left: 5px;
@@ -104,3 +104,4 @@ form .signup-link a:hover{
   margin-top: 30px;
   text-align: center;
 }
+
