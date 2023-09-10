@@ -25,9 +25,31 @@ session_unset();
                         required : "Inserire il nome utente"
                   },
                      password: {
-                        required: "Inserire una password"
+                        required: "Inserire la password"
                      }
                   }
+                  });
+               $("#login").on("submit", function(event){
+                     if($(this).valid()){
+                        $("#return_message").hide();
+                        event.preventDefault();
+                        var formData = new FormData(this);
+                        $.ajax({
+                           type: "POST",
+                           url: $("#login").attr("action"),
+                           processData: false,
+                           contentType: false,
+                           data: formData,
+                           success: function(data){
+                              if(data == "OK"){
+                                 location.replace("index.php");
+                                 } else{
+                                    $("#error_message").show();
+                                    $("#error_message").text(data);
+                                    }         
+                              }
+                        });
+                     }
                   });
             });
       </script>
@@ -37,16 +59,17 @@ session_unset();
          <div class="title">
             Accedi
          </div>
-         <form id="login" action="#">
+         <form id="login" action="loggato.php" method="post">
             <div class="field">
-               <input type="text" name="username">
+               <input type="text" name="username" id="username">
                <label>Username</label>
             </div>
             <div class="field">
-               <input type="password" name="password">
+               <input type="password" name="password" id="password">
                <label>Password</label>
             </div>
 			</br>
+         <p id="error_message"></p>
             <div class="field">
                <input type="submit" value="Login">
             </div>
