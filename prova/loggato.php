@@ -26,7 +26,7 @@ if($i==0){
 			break;
 		}
 		else{
-			$_SESSION['user_session'] = $row['IdUtente'];
+			$_SESSION['session_utente'] = $row['IdUtente'];
 		}
 	}
 }
