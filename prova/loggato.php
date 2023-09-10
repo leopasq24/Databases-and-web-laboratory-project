@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once("connect.php");
 	
 $name = trim($_POST["username"]);
@@ -16,13 +17,16 @@ if(strlen($pass)==0){
 }
 
 if($i==0){
-	$resultset_utente_passw = mysqli_query($link, "SELECT Username, Passw FROM utente WHERE Username='$name'") or die("database error:". mysqli_error($link));
+	$resultset_utente_passw = mysqli_query($link, "SELECT IdUtente, Username, Passw FROM utente WHERE Username='$name'") or die("database error:". mysqli_error($link));
 
 	while($row = mysqli_fetch_assoc($resultset_utente_passw)){
 		if($row['Passw']!= $pass ){
 			echo("Username o Password non validi");
 			$i=$i+1;
 			break;
+		}
+		else{
+			$_SESSION['user_session'] = $row['IdUtente'];
 		}
 	}
 }
