@@ -32,10 +32,9 @@ if($pass != $pass2) {
 	$i=$i+1;
 }
 
-$cerca_mail=mysql_query("SELECT Email FROM utente WHERE Email='$email'");
-$resultset = mysqli_query($link, $cerca_mail) or die("database error:". mysqli_error($link));
+$resultset = mysqli_query($link, "SELECT Email FROM utente WHERE Email='$email'") or die("database error:". mysqli_error($link));
 
-while($row = mysql_fetch_row($resultset)){
+while($row = mysqli_fetch_row($resultset)){
 	if($row['email']){
 		echo("L'indirizzo email risulta già registrato!");
 		$i=$i+1;
@@ -43,7 +42,7 @@ while($row = mysql_fetch_row($resultset)){
 }
 
 if($i==0){
-	$new_account="INSERT INTO utente('IdUtente', 'Username', 'Passw', 'Email', 'Premium') VALUES (NULL, '$name', '$pass', '$email', 0)";
+	$new_account = "INSERT INTO utente(IdUtente, Username, Passw, Email, Premium) VALUES (NULL, '$name', '$pass', '$email', 0)";
 	mysqli_query($link, $new_account) or die("database error:".mysqli_error($link)."qqq".$new_account);
 	echo "OK";
 }
