@@ -37,7 +37,7 @@ if($i==0){
 
 	while($row = mysqli_fetch_assoc($resultset_email)){
 		if($row['Email']){
-			echo("L'indirizzo email risulta già registrato!");
+			echo("L'indirizzo email risulta già registrato.");
 			$i=$i+1;
 			break;
 		}
@@ -49,7 +49,7 @@ if($i==0){
 
 	while($row = mysqli_fetch_assoc($resultset_name)){
 		if($row['Username']){
-			echo("Il nome utente è già in uso!");
+			echo("Il nome utente è già in uso.");
 			$i=$i+1;
 			break;
 		}
