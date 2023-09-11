@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Grape+Nuts&family=Pacifico&family=Roboto+Slab:wght@200;400&display=swap');
 *{
   margin: 0;
   padding: 0;
@@ -16,6 +17,63 @@ html,body{
   background: #e0960b; /* colore evidenziatore */
   color: #fff; /* colore testo evidenziato */
 }
+.grid-container{
+  display:grid;
+  column-gap: 40px;
+  grid-template-columns: 35% auto auto;
+}
+.testo{
+  text-align: left;
+  padding: 30% 5% 40% 10%;
+  font-size: 30px;
+}
+.testo h2{
+  font-family: "Pacifico";
+  font-size: 80px;
+  text-shadow: 1px 1px 3px black;
+  padding:5px;
+}
+.testo :nth-child(1){
+  overflow: hidden; /* Ensures the content is not revealed until the animation*/
+  border-right: .15em solid transparent; /* The typwriter cursor */
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .05em; /* Adjust as needed */
+  animation: 
+    typing 1s steps(40, end);
+}
+.testo h3 span{
+  background: #e0960b;
+  color: #fff;
+}
+.testo :nth-child(2){
+  overflow: hidden; /* Ensures the content is not revealed until the animation*/
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .10em; /* Adjust as needed */
+  animation:
+    typing 1.5s steps(40, end);
+}
+.testo :nth-child(3){
+  overflow: hidden; /* Ensures the content is not revealed until the animation*/
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .10em; /* Adjust as needed */
+  animation:
+    typing 2s steps(40, end);
+}
+
+.testo :nth-child(4){
+  overflow: hidden; /* Ensures the content is not revealed until the animation*/
+  margin: 0 auto; /* Gives that scrolling effect as the typing happens */
+  letter-spacing: .10em; /* Adjust as needed */
+  animation:
+    typing 2.5s steps(40, end);
+}
+
+/* The typing effect */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
 .wrapper{ /* CONTENITORE DEL FORM */
   width: 380px;
   background: #fff;
@@ -114,4 +172,41 @@ form .signup-link a:hover{
   margin-top: 30px;
   text-align: center;
 }
+
+.images{
+  padding: 12% 0% 0% 0%;
+  height: 640px;
+  overflow: hidden;
+}
+
+.img_1{
+  padding-right:5%;
+  margin-left:10%;
+  margin-top: 0%;
+}
+
+.img_1 img[alt~="selfie"]{
+  width:65%;
+  border-radius: 20px;
+  box-shadow:3px 3px 20px black;
+}
+.img_1 img[alt~="selfie"]:hover{
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  transform: rotate(30deg);
+}
+.img_2{
+  margin-top: 15%;
+  margin-left:20%;
+}
+
+.img_2 img[alt~="social"]{
+  width:45%;
+  border-radius: 20px;
+  box-shadow:3px 3px 20px black;
+}
+.img_2 img[alt~="social"]:hover{
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  transform: rotate(-30deg);
+}
+
 
