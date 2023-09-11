@@ -55,28 +55,37 @@ session_unset();
       </script>
    </head>
    <body>
-      <div class="wrapper">
-         <div class="title">
-            Accedi
+      <div class="grid-container">
+         <div class="testo">
+            <h2>Bluggle</h2>
+            <h3><span>crea,</span></h3>
+            <h3><span>commenta,</span></h3>
+            <h3><span>condividi.</span></h3>
          </div>
-         <form id="login" action="loggato.php" method="post">
-            <div class="field">
-               <input type="text" name="username" id="username">
-               <label>Username</label>
+         <div class="wrapper">
+            <div class="title"> Accedi </div>
+            <form id="login" action="loggato.php" method="post">
+               <div class="field">
+                  <input type="text" name="username" id="username">
+                  <label>Username</label>
+               </div>
+               <div class="field">
+                  <input type="password" name="password" id="password">
+                  <label>Password</label>
+               </div>
+			      </br>
+               <p id="error_message"></p>
+               <div class="field">
+                  <input type="submit" value="Login">
+               </div>
+               <div class="signup-link"> Non hai un account? <a href="registrazione.php">Registrati</a></div>
+            </form>
+         </div>
+         <div class="images">
+            <div class="img_3">
+               <img src="foto/social_8.jpeg" alt="pc">
             </div>
-            <div class="field">
-               <input type="password" name="password" id="password">
-               <label>Password</label>
-            </div>
-			</br>
-         <p id="error_message"></p>
-            <div class="field">
-               <input type="submit" value="Login">
-            </div>
-            <div class="signup-link">
-               Non hai un account? <a href="registrazione.php">Registrati</a>
-            </div>
-         </form>
+         </div>
       </div>
    </body>
 </html>

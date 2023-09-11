@@ -190,23 +190,42 @@ form .signup-link a:hover{
   border-radius: 20px;
   box-shadow:3px 3px 20px black;
 }
+
 .img_1 img[alt~="selfie"]:hover{
   box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
   transform: rotate(30deg);
 }
+
 .img_2{
   margin-top: 15%;
-  margin-left:20%;
+  margin-left: 20%;
 }
 
 .img_2 img[alt~="social"]{
-  width:45%;
+  width: 45%;
   border-radius: 20px;
-  box-shadow:3px 3px 20px black;
+  box-shadow: 3px 3px 20px black;
 }
+
 .img_2 img[alt~="social"]:hover{
   box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
   transform: rotate(-30deg);
 }
 
+.img_3{
+  margin-top: 5%;
+  margin-left: 7%;
+}
 
+.img_3 img[alt~="pc"]{
+  margin-top: 5%;
+  margin-left: 2%;
+  width: 80%;
+  border-radius: 20px;
+  box-shadow: 3px 3px 20px black;
+}
+
+.img_3 img[alt~="pc"]:hover{
+  box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+  transform: rotate(10deg);
+}
