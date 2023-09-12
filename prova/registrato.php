@@ -32,25 +32,34 @@ if($pass != $pass2) {
 	$i=$i+1;
 }
 
-if($i==0){
-	$resultset_email = mysqli_query($link, "SELECT Email FROM utente WHERE Email='$email'") or die("database error:". mysqli_error($link));
 
-	while($row = mysqli_fetch_assoc($resultset_email)){
-		if($row['Email']){
-			echo("L'indirizzo email risulta già registrato");
+if($i==0){
+	$stmt_email=mysqli_prepare($link, "SELECT Email FROM utente WHERE Email=?");
+	mysqli_stmt_bind_param($stmt_email,"s",$email);
+	mysqli_stmt_execute($stmt_email);
+	$result_email=mysqli_stmt_get_result($stmt_email);
+
+	while($row = mysqli_fetch_assoc($result_email)){
+		if($row["Email"]){
+			echo("L'indirizzo email risulta già registrato.");
 			$i=$i+1;
+			mysqli_stmt_close($stmt_email);
 			break;
 		}
 	}
 }
 
 if($i==0){
-	$resultset_name = mysqli_query($link, "SELECT Username FROM utente WHERE Username='$name'") or die("database error:". mysqli_error($link));
+	$stmt_name=mysqli_prepare($link, "SELECT Username FROM utente WHERE Username=?");
+	mysqli_stmt_bind_param($stmt_name,"s",$name);
+	mysqli_stmt_execute($stmt_name);
+	$result_name=mysqli_stmt_get_result($stmt_name);
 
-	while($row = mysqli_fetch_assoc($resultset_name)){
+	while($row = mysqli_fetch_assoc($result_name)){
 		if($row['Username']){
-			echo("Il nome utente è già in uso");
+			echo("Il nome utente è già in uso.");
 			$i=$i+1;
+			mysqli_stmt_close($stmt_name);
 			break;
 		}
 	}
@@ -58,8 +67,12 @@ if($i==0){
 
 
 if($i==0){
-	$new_account = "INSERT INTO utente(IdUtente, Username, Passw, Email, Premium) VALUES (NULL, '$name', '$pass', '$email', 0)";
-	mysqli_query($link, $new_account) or die("database error:".mysqli_error($link)."qqq".$new_account);
+	$stmt_new_account=mysqli_prepare($link, "INSERT INTO utente(IdUtente, Username, Passw, Email, Premium) VALUES (?,?,?,?,?)");
+	$id=NULL;
+	$premium=0;
+	mysqli_stmt_bind_param($stmt_new_account,"isssi", $id, $name, $pass, $email, $premium);
+	mysqli_stmt_execute($stmt_new_account);
+	mysqli_stmt_close($stmt_new_account);
 	echo "OK";
 }
 ?>
