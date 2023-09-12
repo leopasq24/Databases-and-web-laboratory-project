@@ -21,18 +21,19 @@ if($i==0){
 	mysqli_stmt_bind_param($stmt_utente_passw,"s",$name);
 	mysqli_stmt_execute($stmt_utente_passw);
 	$result_utente_passw=mysqli_stmt_get_result($stmt_utente_passw);
-
-	while($row = mysqli_fetch_assoc($result_utente_passw)){
-		if($row['Passw']!= $pass ){
-			echo("Username o Password non validi");
-			$i=$i+1;
-			mysqli_stmt_close($stmt_utente_passw);
-			break;
-		}
-		else{
-			mysqli_stmt_close($stmt_utente_passw);
-			$_SESSION['session_utente'] = $row['IdUtente'];
-		}
+	$result_array = mysqli_fetch_row($result_utente_passw);
+	if(empty($result_array)){
+		echo("Username non valido");
+		$i=$i+1;
+		mysqli_stmt_close($stmt_utente_passw);
+	}
+	elseif($result_array[2]!=$pass){
+		echo("Password errata");
+		$i=$i+1;
+		mysqli_stmt_close($stmt_utente_passw);
+	}
+	else{
+		$_SESSION['session_utente']=$result_array[0];
 	}
 }
 
