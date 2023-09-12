@@ -83,7 +83,7 @@ session_unset();
          </div>
          <div class="images">
             <div class="img_3">
-               <img src="foto/social_5.jpeg" alt="pc">
+               <img src="foto/social_5.jpg" alt="pc">
             </div>
          </div>
       </div>
