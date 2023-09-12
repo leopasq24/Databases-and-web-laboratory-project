@@ -11,6 +11,22 @@ session_unset();
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
       <script>
             $(document).ready(function(){
+               $.validator.addMethod("regex_username",
+                  function(value, element, regexp) {
+                     var re = new RegExp(regexp);
+                     return this.optional(element) || re.test(value);
+                  },
+
+                  "Non ammessi caratteri speciali tranne: '_' e '.'");
+
+               $.validator.addMethod("regex_password",
+                  function(value, element, regexp) {
+                     var re = new RegExp(regexp);
+                     return this.optional(element) || re.test(value);
+                  },
+
+                  "Inserire almeno una lettera e un numero");
+
                $("#registrati").validate({
                   rules : {
                      mail: {
@@ -20,11 +36,13 @@ session_unset();
                      username : {
                         required : true,
                         minlength : 5,
-                        maxlength : 20
+                        maxlength : 20,
+                        regex_username: /^[\w\.]{5,20}$/
                      },
                      password : {
                         required : true,
-                        minlength: 4
+                        minlength: 8,
+                        regex_password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
                      },
                      password_2 : {
                         equalTo: "#password"
@@ -42,7 +60,7 @@ session_unset();
                   },
                      password: {
                         required: "La password è obbligatoria!",
-                        minlength: "La password deve essere di almeno 4 caratteri!"
+                        minlength: "La password deve essere di almeno 8 caratteri!"
                      },
                      password_2: {
                         equalTo: "Le password devono coincidere!"
@@ -51,7 +69,7 @@ session_unset();
                   });
                   $("#registrati").on("submit", function(event){
                      if($(this).valid()){
-                        $("#return_message").hide();
+                        $("#error_message").hide();
                         event.preventDefault();
                         var formData = new FormData(this);
                         $.ajax({
