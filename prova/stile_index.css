@@ -92,10 +92,15 @@ header .navbar{
   margin: 0 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background-image: linear-gradient(135deg, #f0e445, #e0960b);
 }
 .navbar .buttons input:hover{
   transform: scale(0.97);
+}
+.navbar .buttons input[value~="Premium"]{
+  background-image: linear-gradient(135deg, #e015c5, #70086a);
+}
+.navbar .buttons input[value~="Logout"] {
+  background-image: linear-gradient(135deg, #f0e445, #e0960b);
 }
  header .text-content{
    width: 40%;
