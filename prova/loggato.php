@@ -17,15 +17,20 @@ if(strlen($pass)==0){
 }
 
 if($i==0){
-	$resultset_utente_passw = mysqli_query($link, "SELECT IdUtente, Username, Passw FROM utente WHERE Username='$name'") or die("database error:". mysqli_error($link));
+	$stmt_utente_passw=mysqli_prepare($link, "SELECT IdUtente, Username, Passw FROM utente WHERE Username=?");
+	mysqli_stmt_bind_param($stmt_utente_passw,"s",$name);
+	mysqli_stmt_execute($stmt_utente_passw);
+	$result_utente_passw=mysqli_stmt_get_result($stmt_utente_passw);
 
-	while($row = mysqli_fetch_assoc($resultset_utente_passw)){
+	while($row = mysqli_fetch_assoc($result_utente_passw)){
 		if($row['Passw']!= $pass ){
 			echo("Username o Password non validi");
 			$i=$i+1;
+			mysqli_stmt_close($stmt_utente_passw);
 			break;
 		}
 		else{
+			mysqli_stmt_close($stmt_utente_passw);
 			$_SESSION['session_utente'] = $row['IdUtente'];
 		}
 	}
