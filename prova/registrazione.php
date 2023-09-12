@@ -42,7 +42,7 @@ session_unset();
                      password : {
                         required : true,
                         minlength: 8,
-                        regex_password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+                        regex_password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d?!]{8,}$/
                      },
                      password_2 : {
                         equalTo: "#password"
