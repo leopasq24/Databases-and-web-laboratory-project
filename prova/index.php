@@ -13,7 +13,7 @@ session_unset();
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo"><a href="#">BLUGGLE></a></div>
+      <div class="logo"><a href="#">Bluggle</a></div>
       <ul class="menu">
         <li><a href="#">Home</a></li>
         <li><a href="#">Latest</a></li>
