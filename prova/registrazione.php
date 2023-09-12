@@ -17,7 +17,7 @@ session_unset();
                      return this.optional(element) || re.test(value);
                   },
 
-                  "Non ammessi caratteri speciali tranne: '_' e '.'");
+                  "Non ammessi caratteri speciali tranne: _ , - , .");
 
                $.validator.addMethod("regex_password",
                   function(value, element, regexp) {
@@ -25,7 +25,7 @@ session_unset();
                      return this.optional(element) || re.test(value);
                   },
 
-                  "Inserire almeno una lettera e un numero");
+                  "Obbligatori: lettere e numeri. Ammessi: ?, !, #, $, *");
 
                $("#registrati").validate({
                   rules : {
@@ -37,12 +37,12 @@ session_unset();
                         required : true,
                         minlength : 5,
                         maxlength : 20,
-                        regex_username: /^[\w\.]{5,20}$/
+                        regex_username: /^[\w\.-]{5,20}$/
                      },
                      password : {
                         required : true,
                         minlength: 8,
-                        regex_password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d?!]{8,}$/
+                        regex_password: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d?!#$*]{8,}$/
                      },
                      password_2 : {
                         equalTo: "#password"

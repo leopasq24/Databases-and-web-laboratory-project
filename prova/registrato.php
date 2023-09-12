@@ -15,8 +15,8 @@ if(strlen($name) > 20){
 	echo("Lo username non può contenere più di 20 caratteri!");
 	$i=$i+1;
 }
-if(strlen($pass) < 4) {
-	echo("La password deve essere di almeno 4 caratteri!");
+if(strlen($pass) < 8) {
+	echo("La password deve essere di almeno 8 caratteri!");
 	$i=$i+1;
 }
 if(strlen($email) == 0){
