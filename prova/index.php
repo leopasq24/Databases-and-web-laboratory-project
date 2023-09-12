@@ -22,8 +22,8 @@ session_unset();
         <li><a href="#">Contact</a></li>
       </ul>
       <div class="buttons">
-        <input type="button" value="Login"></a>
-        <input type="button" value="Registrati">
+        <input type="button" value="Premium">
+        <a href="logout.php"><input type="button" value="Logout"></a>
       </div>
     </nav>
     <div class="text-content">
