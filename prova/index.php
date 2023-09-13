@@ -24,7 +24,7 @@ session_start();
         <li><a href="#">Latest</a></li>
         <li><a href="#">Offers</a></li>
         <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
+        <li><a href="#">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
@@ -33,7 +33,9 @@ session_start();
     </nav>
     <div class="text-content">
       <h2>Ti diamo il benvenuto,<br><span id="nome_utente"></span></h2>
-      <p>Su Bluggle puoi creare il tuo <span>blog personale</span>, postare le <span>foto</span> che più ti piacciono e scoprirne di nuove. Oppure puoi condividere un <span>pensiero</span> con gli altri utenti, ma aspettandoti i loro <span>commenti</span>! Occhio, però...gli utenti standard possono creare un <span>numero limitato di blog</span>. Buon divertimento!</p>
+      <p> <span>Crea</span> il tuo blog personale, <span>posta</span> quello che più ti piace, <span>condividi</span> un pensiero...
+      o divertiti a <span>galleggiare</span> tra i post degli altri utenti! 🫧 </br></p>
+      <p><em>"Qui siamo tutte bolle!"</em> – <em>Le avventure di Alice nel Paese delle Bolle</em></p>
     </div>
   </header>
 </body>

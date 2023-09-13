@@ -29,7 +29,7 @@ body::after{
 body::before{
   clip-path: circle(30% at left 20%);
   opacity: 0.4;
-  background-image: linear-gradient(135deg, #e0960b, #f0e445);
+  background-image: linear-gradient(135deg, #e0960b, #e6c843);
 }
 body::after{
   opacity: 0.4;
@@ -64,10 +64,11 @@ header .navbar{
 }
 .navbar .logo a{
   text-decoration: none;
-  font-size: 30px;
+  font-size: 50px;
+  text-shadow: 1px 1px 2px black;
   color: #000;
   font-weight: 500;
-  font-family: 'Pacifico',sans-serif;
+  font-family: 'Pacifico', sans-serif;
 }
 .navbar .menu li{
   list-style: none;
@@ -99,7 +100,7 @@ header .navbar{
   transform: scale(0.97);
 }
 .navbar .buttons input[value~="Premium"]{
-  background-image: linear-gradient(135deg, #e015c5, #70086a);
+  background-image: linear-gradient(135deg, #ff00dd, #8b0084);
 }
 .navbar .buttons input[value~="Logout"] {
   background-image: linear-gradient(135deg, #f0e445, #e0960b);
@@ -115,13 +116,24 @@ header .navbar{
 .text-content h2 span{
   color:white;
   text-shadow: 1px 1px 1px black;
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 0px 20px 20px 20px;
+  padding: 2px 15px 2px 15px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.text-content h2 span:hover{
+  background: linear-gradient(135deg, #ff00dd, #8b0084);
+  cursor: pointer;
 }
 .text-content p{
   font-size: 15px;
-  margin-top: 10px;
+  margin-top: 18px;
 }
 .text-content p span{
-  font-weight:bold;
+  font-weight: bold;
+  text-decoration: underline white;
 }
 @media (max-width:850px) {
   header .navbar{
