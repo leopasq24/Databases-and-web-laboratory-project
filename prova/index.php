@@ -33,7 +33,7 @@ session_start();
     </nav>
     <div class="text-content">
       <h2>Ti diamo il benvenuto,<br><span id="nome_utente"></span></h2>
-      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum facere in nam, officiis aspernatur consectetur aliquid sequi possimus et. Sint.</p>
+      <p>Su Bluggle puoi creare il tuo <span>blog personale</span>, postare le <span>foto</span> che più ti piacciono e scoprirne di nuove. Oppure puoi condividere un <span>pensiero</span> con gli altri utenti, ma aspettandoti i loro <span>commenti</span>! Occhio, però...gli utenti standard possono creare un <span>numero limitato di blog</span>. Buon divertimento!</p>
     </div>
   </header>
 </body>
