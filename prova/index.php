@@ -1,6 +1,5 @@
 <?php
 session_start();
-session_unset();
 ?>
 <html lang="en" dir="ltr">
   <head>
