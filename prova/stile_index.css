@@ -124,7 +124,7 @@ header .navbar{
   transition: all 0.3s ease-in-out;
 }
 .text-content h2 span:hover{
-  background: linear-gradient(135deg, #ff00dd, #8b0084);
+  background: linear-gradient(135deg, #ff6de285, #008cff7a);
   cursor: pointer;
 }
 .text-content p{
@@ -134,6 +134,7 @@ header .navbar{
 .text-content p span{
   font-weight: bold;
   text-decoration: underline white;
+  text-decoration-thickness: 2px;
 }
 @media (max-width:850px) {
   header .navbar{

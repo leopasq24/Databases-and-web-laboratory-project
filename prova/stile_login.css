@@ -68,7 +68,6 @@ html,body{
     typing 2.5s steps(40, end);
 }
 
-/* The typing effect */
 @keyframes typing {
   from { width: 0 }
   to { width: 100% }
@@ -179,15 +178,15 @@ form .signup-link a:hover{
 }
 
 .img_1{
-  padding-right:5%;
-  margin-left:10%;
+  padding-right: 5%;
+  margin-left: 10%;
   margin-top: 0%;
 }
 
 .img_1 img[alt~="selfie"]{
   width:65%;
   border-radius: 20px;
-  box-shadow:3px 3px 20px black;
+  box-shadow: 3px 3px 20px black;
 }
 
 .img_1 img[alt~="selfie"]:hover, .img_2 img[alt~="social"]:hover, .img_3 img[alt~="pc"]:hover{
@@ -216,4 +215,28 @@ form .signup-link a:hover{
   width: 50%;
   border-radius: 20px;
   box-shadow: 3px 3px 20px black;
+}
+
+@media (max-width:850px) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "titolo" "form" "immagini";
+  }
+  .testo h2{
+    padding-left: 10%;
+    grid-area: titolo;
+    font-size: 60px;
+  }
+  .testo h3 span:first-child {
+    grid-area: titolo;
+    display: none;
+  }
+  .wrapper {
+    grid-area: form;
+  }
+  .images img {
+    grid-area: immagini;
+    display: none;
+  }
 }
