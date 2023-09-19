@@ -38,7 +38,7 @@ session_start();
     <div class="text-content">
       <h2>Ti diamo il benvenuto,<br><span id="nome_utente"></span></h2>
       <p> <span>Crea</span> il tuo blog personale, <span>posta</span> quello che più ti piace, <span>condividi</span> un pensiero...
-      o divertiti a <span>galleggiare</span> tra i post degli altri utenti! 🫧 </br></p>
+      o divertiti a <span>galleggiare</span> tra i post degli altri utenti! 🫧 </p>
       <p><em>"Qui siamo tutte bolle!"</em> – <em>Le avventure di Alice nel Paese delle Bolle</em></p>
     </div>
   </header>
