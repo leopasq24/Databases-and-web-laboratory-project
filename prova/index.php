@@ -11,7 +11,11 @@ session_start();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
-        $("#nome_utente").load("nome_utente.php",);
+        $("#nome_utente").load("nome_utente.php", function(response) {
+          if (response == "Sessione annullata") {
+            location.replace("registrazione.php");
+            }
+        });
       });
     </script>
    </head>
