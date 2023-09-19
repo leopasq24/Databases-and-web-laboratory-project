@@ -2,7 +2,7 @@
 session_start();
 include_once("connect.php");
 if (!isset($_SESSION["session_utente"])) {
-	echo"Sessione non settata";
+	echo"Sessione annullata";
 	exit;
 } else {
 	$id_utente = $_SESSION["session_utente"];
