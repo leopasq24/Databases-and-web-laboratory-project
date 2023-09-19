@@ -217,14 +217,14 @@ form .signup-link a:hover{
   box-shadow: 3px 3px 20px black;
 }
 
-@media (max-width:850px) {
+@media (max-width:1163px) {
   .grid-container {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-areas: "titolo" "form" "immagini";
   }
   .testo h2{
-    padding-left: 10%;
+    padding-left: 7%;
     grid-area: titolo;
     font-size: 60px;
   }
