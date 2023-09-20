@@ -19,7 +19,7 @@ html,body{
 }
 .grid-container{
   display:grid;
-  column-gap: 40px;
+  column-gap: 2%;
   grid-template-columns: 35% auto auto;
 }
 .testo{
@@ -74,7 +74,7 @@ html,body{
 }
 
 .wrapper{ /* CONTENITORE DEL FORM */
-  width: 380px;
+  width: 100%;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
@@ -226,7 +226,7 @@ form .signup-link a:hover{
   .testo h2{
     padding-left: 7%;
     grid-area: titolo;
-    font-size: 60px;
+    font-size: 50px;
   }
   .testo h3 span:first-child {
     grid-area: titolo;
