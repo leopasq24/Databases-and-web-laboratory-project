@@ -100,46 +100,56 @@ header .navbar{
   transform: scale(0.97);
 }
 .navbar .buttons input[value~="Premium"]{
-  background-image: linear-gradient(135deg, #ff00dd, #8b0084);
+  background: linear-gradient(135deg, #ff00dd, #8b0084);
 }
 .navbar .buttons input[value~="Logout"] {
-  background-image: linear-gradient(135deg, #f0e445, #e0960b);
+  background: linear-gradient(135deg, #f0e445, #e0960b);
 }
-header .text-content{
+ header .text-content{
    width: 50%;
-   margin: 0 0 0 23%;
+   margin: 0 0 0 23% ;
    text-align: center;
-}
+ }
 .text-content h2{
   font-size: 37px;
   font-weight: 600;
+  line-height: 1.3;
 }
 .text-content h2 span{
   color:white;
   text-shadow: 1px 1px 1px black;
-  border-style: solid;
-  border-width: 2px;
-  border-radius: 0px 20px 20px 20px;
-  padding: 2px 15px 2px 15px;
-  background: linear-gradient(135deg, #ff6de285, #008cff7a);
 }
 .text-content p{
   font-size: 20px;
   margin-top: 5%;
-  padding: 2%;
-}
-.text-content p:nth-of-type(1){
+  padding:2%;
   border-right: 5px solid #e0960b;
   border-left: 5px solid #e0960b;
-}
-.text-content p:nth-of-type(2){
-  font-size: 17px;
-  margin-top: 2%;
 }
 .text-content p span{
   font-weight: bold;
 }
+.text-content input{
+  outline: none;
+  color: #f2f2f2;
+  font-size: 28px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ff6de285, #008cff7a);
+  margin-top: 5%;
+}
+.text-content input:hover{
+  transform: scale(0.97);
+}
 @media (max-width:1005px) {
+  header{
+    height: 95vh;
+  }
   header .navbar{
     flex-direction: column;
     align-items: center;
@@ -150,38 +160,25 @@ header .text-content{
     margin: 10px 0 20px 0;
   }
   .text-content p{
-    font-size: 17px;
-  }
-  .text-content p:nth-of-type(2){
     font-size: 15px;
-    margin-top: 2%;
+    margin-top:15%;
   }
   header .text-content h2{
     font-size: 30px;
-    margin-top: 5%;
+    margin-top: 10%;
   }
+  .text-content input{
+  font-size: 20px;
+  margin-top: 15%;
 }
-@media (max-width:748px) {
+}
+@media (max-width:410px) {
+  header{
+    height: 100vh;
+    width: 100%;
+    border-radius: 0px;
+  }
   header .navbar{
     padding: 15px 10px;
-  }
-  header .text-content h2{
-    line-height: 1.3;
-    margin: 5% 0 0 0;
-  }
-  header .text-content h2 span{
-    line-height: 1.7;
-  }
-  .text-content p{
-    font-size: 15px;
-  }
-  .text-content p:nth-of-type(1){
-    border-right: 4px solid #e0960b;
-    border-left: 4px solid #e0960b;
-    padding-left: 2%;
-  }
-  .text-content p:nth-of-type(2){
-    font-size: 13px;
-    margin-top: 2%;
-  }
+}
 }
