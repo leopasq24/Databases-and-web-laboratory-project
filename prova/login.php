@@ -42,7 +42,7 @@ session_unset();
                            data: formData,
                            success: function(data){
                               if(data == "OK"){
-                                 location.replace("index.php");
+                                 location.replace("intro.php");
                                  } else{
                                     $("#error_message").show();
                                     $("#error_message").text(data);
