@@ -23,6 +23,12 @@ session_start();
           }
           $(".blog-popolari").html(data);
         });
+      $.get("post.php", function(data) {
+          if(data=="Sessione annullata"){
+            location.replace("registrazione.php");
+          }
+          $(".ultimi-post").html(data);
+        });
       });
     </script>
    </head>
@@ -47,7 +53,9 @@ session_start();
         <div class="macro-categorie"></div>
       </div>
       <div class="post">
-        <p class="titolo">Nuovi post</p></div>
+        <p class="titolo">Nuovi post</p>
+        <div class="ultimi-post"></div>
+      </div>
       <div class="popolari">
         <p class="titolo">Blog popolari</p>
         <div class="blog-popolari"></div>
