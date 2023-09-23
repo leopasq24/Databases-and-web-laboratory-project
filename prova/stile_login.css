@@ -240,3 +240,8 @@ form .signup-link a:hover{
     display: none;
   }
 }
+  .images img {
+    grid-area: immagini;
+    display: none;
+  }
+}
