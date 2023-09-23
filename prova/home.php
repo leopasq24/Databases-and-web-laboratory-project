@@ -23,11 +23,26 @@ session_start();
           }
           $(".blog-popolari").html(data);
         });
+        $("#blog_personali").click(function(){
+          $(".ultimi-post").hide();
+          $(".ultimi-post-personali").show();
+          $("#blog_generali").removeAttr("checked");
+        });
+        $("#blog_generali").click(function(){
+          $(".ultimi-post-personali").hide();
+          $(".ultimi-post").show();
+        });  
       $.get("post.php", function(data) {
           if(data=="Sessione annullata"){
             location.replace("registrazione.php");
           }
           $(".ultimi-post").html(data);
+        });
+      $.get("post_personali.php", function(data) {
+          if(data=="Sessione annullata"){
+            location.replace("registrazione.php");
+          }
+          $(".ultimi-post-personali").html(data);
         });
       });
     </script>
@@ -53,8 +68,11 @@ session_start();
         <div class="macro-categorie"></div>
       </div>
       <div class="post">
-        <p class="titolo">Nuovi post</p>
+        <p class="titolo">Nuovi post</br>
+        <input type="radio" id="blog_generali" name="blog_generali" value="Tutti i blog" checked><label for="blog_generali">Tutti i Blog</label>
+        <input type="radio" id="blog_personali" name="blog_personali" value="I tuoi blog"><label for="blog_personali">I tuoi Blog</label></p>
         <div class="ultimi-post"></div>
+        <div class="ultimi-post-personali" hidden></div>
       </div>
       <div class="popolari">
         <p class="titolo">Blog popolari</p>
