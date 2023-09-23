@@ -31,7 +31,7 @@ session_unset();
                   });
                $("#login").on("submit", function(event){
                      if($(this).valid()){
-                        $("#return_message").hide();
+                        $("#error_message").hide();
                         event.preventDefault();
                         var formData = new FormData(this);
                         $.ajax({
@@ -41,12 +41,15 @@ session_unset();
                            contentType: false,
                            data: formData,
                            success: function(data){
-                              if(data == "OK"){
+                              if(data == "Primo accesso"){
                                  location.replace("intro.php");
-                                 } else{
+                                 }
+                              else if(data == "OK"){
+                                    location.replace("home.php");                                
+                              } else{
                                     $("#error_message").show();
-                                    $("#error_message").text(data);
-                                    }         
+                                    $("#error_message").text(data);                                  
+                                 }         
                               }
                         });
                      }
