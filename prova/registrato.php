@@ -1,10 +1,10 @@
 <?php
 include_once("connect.php");
 
-$name = $_POST["username"];
-$pass = $_POST["password"];
-$pass2 = $_POST["password_2"];
-$email = $_POST["mail"];
+$name = trim($_POST["username"]);
+$pass = trim($_POST["password"]);
+$pass2 = trim($_POST["password_2"]);
+$email = trim($_POST["mail"]);
 $i=0;
 
 if(strlen($name) < 5){
