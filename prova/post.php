@@ -13,6 +13,8 @@ if (!isset($_SESSION["session_utente"])) {
         $testo = $row['Testo'];
         $autore_post = $row['Username'];
         $blog = $row['Argomento'];
+        $data = $row['Data'];
+        $ora = $row['Ora'];
         $image_blog_Data = $row['immagine_blog'];
         if($image_blog_Data='NULL'){
             $src_img="foto/blog.png";
@@ -27,6 +29,7 @@ if (!isset($_SESSION["session_utente"])) {
     		$html .= "<p>$blog</p>";
         	$html .= "<h4>$title</h4>";
         	$html .= "<p>$testo</p>";
+        	$html .= "<p class='dataeora'>$data $ora</p>";
         	$html .= "</div>";
     	}
     	else{
@@ -36,6 +39,7 @@ if (!isset($_SESSION["session_utente"])) {
         	$html .= "<h4>$title</h4>";
         	$html .= "<img src='data:image/png;base64, $base64Image_post_Data' alt='$title'></img>";
         	$html .= "<p>$testo</p>";
+        	$html .= "<p class='dataeora'>$data $ora</p>";
         	$html .= "</div>";
     	}
     }
