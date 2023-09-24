@@ -195,7 +195,7 @@ header .grid-post{
   background:#fff;
  }
  header .grid-post .post .ultimi-post, .ultimi-post-personali{
-  height: 50vh;
+  height: 48vh;
   overflow: scroll;
  }
  header .grid-post .post .titolo{
@@ -236,12 +236,16 @@ header .grid-post{
   border-radius: 0 15px 15px 15px;
  }
 
-  header .grid-post .post .nuovo-post img:nth-child(1){
+ header .grid-post .post .nuovo-post img:nth-child(1){
     float:left;
     width: 4.5%;
     margin-top:1%;
     margin-right:1.2%;
-  }
+ }
+  header .grid-post .post .nuovo-post p.dataeora{
+    font-size: x-small;
+    margin-top:2%;
+ }
  header .grid-post .popolari{
   margin-right:5%;
   background: #FAEBD7;
