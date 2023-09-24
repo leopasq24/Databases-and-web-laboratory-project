@@ -162,7 +162,7 @@ header .grid-post{
  }
  .titolo{
   border-bottom:1.5px solid #DCDCDC;
-  padding-bottom: 1.7%;
+  padding-bottom: 1.5%;
  }
  header .grid-post .categorie{
   margin-left:5%;
@@ -194,10 +194,32 @@ header .grid-post{
  header .grid-post .post{
   background:#fff;
  }
- header .grid-post .post .ultimi-post{
+ header .grid-post .post .ultimi-post, .ultimi-post-personali{
   height: 50vh;
   overflow: scroll;
  }
+ header .grid-post .post .titolo{
+  margin-bottom:0%;
+ }
+  /* Hide the actual radio buttons */
+  header .grid-post .post .titolo input[type="radio"] {
+  display: none;
+}
+
+/* Style the labels to look like custom radio buttons */
+  header .grid-post .post .titolo label {
+  display: inline-block;
+  padding: 1%;
+  margin-right: 10px;
+  cursor: pointer;
+  font-weight: 300;
+}
+
+ header .grid-post .post .titolo label.selected {
+  background-color: #DCDCDC;
+  color: #fff;
+  border-radius: 5px;
+}
  header .grid-post .post p{
   margin-top:1.3%;
   margin-bottom:1.3%;
@@ -207,11 +229,13 @@ header .grid-post{
   margin-left:4%;
   margin-right:4%;
   margin-top: 2%;
+  margin-bottom:2%;
   font-weight: 400;
   padding: 1.5%;
   border:1.8px solid #DCDCDC;
   border-radius: 0 15px 15px 15px;
  }
+
   header .grid-post .post .nuovo-post img:nth-child(1){
     float:left;
     width: 4.5%;
