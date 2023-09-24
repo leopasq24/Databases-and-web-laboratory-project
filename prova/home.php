@@ -26,12 +26,15 @@ session_start();
         $("#blog_personali").click(function(){
           $(".ultimi-post").hide();
           $(".ultimi-post-personali").show();
-          $("#blog_generali").removeAttr("checked");
+          $("#label_personali").addClass("selected");
+          $("#label_generali").removeClass("selected");
         });
         $("#blog_generali").click(function(){
           $(".ultimi-post-personali").hide();
           $(".ultimi-post").show();
-        });  
+          $("#label_generali").addClass("selected");
+          $("#label_personali").removeClass("selected");
+          });  
       $.get("post.php", function(data) {
           if(data=="Sessione annullata"){
             location.replace("registrazione.php");
@@ -69,8 +72,8 @@ session_start();
       </div>
       <div class="post">
         <p class="titolo">Nuovi post</br>
-        <input type="radio" id="blog_generali" name="blog_generali" value="Tutti i blog" checked><label for="blog_generali">Tutti i Blog</label>
-        <input type="radio" id="blog_personali" name="blog_personali" value="I tuoi blog"><label for="blog_personali">I tuoi Blog</label></p>
+        <input type="radio" id="blog_generali" name="blog_generali" value="Tutti i blog"><label for="blog_generali" id="label_generali" class="selected">Tutti i Blog</label>
+        <input type="radio" id="blog_personali" name="blog_personali" value="I tuoi blog"><label for="blog_personali" id="label_personali">I tuoi Blog</label></p>
         <div class="ultimi-post"></div>
         <div class="ultimi-post-personali" hidden></div>
       </div>
