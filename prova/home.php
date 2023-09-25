@@ -17,6 +17,20 @@ session_start();
           }
           $(".macro-categorie").html(data);
         });
+        $(".macro-categorie").on("click", ".macrocat", function(){
+          var macrocat = $(this);
+          var someValue = macrocat.find("#macrocat_nome").text();
+          var requestData = {
+            key1: someValue
+          };
+          $.get("sottocategorie.php", requestData,function(data) {
+            if(data=="Sessione annullata"){
+              location.replace("registrazione.php");
+            }
+            $macrocat.find(".micro-categoria").html(data);
+            $macrocat.find(".micro-categoria").toggle();
+          });
+        });
       $.get("blog_popolari.php", function(data) {
           if(data=="Sessione annullata"){
             location.replace("registrazione.php");
@@ -56,7 +70,7 @@ session_start();
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
         <li><a href="home.php">Home</a></li>
-        <li><a href="#"> I tuoi Blog</a></li>
+        <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
         <li><a href="#">Account</a></li>
         <li><a href="#">Info</a></li>
       </ul>
