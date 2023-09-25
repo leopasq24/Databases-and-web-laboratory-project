@@ -8,6 +8,10 @@ if (!isset($_SESSION["session_utente"])) {
     $id_utente = $_SESSION["session_utente"];
     $query_post = mysqli_query($link,"SELECT post.Titolo AS Titolo_post, Testo, Data, Ora, post.Immagine AS immagine_post, blog.Titolo AS Argomento, blog.Immagine AS immagine_blog, Username FROM post, blog, utente WHERE post.IdBlog=blog.IdBlog AND post.IdUtente=utente.IdUtente AND blog.IdUtente = $id_utente ORDER BY Data DESC LIMIT 7");
     $html = "";
+    $query_results = mysqli_fetch_assoc($query_post);
+    if(empty($query_results)){
+        $html .= "<p id='nessun_blog'>Non hai ancora nessun blog :( Creane uno!</p>";    
+    }
     while($row = mysqli_fetch_assoc($query_post)){
     	$image_post_Data = $row['immagine_post'];
     	$title = $row['Titolo_post'];
