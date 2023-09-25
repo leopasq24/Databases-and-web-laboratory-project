@@ -27,8 +27,8 @@ session_start();
             if(data=="Sessione annullata"){
               location.replace("registrazione.php");
             }
-            $macrocat.find(".micro-categoria").html(data);
-            $macrocat.find(".micro-categoria").toggle();
+            macrocat.find(".micro-categoria").html(data);
+            macrocat.find(".micro-categoria").toggle();
           });
         });
       $.get("blog_popolari.php", function(data) {
