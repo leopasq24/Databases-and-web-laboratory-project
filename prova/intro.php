@@ -22,12 +22,11 @@ session_start();
 <body>
   <header>
     <nav class="navbar">
-      <div class="logo"><a href="#">Bluggle</a></div>
+      <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Latest</a></li>
-        <li><a href="#">Offers</a></li>
-        <li><a href="#">Services</a></li>
+        <li><a href="home.php">Home</a></li>
+        <li><a href="#"> I tuoi Blog</a></li>
+        <li><a href="#">Account</a></li>
         <li><a href="#">Info</a></li>
       </ul>
       <div class="buttons">
@@ -39,7 +38,7 @@ session_start();
       <h2>Ti diamo il benvenuto,<br><span id="nome_utente"></span></h2>
       <p> <span>Crea</span> il tuo blog personale, <span>posta</span> quello che più ti piace, <span>condividi</span> un pensiero...
       o divertiti a <span>galleggiare</span> tra i post degli altri utenti! 🫧 </br></p>
-      <input type="button" value="Iniziamo!">
+      <a href="home.php"><input type="button" value="Iniziamo!"></a>
     </div>
   </header>
 </body>
