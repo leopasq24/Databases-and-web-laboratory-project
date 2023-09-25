@@ -25,7 +25,7 @@ session_start();
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
         <li><a href="home.php">Home</a></li>
-        <li><a href="#"> I tuoi Blog</a></li>
+        <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
         <li><a href="#">Account</a></li>
         <li><a href="#">Info</a></li>
       </ul>
