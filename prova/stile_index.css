@@ -105,6 +105,9 @@ header .navbar{
 .navbar .buttons input[value~="Logout"] {
   background: linear-gradient(135deg, #f0e445, #e0960b);
 }
+
+/* Intro*/
+
  header .text-content{
    width: 50%;
    margin: 0 0 0 23% ;
@@ -167,7 +170,6 @@ header .grid-post{
  header .grid-post .categorie{
   margin-left:5%;
   background:#F0FFFF;
-  height: 60vh;
  }
  header .grid-post .categorie p:nth-child(1){
   background: #b3ffff;
@@ -180,16 +182,41 @@ header .grid-post{
   margin-top:3%;
   margin-bottom:3%;
  }
+header .grid-post .categorie .macro-categorie{
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: 52vh;
+}
  header .grid-post .categorie .macrocat{
-  text-align:left;
-  margin-left:6%;
+  text-align: left;
+  margin-left: 6%;
   margin-top: 2%;
   font-weight: 400;
  }
  header .grid-post .categorie .macrocat img{
-  float:left;
+  float: left;
   width: 8%;
   margin-right: 5%;
+ }
+ .macro-categorie p#macrocat_nome {
+  cursor: pointer;
+  user-select: none;
+ }
+
+ header .grid-post .macro-categorie .micro-categoria{
+  margin-right: 12%;
+ }
+ header .grid-post .macro-categorie .micro-categoria p{
+  background: none;
+  font-size: 15px;
+  padding-top: 0%;
+  padding-bottom: 0%;
+  line-height: 1.1em;
+  margin-top: 0%;
+  margin-left: 12%;
+  cursor: pointer;
+  border-bottom: 0.5px dotted #99ffff;
+  font-weight: 300;
  }
  header .grid-post .post{
   background:#fff;
@@ -201,12 +228,9 @@ header .grid-post{
  header .grid-post .post .titolo{
   margin-bottom:0%;
  }
-  /* Hide the actual radio buttons */
-  header .grid-post .post .titolo input[type="radio"] {
+ header .grid-post .post .titolo input[type="radio"] {
   display: none;
-}
-
-/* Style the labels to look like custom radio buttons */
+ }
   header .grid-post .post .titolo label {
   display: inline-block;
   padding: 1%;
@@ -214,7 +238,6 @@ header .grid-post{
   cursor: pointer;
   font-weight: 300;
 }
-
  header .grid-post .post .titolo label.selected {
   background-color: #DCDCDC;
   color: #fff;
@@ -233,8 +256,8 @@ header .grid-post{
   font-weight: 400;
   padding: 1.5%;
   border:1.8px solid #DCDCDC;
-  background: #f2f2f2;
   border-radius: 0 15px 15px 15px;
+  background: #f2f2f2;
  }
 
  header .grid-post .post .nuovo-post img:nth-child(1){
@@ -274,6 +297,69 @@ header .grid-post{
   width: 8%;
   margin-right: 5%;
  }
+
+ /*I tuoi Blog*/
+
+header .tuoi_blog{
+  width: 50%;
+  text-align: center;
+}
+.tuoi_blog input{
+  outline: none;
+  color: #f2f2f2;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ff6de285, #008cff7a);
+  margin-top: 3%;
+}
+.tuoi_blog input:hover{
+  transform: scale(0.97);
+}
+.tuoi_blog input[value="Crea un nuovo Blog"]{
+  margin-top: 0%;
+  background: linear-gradient(135deg, #f0e445, #e0960b);
+  margin: 0 0 0 80%;
+}
+.tuoi_blog input[value="Modifica Blog"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  font-size:14px;
+  float:left;
+}
+.tuoi_blog input[value="Elimina Blog"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  font-size:14px;
+  float:right;
+}
+.tuoi_blog .presentazione{
+  margin: 3% 0 0 80%;
+  white-space: nowrap;
+  font-size:25px;
+}
+.tuoi_blog .griglia_blog_creati{
+  display:flex;
+}
+.tuoi_blog .griglia_blog_creati p:nth-child(3){ /* descrizione blog */
+  font-style: italic;
+  font-size: 13px;
+  color: grey;
+}
+.tuoi_blog .griglia_blog_creati .blog{
+  float:left;
+  background: #fff;
+  padding:2%;
+  border-radius: 10px;
+  margin: 3% 3% 0 3%;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+}
+
 /*Media queries*/
 
 
