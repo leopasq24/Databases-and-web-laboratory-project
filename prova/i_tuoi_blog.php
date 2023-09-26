@@ -39,7 +39,6 @@ session_start();
       <a href="#"><input type="button" value="Crea un nuovo Blog"></a>
       <p class="presentazione">I Blog creati da te:</p>
       <div class="griglia_blog"></div>
-      <a href="#"><input type="button" value="modifica Blog"></a><a href="#"><input type="button" value="Elimina Blog"></a>
     </div>
   </header>
 </body>
