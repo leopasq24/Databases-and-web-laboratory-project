@@ -29,6 +29,7 @@ if (!isset($_SESSION["session_utente"])) {
             $html .= "<img src='{$src_img}' alt='{$Title}'></img>";
             $html .= "<p>{$Title}</p>";
             $html .= "<p>{$descrizione}</p>";
+            $html .= "<a href='#''><input type='button' value='Modifica Blog'></a><a href='#'><input type='button' value='Elimina Blog'></a>";
             $html .= "</div>";
         }
     }
