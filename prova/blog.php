@@ -12,7 +12,7 @@ if (!isset($_SESSION["session_utente"])) {
     $query_blog = mysqli_stmt_get_result($stmt);
     $html = "<div class='griglia_blog_creati'>";
     if (mysqli_num_rows($query_blog) === 0) {
-        $html .= "<p id='nessun_blog'>Non hai ancora nessun blog :( Creane uno!</p>";
+        $html .= "<p id='nessun_blog'>Che tristezza, nessun blog nei paraggi... </br> Che ne dici di creane uno? ;)</p>";
     }
     else{
         while ($row = mysqli_fetch_assoc($query_blog)) {
