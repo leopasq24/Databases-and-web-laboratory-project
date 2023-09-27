@@ -13,7 +13,7 @@ if (!isset($_SESSION["session_utente"])) {
         $categoryName = $row['Nome'];
         $html .= "<div class='macrocat'>";
         $html .= "<img src='data:image/png;base64, $base64Icon' alt='$categoryName'></img>";
-        $html .= "<p id='macrocat_nome'>$categoryName</p>";
+        $html .= "<p id='macrocat_nome'>{$categoryName}</p><p id='freccia'>&#8250;</p>";
         $html .= "<div class='micro-categoria'></div>";
         $html .= "</div>";
     }
