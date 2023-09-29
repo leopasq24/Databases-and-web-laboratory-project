@@ -192,6 +192,7 @@ header .grid-post .categorie .macro-categorie{
   margin-left: 6%;
   margin-top: 2%;
   font-weight: 400;
+  cursor:pointer;
  }
  header .grid-post .categorie .macrocat img{
   float: left;
@@ -199,12 +200,19 @@ header .grid-post .categorie .macro-categorie{
   margin-right: 5%;
  }
  .macro-categorie p#macrocat_nome {
-  cursor: pointer;
   user-select: none;
+  display: inline;
+  margin-right: 10px;
  }
-
+ .macro-categorie p#freccia{
+  user-select: none;
+  display: inline-block;
+  margin:0 0 0 0;
+ }
  header .grid-post .macro-categorie .micro-categoria{
   margin-right: 12%;
+  margin-top: 2%;
+  margin-left: 2.5%;
  }
  header .grid-post .macro-categorie .micro-categoria p{
   background: none;
@@ -326,13 +334,13 @@ header .tuoi_blog{
   background: linear-gradient(135deg, #f0e445, #e0960b);
   margin: 0 0 0 80%;
 }
-.tuoi_blog input[value="Modifica Blog"]{
+.tuoi_blog input[value="Modifica"]{
   margin-top: 3%;
   background: linear-gradient(135deg, #83c1ff, #2e7ec0);
   font-size:14px;
   float:left;
 }
-.tuoi_blog input[value="Elimina Blog"]{
+.tuoi_blog input[value="Elimina"]{
   margin-top: 3%;
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
   font-size:14px;
@@ -352,17 +360,9 @@ header .tuoi_blog{
   font-size: 13px;
   color: grey;
 }
-.tuoi_blog .griglia_blog_creati .blog{
-  float:left;
-  background: #fff;
-  padding:2%;
-  border-radius: 10px;
-  margin: 3% 3% 0 3%;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
-}
-.tuoi_blog .griglia_blog_creati p#nessun_blog{
+.tuoi_blog .griglia_blog_creati p#nessun_blog{/*appare se non ci sono post*/
   margin-top: 3%;
-  margin-left: 70%;
+  margin-left: 74%;
   text-align: center;
   white-space: nowrap;
   font-size: 17px;
@@ -371,7 +371,14 @@ header .tuoi_blog{
   border-radius: 10px;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
 }
-
+.tuoi_blog .griglia_blog_creati .blog{
+  float:left;
+  background: #fff;
+  padding:2%;
+  border-radius: 10px;
+  margin: 3% 3% 0 3%;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+}
 /*Media queries*/
 
 
@@ -411,4 +418,3 @@ header .tuoi_blog{
     padding: 15px 10px;
 }
 }
-
