@@ -20,16 +20,27 @@ session_start();
         $(".macro-categorie").on("click", ".macrocat", function(){
           var macrocat = $(this);
           var someValue = macrocat.find("#macrocat_nome").text();
+          var freccia = macrocat.find("#freccia");
+          var microCategoria = macrocat.find(".micro-categoria");
           var requestData = {
             key1: someValue
           };
-          $.get("sottocategorie.php", requestData,function(data) {
-            if(data=="Sessione annullata"){
+
+          microCategoria.toggleClass("visible");
+
+          if (microCategoria.hasClass("visible")) {
+            freccia.css({'transform': 'rotate(90deg)'});
+            $.get("sottocategorie.php", requestData,function(data) {
+             if(data=="Sessione annullata"){
               location.replace("registrazione.php");
-            }
-            macrocat.find(".micro-categoria").html(data);
-            macrocat.find(".micro-categoria").toggle();
-          });
+             }
+             microCategoria.html(data);
+             microCategoria.show();
+            });
+          } else {
+            freccia.css({'transform': 'rotate(0deg)'});
+            microCategoria.hide();
+          }
         });
       $.get("blog_popolari.php", function(data) {
           if(data=="Sessione annullata"){
