@@ -353,7 +353,7 @@ header .tuoi_blog{
   font-size: 20px;
 }
 .tuoi_blog .griglia_blog_creati{
-  display:flex;
+  display: flex;
 }
 .tuoi_blog .griglia_blog_creati p:nth-child(3){ /* descrizione blog */
   font-style: italic;
@@ -379,8 +379,52 @@ header .tuoi_blog{
   margin: 3% 3% 0 3%;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
 }
-/*Media queries*/
 
+/* Form creazione blog */
+
+.tuoi_blog .field{
+  padding-left: 10%;
+  text-align: left;
+}
+.tuoi_blog .field label{
+  font-size: 12px;
+  font-weight: 500;
+  font-size: 15px;
+  user-select: none;
+  text-align: left;
+}
+.tuoi_blog .field input#titolo_blog, input#descrizione_blog, input#immagine_blog, input#coautori{
+  background: white;
+  color: black;
+  font-weight: 300;
+  margin-left: 1%;
+}
+.tuoi_blog .field select#categoria_blog{
+  margin-top: 3%;
+  margin-left: 1%;
+}
+.tuoi_blog .field select#sottocategoria_blog{
+  margin-top: 1%;
+  margin-left: 1%;
+}
+input#crea_blog{
+  margin-top: 0;
+}
+input[value="Crea"]{
+  margin-top: 1%;
+  margin-right: 2%;
+}
+label{
+  font-size: 15px;
+}
+input#immagine_blog{
+  font-size: 13px;
+}
+input#immagine_blog input#file-upload-button{
+  background: linear-gradient(135deg, #ff6de285, #008cff7a);
+}
+
+/* Media queries */
 
 @media (max-width:1005px) {
   header{
