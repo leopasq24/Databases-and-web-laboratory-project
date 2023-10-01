@@ -347,7 +347,7 @@ header .tuoi_blog{
   float:right;
 }
 .tuoi_blog .presentazione{
-  margin: 5% 0 0 81%;
+  margin: 3% 0 0 81%;
   white-space: nowrap;
   font-weight: 500;
   font-size: 20px;
@@ -387,7 +387,7 @@ header .tuoi_blog{
   text-align: left;
 }
 .tuoi_blog .field:nth-child(1){
-  margin-top: 13%;
+  margin-top: 2%;
 }
 label{
   font-weight: 500;
@@ -430,7 +430,10 @@ input[value="Crea"]:hover{
 input#immagine_blog{
   font-size: 13px;
 }
-
+label.error{/*messaggi d'errore jQuery*/
+  color: red;
+  font-weight: 400;
+}
 
 /*Media queries*/
 
