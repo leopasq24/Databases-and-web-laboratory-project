@@ -9,6 +9,7 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
       $(document).ready(function() {
         $.get("blog.php", function(data) {
@@ -19,10 +20,18 @@ session_start();
         });
         $("#crea_blog").click(function(){
           $('#form_crea_blog').toggle();
-          if($(this).val()=="Nascondi"){
+          if($(this).val()=="Annulla"){
             $(this).val("Crea un nuovo Blog");
+            $(".content-container").css("display", "");
+            $(".griglia_blog").css("flex", "");
+            $(".griglia_blog_creati").css("margin-top", "");
+            $(".presentazione").css("margin-left", "81%");
           }else{
-            $(this).val("Nascondi");
+            $(this).val("Annulla");
+            $(".content-container").css("display", "flex");
+            $(".griglia_blog").css("flex", "1");
+            $(".griglia_blog_creati").css("margin-top", "30%");
+            $(".presentazione").css("margin-left", "30%");
           }
         });
         $.get("categorie_select.php", function(data) {
@@ -40,8 +49,38 @@ session_start();
             $("#sottocategoria_blog").html(data);
           });
         });
+        $("#form_crea_blog").validate({
+          rules : {
+            titolo_blog: {
+              required : true
+              },
+            descrizione_blog : {
+              required : true
+                },
+            categoria_blog : {
+              required : true
+              },
+            sottocategoria_blog : {
+              required : true
+              }  
+            },
+          messages : {
+            titolo_blog: {
+              required: "Inserire un titolo"
+            },
+            descrizione_blog : {
+              required : "Inserire una descrizione"
+            },
+            categoria_blog: {
+              required: "Inserire una categoria"
+            },
+            sottocategoria_blog: {
+              required: "Inserire una sottocategoria"
+            }
+          }
+        });
         $("#form_crea_blog").on("submit", function(event){
-          if($(this).valid()){
+            if($(this).valid()){
             $("#error_message").hide();
             event.preventDefault();
             var formData = new FormData(this);
@@ -53,14 +92,14 @@ session_start();
               data: formData,
               success: function(data){
                 if(data == "OK"){
-                  location.replace("welcome.php");
+                   location.reload();
                 } else{
                   $("#error_message").show();
                   $("#error_message").text(data);
                 }         
               }
             });
-          }
+          }  
         });        
        }); 
     </script>
@@ -82,39 +121,42 @@ session_start();
     </nav>
     <div class="tuoi_blog">
       <input type="button" id="crea_blog" value="Crea un nuovo Blog">
-      <form id="form_crea_blog" action="crea_blog.php" method="post" hidden>
+      <div class="content-container">
+      <form id="form_crea_blog" action="crea_blog.php" method="post" enctype="multipart/form-data" hidden>
         <div class="field">
+          <label>Titolo</label></br>
           <input type="text" name="titolo_blog" id="titolo_blog">
-          <label>Titolo</label>
         </div>
         <div class="field">
+          <label>Descrizione</label></br>
           <input type="text" name="descrizione_blog" id="descrizione_blog">
-          <label>Descrizione</label>
         </div>
         <div class="field">
+          <label>Immagine</label></br>
           <input type="file" id="immagine_blog" name="immagine_blog">
-          <label>Immagine</label>
         </div>
         <div class="field">
+          <label>Categoria</label></br>
           <select id="categoria_blog" name="categoria_blog"></select>
-            <label>Categoria</label>
         </div>
         <div class="field">
+          <label>Sottocategoria</label></br>
           <select id="sottocategoria_blog" name="sottocategoria_blog"></select>
-            <label>Sottocategoria</label>
+        </div>
+        <div class="field">
+          <label>Seleziona uno o più coautori</label></br>
+          <input type="text" name="coautori" id="coautori">
+        </div>
+        <div class="field">
+          <input type="submit" value="Crea">
         </div>
         </br>
         <p id="error_message"></p>
-        <div class="field">
-            <input type="submit" value="Crea">
-        </div>
       </form>
       <p class="presentazione">I Blog creati da te:</p>
       <div class="griglia_blog"></div>
-    </div>
-  </header>
-</body>
-</html>
+      </div>
+  </div>
   </header>
 </body>
 </html>
