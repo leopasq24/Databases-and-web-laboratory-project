@@ -19,7 +19,7 @@ if (!isset($_SESSION["session_utente"])) {
             $imageData = $row['Immagine'];
             $descrizione = $row['Descrizione'];
             $Title = $row['Titolo'];
-            if ($imageData === null) {
+            if ($imageData == null) {
                 $src_img = "foto/blog.png";
             } else {
                 $base64Image = base64_encode($imageData);
