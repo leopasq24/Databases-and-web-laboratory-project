@@ -12,14 +12,14 @@ if (!isset($_SESSION["session_utente"])) {
     $query_blog = mysqli_stmt_get_result($stmt);
     $html = "<div class='griglia_blog_creati'>";
     if (mysqli_num_rows($query_blog) === 0) {
-        $html .= "<p id='nessun_blog'>Che tristezza, nessun blog nei paraggi... </br> Che ne dici di creane uno? ;)</p>";
+        $html .= "<p id='nessun_blog'>Ops! Nessun blog nei paraggi... </br> Che ne dici di creane uno? ;)</p>";
     }
     else{
         while ($row = mysqli_fetch_assoc($query_blog)) {
             $imageData = $row['Immagine'];
             $descrizione = $row['Descrizione'];
             $Title = $row['Titolo'];
-            if ($imageData==null) {
+            if ($imageData === null) {
                 $src_img = "foto/blog.png";
             } else {
                 $base64Image = base64_encode($imageData);
@@ -29,7 +29,7 @@ if (!isset($_SESSION["session_utente"])) {
             $html .= "<img src='{$src_img}' alt='{$Title}'></img>";
             $html .= "<p>{$Title}</p>";
             $html .= "<p>{$descrizione}</p>";
-            $html .= "<a href='#''><input type='button' value='Modifica Blog'></a><a href='#'><input type='button' value='Elimina Blog'></a>";
+            $html .= "<a href='#''><input type='button' value='Modifica'></a><a href='#'><input type='button' value='Elimina'></a>";
             $html .= "</div>";
         }
     }
