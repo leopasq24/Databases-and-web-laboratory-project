@@ -394,6 +394,10 @@ label{
   font-size: 15px;
   user-select: none;
 }
+.tuoi_blog .field input{
+  transform: none;
+  cursor:auto;
+}
 .tuoi_blog .field input#titolo_blog, input#descrizione_blog, input#immagine_blog, input#coautori{
   background: white;
   color: black;
@@ -401,13 +405,9 @@ label{
   margin-left: 1%;
   margin-top: 1.5%;
   margin-bottom: 2%;
+  font-size: 13px;
 }
-.tuoi_blog .field input{
-  transform: none;
-  cursor:auto;
-}
-
-.tuoi_blog .field select#categoria_blog, select#sottocategoria_blog{
+.tuoi_blog .field select#categoria_blog{
   margin-top: 1%;
   margin-left: 1%;
   margin-bottom: 2%;
@@ -417,10 +417,13 @@ input#crea_blog{
 }
 input[value="Annulla"]{
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  font-size: 14px;
 }
 input[value="Crea"]{
-  margin-top: 1.5%;
+  margin-top: 5.5%;
   margin-right: 2%;
+  margin-left:45%;
+  font-size: 14px;
 }
 
 input[value="Crea"]:hover{
@@ -433,11 +436,10 @@ input#immagine_blog{
 label.error{/*messaggi d'errore jQuery*/
   color: red;
   font-weight: 400;
+  font-size: 13px;
 }
 
 /*Media queries*/
-
-
 @media (max-width:1005px) {
   header{
     height: 95vh;
