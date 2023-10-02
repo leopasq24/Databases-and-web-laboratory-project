@@ -32,7 +32,7 @@ if (!move_uploaded_file($_FILES["immagine_blog"]["tmp_name"], $img)) {
 		$img=NULL;
 	}
     else{
-    	echo "File upload failed.Error". $_FILES["immagine_blog"]["error"];
+    	echo "Errore caricamento file:". $_FILES["immagine_blog"]["error"];
     	$i=$i+1;
     }
 }
