@@ -10,7 +10,9 @@ if (!isset($_SESSION["session_utente"])) {
     mysqli_stmt_bind_param($stmt, "i", $id_utente);
     mysqli_stmt_execute($stmt);
     $query_blog = mysqli_stmt_get_result($stmt);
-    $html = "<div class='griglia_blog_creati'>";
+    $html = "";
+    $html .="<p class='presentazione'>I Blog creati da te:</p>";
+    $html .= "<div class='griglia_blog_creati'>";
     if (mysqli_num_rows($query_blog) === 0) {
         $html .= "<p id='nessun_blog'>Ops! Nessun blog nei paraggi... </br> Che ne dici di creane uno? ;)</p>";
     }
