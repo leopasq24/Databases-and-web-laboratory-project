@@ -22,16 +22,20 @@ session_start();
           $('#form_crea_blog').toggle();
           if($(this).val()=="Annulla"){
             $(this).val("Crea un nuovo Blog");
+            $(".tuoi_blog").prepend($(this));
+            $(this).css("margin-left","");
             $(".content-container").css("display", "");
             $(".griglia_blog").css("flex", "");
-            $(".griglia_blog_creati").css("margin-top", "");
-            $(".presentazione").css("margin-left", "81%");
+             $(".presentazione").css("margin-left", "");
+            $(".griglia_blog").css("margin-left", "");
           }else{
             $(this).val("Annulla");
+            $(this).css({"margin-left":"38%"});
+            $("#form_crea_blog").prepend($(this));
             $(".content-container").css("display", "flex");
             $(".griglia_blog").css("flex", "1");
-            $(".griglia_blog_creati").css("margin-top", "30%");
-            $(".presentazione").css("margin-left", "30%");
+            $(".presentazione").css("margin-left", "40%");
+            $(".griglia_blog").css("margin-left", "40%");
           }
         });
         $.get("categorie_select.php", function(data) {
@@ -52,30 +56,28 @@ session_start();
         $("#form_crea_blog").validate({
           rules : {
             titolo_blog: {
-              required : true
+              required : true,
+              maxlength:15
               },
             descrizione_blog : {
-              required : true
+              required : true,
+              maxlength: 30
                 },
             categoria_blog : {
               required : true
-              },
-            sottocategoria_blog : {
-              required : true
-              }  
+              } 
             },
           messages : {
             titolo_blog: {
-              required: "Inserire un titolo"
+              required: "Inserire un titolo",
+              maxlength: "Inserire massimo 15 caratteri"
             },
             descrizione_blog : {
-              required : "Inserire una descrizione"
+              required : "Inserire una descrizione",
+              maxlength: "Inserire massimo 30 caratteri"
             },
             categoria_blog: {
               required: "Inserire una categoria"
-            },
-            sottocategoria_blog: {
-              required: "Inserire una sottocategoria"
             }
           }
         });
@@ -140,10 +142,6 @@ session_start();
           <select id="categoria_blog" name="categoria_blog"></select>
         </div>
         <div class="field">
-          <label>Sottocategoria</label></br>
-          <select id="sottocategoria_blog" name="sottocategoria_blog"></select>
-        </div>
-        <div class="field">
           <label>Seleziona uno o più coautori</label></br>
           <input type="text" name="coautori" id="coautori">
         </div>
@@ -153,7 +151,6 @@ session_start();
         </br>
         <p id="error_message"></p>
       </form>
-      <p class="presentazione">I Blog creati da te:</p>
       <div class="griglia_blog"></div>
       </div>
   </div>
