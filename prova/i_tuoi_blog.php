@@ -24,18 +24,10 @@ session_start();
             $(this).val("Crea un nuovo Blog");
             $(".tuoi_blog").prepend($(this));
             $(this).css("margin-left","");
-            $(".content-container").css("display", "");
-            $(".griglia_blog").css("flex", "");
-             $(".presentazione").css("margin-left", "");
-            $(".griglia_blog").css("margin-left", "");
           }else{
             $(this).val("Annulla");
-            $(this).css({"margin-left":"38%"});
+            $(this).css({"margin-left":"25%"});
             $("#form_crea_blog").prepend($(this));
-            $(".content-container").css("display", "flex");
-            $(".griglia_blog").css("flex", "1");
-            $(".presentazione").css("margin-left", "40%");
-            $(".griglia_blog").css("margin-left", "40%");
           }
         });
         $.get("categorie_select.php", function(data) {
@@ -81,6 +73,20 @@ session_start();
             }
           }
         });
+        var searchInput = $("#coautori");
+        var searchResults = $("#searchResults");
+        searchInput.on("input", function() {
+          var query = $(this).val();
+          $.ajax({
+            type: "GET",
+            url: "search_coautori.php",
+            data: { query: query },
+            dataType: "html",
+            success: function(data) {
+              searchResults.html(data);
+            }
+          });
+        });
         $("#form_crea_blog").on("submit", function(event){
             if($(this).valid()){
             $("#error_message").hide();
@@ -106,8 +112,8 @@ session_start();
        }); 
     </script>
    </head>
-<body>
-  <header>
+<body id="body_tuoi_blog">
+  <header id="header_tuoi_blog">
     <nav class="navbar">
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
@@ -123,7 +129,6 @@ session_start();
     </nav>
     <div class="tuoi_blog">
       <input type="button" id="crea_blog" value="Crea un nuovo Blog">
-      <div class="content-container">
       <form id="form_crea_blog" action="crea_blog.php" method="post" enctype="multipart/form-data" hidden>
         <div class="field">
           <label>Titolo</label></br>
@@ -142,8 +147,9 @@ session_start();
           <select id="categoria_blog" name="categoria_blog"></select>
         </div>
         <div class="field">
-          <label>Seleziona uno o più coautori</label></br>
+          <label>Seleziona uno o più coautori </br>(separandoli con uno spazio)</label></br>
           <input type="text" name="coautori" id="coautori">
+          <div id="searchResults"></div>
         </div>
         <div class="field">
           <input type="submit" value="Crea">
@@ -152,7 +158,6 @@ session_start();
         <p id="error_message"></p>
       </form>
       <div class="griglia_blog"></div>
-      </div>
   </div>
   </header>
 </body>
