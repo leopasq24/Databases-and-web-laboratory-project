@@ -33,7 +33,22 @@ session_start();
             error: function(xhr, status, error) {
               console.error(error);
               }
-            })
+            });
+          $.ajax({
+            url: "info_gest_blog.php",
+            type: "GET",
+            data:{ idBlog : idBlog, Blog_title: Blog_title },
+            success: function(data) {
+              if(data=="Sessione annullata"){
+                location.replace("registrazione.php");
+              }else{
+                console.log("Errore");
+              }
+            },
+            error: function(xhr, status, error) {
+              console.error(error);
+            }
+          })
         });
         $("#crea_blog").click(function(){
           $('#form_crea_blog').toggle();
@@ -227,9 +242,9 @@ session_start();
                 }         
               }
             });
-          }  
-        });        
-       }); 
+            }  
+        });       
+      }); 
     </script>
    </head>
 <body id="body_tuoi_blog">
