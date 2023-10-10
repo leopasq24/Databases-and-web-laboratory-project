@@ -6,7 +6,7 @@ if (!isset($_SESSION["session_utente"])) {
     exit;
 } else {
     $id_utente = $_SESSION["session_utente"];
-    $stmt_tuoi_blog = mysqli_prepare($link, "SELECT Titolo, Descrizione, Immagine FROM blog WHERE IdUtente=?");
+    $stmt_tuoi_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine FROM blog WHERE IdUtente=?");
     mysqli_stmt_bind_param($stmt_tuoi_blog, "i", $id_utente);
     mysqli_stmt_execute($stmt_tuoi_blog);
     $query_tuoi_blog = mysqli_stmt_get_result($stmt_tuoi_blog);
@@ -18,6 +18,7 @@ if (!isset($_SESSION["session_utente"])) {
     }
     else{
         while ($row = mysqli_fetch_assoc($query_tuoi_blog)) {
+            $idblog = $row['IdBlog'];
             $imageData = $row['Immagine'];
             $descrizione = $row['Descrizione'];
             $Title = $row['Titolo'];
@@ -27,11 +28,10 @@ if (!isset($_SESSION["session_utente"])) {
                 $base64Image = base64_encode($imageData);
                 $src_img = "data:image/png;base64," . $base64Image;
             }
-            $html .= "<div class='blog'>";
+            $html .= "<div class='blog' data-blog-title='{$Title}' data-blog-id='{$idblog}'>";
             $html .= "<img src='{$src_img}' alt='{$Title}'></img>";
-            $html .= "<p>{$Title}</p>";
-            $html .= "<p>{$descrizione}</p>";
-            $html .= "<input type='button' value='Modifica'><input type='button' value='Elimina'>";
+            $html .= "<p class='titolo_tuoi_blog'>{$Title}</p>";
+            $html .= "<p class='descrizione_tuoi_blog'>{$descrizione}</p>";
             $html .= "</div>";
         }
         mysqli_stmt_close($stmt_tuoi_blog);
