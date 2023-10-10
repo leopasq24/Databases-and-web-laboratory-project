@@ -348,7 +348,17 @@ header .tuoi_blog{
   background: linear-gradient(135deg, #83c1ff, #2e7ec0);
   font-size: 14px;
 }
+.tuoi_blog input[value="Conferma"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  font-size: 14px;
+}
 .tuoi_blog input[value="Elimina"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  font-size: 14px;
+}
+.tuoi_blog input[value="Indietro"]{
   margin-top: 3%;
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
   font-size: 14px;
@@ -364,6 +374,15 @@ header .tuoi_blog{
 .tuoi_blog .griglia_blog_creati{
   display:flex;
 }
+.tuoi_blog .griglia_blog_creati .blog{
+  float:left;
+  background: #fff;
+  padding:1%;
+  border-radius: 10px;
+  margin: 5% 2% 7% 2%;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+  cursor: pointer;
+}
 .tuoi_blog .griglia_blog_creati p:nth-child(3){ /* descrizione blog */
   font-style: italic;
   font-size: 13px;
@@ -376,21 +395,38 @@ header .tuoi_blog{
   text-align: center;
   white-space: nowrap;
   font-size: 17px;
-  background: #fff;
   padding: 2%;
   border-radius: 10px;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
 }
-.tuoi_blog .griglia_blog_creati .blog{
+.tuoi_blog .griglia_blog_creati input.campo_titolo_tuoi_blog{
+  margin-top:1%;
+  font-size: 14px;
+  display:block;
+  width:25%;
+  cursor:auto;
+  margin-left: 37%;
+  border-radius: 5px;
+  background: none;
+  color:black;
+  border:1px solid #f2f2f2;
+}
+.tuoi_blog .griglia_blog_creati input.campo_descrizione_tuoi_blog{
+  font-size: 13px;
+  cursor:auto;
+  width:55%;
   float:left;
-  background: #fff;
-  padding:1%;
-  border-radius: 10px;
-  margin: 5% 2% 7% 2%;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+  margin-left: 22%;
+  border-radius: 5px;
+  background:none;
+  color:black;
+  border:1px solid #f2f2f2;
 }
+.tuoi_blog .griglia_blog_creati input.campo_titolo_tuoi_blog:hover,input.campo_descrizione_tuoi_blog:hover{
+  transform:none;
+} 
 
-.tuoi_blog .presentazione_coautore{/*blog di cui sei coautore*/
+/*blog di cui sei coautore*/
+.tuoi_blog .presentazione_coautore{
   display:inline-block;
   margin: 3% 0 0 0%;
   white-space: nowrap;
@@ -412,14 +448,12 @@ header .tuoi_blog{
 .tuoi_blog .griglia_blog_coautore p#nessun_blog{/*appare se non ci sono post*/
   margin-top: 3%;
   margin-left: 32%;
-  margin-bottom: 7%;
+  margin-bottom: 4.8%;
   text-align: center;
   white-space: nowrap;
   font-size: 17px;
-  background: #fff;
   padding: 2%;
   border-radius: 10px;
-  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
 }
 .tuoi_blog .griglia_blog_coautore .blog{
   float:left;
@@ -428,21 +462,6 @@ header .tuoi_blog{
   border-radius: 10px;
   margin: 5% 2% 7% 2%;
   box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
-}
-div#searchResults li{
-  list-style: none;
-  font-size: 14px;
-  font-weight: 300;
-  padding: 1% 7% 0 8%;
-}
-div#searchResults ul{
-  margin-left: 1%;
-  background: #fff893;
-  height: 70px;
-  width: 20%;
-  overflow-y: auto;
-  border-radius: 15px;
-  cursor: auto;
 }
 
 /* Form creazione blog */ 
@@ -494,10 +513,29 @@ input[value="Crea"]:hover{
 input#immagine_blog{
   font-size: 13px;
 }
+div#searchResults li{
+  list-style: none;
+  font-size: 14px;
+  font-weight: 300;
+  padding: 1% 7% 0 8%;
+  cursor: pointer;
+}
+div#searchResults ul{
+  margin-left: 1%;
+  background: #fff893;
+  height: 70px;
+  width: 20%;
+  overflow-y: auto;
+  border-radius: 15px;
+  cursor: auto;
+}
 label.error{/*messaggi d'errore jQuery*/
   color: red;
   font-weight: 400;
   font-size: 13px;
+}
+.tuoi_blog p#error_message{
+  color:red;
 }
 
 /*Media queries*/
