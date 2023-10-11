@@ -340,12 +340,12 @@ header .tuoi_blog{
 }
 .tuoi_blog input[value="Crea un nuovo Blog"]{
   margin-top: 0%;
-  background: linear-gradient(135deg, #f0e445, #e0960b);
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
   margin: 0 0 0 0%;
 }
 .tuoi_blog input[value="Modifica"]{
   margin-top: 3%;
-  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  background: linear-gradient(135deg, #83c1ff, #2972af);
   font-size: 14px;
 }
 .tuoi_blog input[value="Conferma"]{
@@ -353,12 +353,7 @@ header .tuoi_blog{
   background: linear-gradient(135deg, #33cc33, #1f7a1f);
   font-size: 14px;
 }
-.tuoi_blog input[value="Elimina"]{
-  margin-top: 3%;
-  background: linear-gradient(135deg, #ff1414, #6b0c0c);
-  font-size: 14px;
-}
-.tuoi_blog input[value="Indietro"]{
+.tuoi_blog input[value="Elimina"], .tuoi_blog input[value="Indietro"]{
   margin-top: 3%;
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
   font-size: 14px;
@@ -425,7 +420,8 @@ header .tuoi_blog{
   transform:none;
 } 
 
-/*blog di cui sei coautore*/
+/* Blog di cui sei coautore*/
+
 .tuoi_blog .presentazione_coautore{
   display:inline-block;
   margin: 3% 0 0 0%;
@@ -538,7 +534,80 @@ label.error{/*messaggi d'errore jQuery*/
   color:red;
 }
 
+/* Singolo blog */
+
+header#header_tuoi_blog .grid-post .colonna-blog, header#header_tuoi_blog .grid-post .post, header#header_tuoi_blog .grid-post .p_controllo{
+  padding-bottom: 2%;
+}
+
+header#header_tuoi_blog .grid-post .colonna-blog, header#header_tuoi_blog .grid-post .p_controllo{
+ border-radius: 15px;
+ box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+ text-align: center;
+ font-weight: 600;
+}
+header#header_tuoi_blog .grid-post .colonna-blog{
+ margin-left:5%;
+ background:#fffef0;
+ margin-bottom: 8%;
+}
+header#header_tuoi_blog .grid-post .colonna-blog p:nth-child(1){
+ background: #fffab3;
+ padding-top:3%;
+ padding-bottom:3%;
+ margin-top:0%;
+ border-radius: 15px 15px 0 0;
+}
+header#header_tuoi_blog .grid-post .colonna-blog p{
+ margin-top:3%;
+ margin-bottom:3%;
+}
+header#header_tuoi_blog .grid-post .colonna-blog .info-blog{
+ overflow-y: auto;
+ overflow-x: hidden;
+ height: 52vh;
+}
+
+header#header_tuoi_blog .grid-post .post{
+  margin-bottom: 4%;
+}
+
+header#header_tuoi_blog .grid-post .post .post-pop, .post-rec{
+  height: 48vh;
+}
+
+header#header_tuoi_blog .grid-post .p_controllo{
+ margin-right:5%;
+ background: #e8d7fa;
+ margin-bottom: 8%;
+}
+header#header_tuoi_blog .grid-post .p_controllo p:nth-child(1){
+ background: #c3a4f4;
+ padding-top:3%;
+ padding-bottom:3%;
+ margin-top:0%;
+ border-radius: 15px 15px 0 0;
+}
+header#header_tuoi_blog .grid-post .p_controllo p{
+ margin-top:3%;
+ margin-bottom:3%;
+}
+header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo{
+ text-align:left;
+ margin-left:3%;
+ margin-top: 2%;
+ font-weight: 400;
+ height: 60vh;
+}
+input[value="Crea un nuovo post"]{
+  padding: 6px 15px;
+  margin-top: -3%;
+  margin-bottom: 3%;
+  font-size: 16px;
+}
+
 /*Media queries*/
+
 @media (max-width:1005px) {
   header{
     height: 95vh;
@@ -575,4 +644,3 @@ label.error{/*messaggi d'errore jQuery*/
     padding: 15px 10px;
 }
 }
-
