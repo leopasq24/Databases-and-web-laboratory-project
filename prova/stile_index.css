@@ -306,6 +306,118 @@ header .grid-post .categorie .macro-categorie{
   margin-right: 5%;
  }
 
+/* Tutti i Blog */
+
+header .tutti_i_blog{
+  width: 100%;
+  text-align: center;
+}
+.tutti_i_blog .griglia_blog_creati{
+  display: flex;
+  flex-wrap: wrap;
+}
+.tutti_i_blog .griglia_blog_creati .blog{
+  float: left;
+  background: #fff;
+  padding: 2%;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+  cursor: pointer;
+  width: 20%;
+  margin: 4% 2% 1% 8%;
+}
+.tutti_i_blog .griglia_blog_creati p:nth-child(3){ /* descrizione blog */
+  font-style: italic;
+  font-size: 13px;
+  color: grey;
+}
+.tutti_i_blog .griglia_blog_creati input.campo_titolo_tuoi_blog{
+  margin-top:1%;
+  font-size: 14px;
+  display:block;
+  width:25%;
+  cursor:auto;
+  margin-left: 37%;
+  border-radius: 5px;
+  background: none;
+  color:black;
+  border:1px solid #f2f2f2;
+}
+.tutti_i_blog .griglia_blog_creati input.campo_descrizione_tuoi_blog{
+  font-size: 13px;
+  cursor:auto;
+  width:55%;
+  float:left;
+  margin-left: 22%;
+  border-radius: 5px;
+  background:none;
+  color:black;
+  border:1px solid #f2f2f2;
+}
+.tutti_i_blog .griglia_blog_creati input.campo_titolo_tuoi_blog:hover,input.campo_descrizione_tuoi_blog:hover{
+  transform:none;
+} 
+
+#caricablog{
+  outline: none;
+  color: #f2f2f2;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 3% 0 4% 0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+}
+
+#caricablog:hover{
+  transform: scale(0.97);
+}
+
+.tutti_i_blog p.blog_finiti{
+  margin: 4% 0 5% 0;
+  text-align: center;
+  white-space: nowrap;
+  font-size: 17px;
+}
+
+.ordina_blog p{
+  font-size: 18px;
+  margin: 0 0 1% 32%;
+  font-weight: 500;
+  background: #fff292;
+  box-shadow: 2px 2px 5px 0 rgba(0, 0, 0, 0.354);
+  width: 34%;
+  padding: 1% 1% 1% 1%;
+  border-radius: 10px;
+}
+
+.ordina_blog label{
+  font-size: 18px;
+  display: inline-block;
+  padding: 2%;
+  margin-right: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.ordina_blog input[type="radio"] {
+  display: none;
+}
+
+.ordina_blog label.selected {
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  color: #fff;
+  border-radius: 10px;
+}
+
+.messaggio_fine{
+  padding: 2% 2% 3% 2%;
+  font-size: 17px;
+}
+
  /*I tuoi Blog*/
  
  body#body_tuoi_blog{
