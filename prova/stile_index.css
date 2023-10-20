@@ -677,7 +677,7 @@ header#header_tuoi_blog .grid-post .colonna-blog p{
 header#header_tuoi_blog .grid-post .colonna-blog .info-blog{
  overflow-y: auto;
  overflow-x: hidden;
- height: 52vh;
+ height: 47vh;
 }
 
 header#header_tuoi_blog .grid-post .post{
@@ -709,13 +709,74 @@ header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo{
  margin-left:3%;
  margin-top: 2%;
  font-weight: 400;
- height: 60vh;
+ height: 30vh;
 }
-input[value="Crea un nuovo post"]{
+input#crea_post{
   padding: 6px 15px;
   margin-top: -3%;
   margin-bottom: 3%;
   font-size: 16px;
+  outline: none;
+  color: #f2f2f2;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+}
+
+input#crea_post:hover{
+  transform: scale(0.97);
+}
+
+.info-blog .dati-blog{
+  margin-left: 8%;
+  text-align: left;
+}
+
+.info-blog .dati-blog .flex{
+  display: inline-block;
+  width: 100%;
+  display: flex; 
+  align-items: center;
+}
+
+.info-blog .dati-blog .flex p.titolo_blog{
+  display: inline-block;
+  width: 50%;
+  font-size: 15px;
+}
+
+.info-blog .dati-blog img{
+  width: 20%;
+  display: inline-block;
+  margin-right: 3%;
+}
+
+.info-blog .dati-blog p:nth-child(2){
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.info-blog .dati-blog p:nth-child(3){
+  font-size: 14px;
+  font-style: italic;
+  font-weight: 400;
+  color: grey;
+}
+
+.tuoi_blog input[value="Modifica"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #83c1ff, #2972af);
+  font-size: 14px;
+  margin-left: 10%;
+}
+.tuoi_blog input[value="Elimina"], .tuoi_blog input[value="Indietro"]{
+  margin-top: 3%;
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  font-size: 14px;
 }
 
 /*Media queries*/
