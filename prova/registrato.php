@@ -67,10 +67,11 @@ if($i==0){
 
 
 if($i==0){
+	$ultimate_pass=hash('sha3-512' , $pass);
 	$stmt_new_account=mysqli_prepare($link, "INSERT INTO utente(IdUtente, Username, Passw, Email, Premium) VALUES (?,?,?,?,?)");
 	$id=NULL;
 	$premium=0;
-	mysqli_stmt_bind_param($stmt_new_account,"isssi", $id, $name, $pass, $email, $premium);
+	mysqli_stmt_bind_param($stmt_new_account,"isssi", $id, $name, $ultimate_pass, $email, $premium);
 	mysqli_stmt_execute($stmt_new_account);
 	mysqli_stmt_close($stmt_new_account);
 	echo "OK";
