@@ -17,6 +17,7 @@ if(strlen($pass)==0){
 }
 
 if($i==0){
+	$ultimate_pass=hash('sha3-512' , $pass);
 	$stmt_utente_passw=mysqli_prepare($link, "SELECT IdUtente, Username, Passw FROM utente WHERE Username=?");
 	mysqli_stmt_bind_param($stmt_utente_passw,"s",$name);
 	mysqli_stmt_execute($stmt_utente_passw);
@@ -27,7 +28,7 @@ if($i==0){
 		$i=$i+1;
 		mysqli_stmt_close($stmt_utente_passw);
 	}
-	elseif($result_array[2]!=$pass){
+	elseif($result_array[2]!=$ultimate_pass){
 		echo("Credenziali errate");
 		$i=$i+1;
 		mysqli_stmt_close($stmt_utente_passw);
