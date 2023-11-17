@@ -1,11 +1,10 @@
 <?php
 session_start();
-session_unset();
 ?>
 <html lang="it">
    <head>
       <meta charset="utf-8">
-      <title>Form di login</title>
+      <title>Login</title>
       <link rel="stylesheet" href="stile_login.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
