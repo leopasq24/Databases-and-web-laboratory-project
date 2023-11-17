@@ -9,6 +9,7 @@ session_start();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
       $(document).ready(function() {
         $(".griglia_blog").on("click", ".blog", function(){
@@ -99,8 +100,8 @@ session_start();
       });
     </script>
   </head>
-<body id="body_tuoi_blog">
-  <header id="header_tuoi_blog">
+<body id="body_tutti_i_blog">
+  <header id="header_tutti_i_blog">
     <nav class="navbar">
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
