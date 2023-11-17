@@ -191,7 +191,7 @@ form .signup-link a:hover{
 .img_1 img[alt~="selfie"]:hover, .img_2 img[alt~="social"]:hover, .img_3 img[alt~="pc"]:hover{
   box-shadow: 3px 3px 20px #8b0084;
   transform: rotate(30deg);
-  cursor: pointer;
+  cursor: unset;
 }
 
 .img_2{
