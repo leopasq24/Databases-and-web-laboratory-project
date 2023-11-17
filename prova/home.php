@@ -1,7 +1,7 @@
 <?php
 session_start();
 ?>
-<html lang="en" dir="ltr">
+<html lang="it" dir="ltr">
   <head>
     <meta charset="UTF-8">
     <title> Pagina iniziale </title>
