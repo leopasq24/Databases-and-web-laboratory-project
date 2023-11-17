@@ -26,14 +26,17 @@ session_start();
             type: "GET",
             data:{ idBlog : idBlog, Blog_title: Blog_title },
             success: function(data) {
-              $(".header_tuoi_blog").css({"height":"85vh", "margin":"auto"});
-              $(".body_tuoi_blog").css("height","100%");
+              if(data=="Sessione annullata"){
+                location.replace("registrazione.php");
+              }else{
               $(".tuoi_blog").html(data);
-              },
+              }
+            },
             error: function(xhr, status, error) {
               console.error(error);
               }
-            });
+            })
+        });
         $("#crea_blog").click(function(){
           $('#form_crea_blog').toggle();
           if($(this).val()=="Annulla"){
@@ -56,15 +59,6 @@ session_start();
           }
           $("#categoria_blog").html(data);
         });
-        $("#categoria_blog").change(function() {
-          var categoria = $(this).val();
-          $.get("sottocategorie_select.php", { nome_cat: categoria }, function(data) {
-            if(data=="Sessione annullata"){
-              location.replace("registrazione.php");
-            }
-            $("#sottocategoria_blog").html(data);
-          });
-        });       
         $("#form_crea_blog").validate({
           rules : {
             titolo_blog: {
@@ -96,7 +90,7 @@ session_start();
         var searchInput = $("#coautori");
         var searchResults = $("#searchResults");
         searchInput.on("input", function() {
-        var query = $(this).val();
+          var query = $(this).val();
           $.ajax({
             type: "GET",
             url: "search_coautori.php",
@@ -113,7 +107,7 @@ session_start();
           if (valore) {
             var elenco = valore.split(' ');
             if (elenco.indexOf(selezione) === -1) {
-              searchInput.val(valore + ' ' + selezione);
+              searchInput.val(valore + selezione);
             }
           } else {
             searchInput.val(selezione);
@@ -139,9 +133,9 @@ session_start();
                 }         
               }
             });
-            }  
-        });       
-      }); 
+          }  
+        });        
+       }); 
     </script>
    </head>
 <body id="body_tuoi_blog">
