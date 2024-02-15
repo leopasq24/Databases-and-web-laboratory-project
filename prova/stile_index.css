@@ -273,7 +273,156 @@ header .grid-post .categorie .macro-categorie{
   border-radius: 0 15px 15px 15px;
   background: #f2f2f2;
  }
-
+ header .grid-post .post .nuovo-post button.modifica_post{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  float: right;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 6px;
+  color:white;
+  padding: 0.4%;
+ }
+ header .grid-post .post .nuovo-post button.elimina_post{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  margin-left: 2%;
+  float: right;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 6px;
+  color:white;
+  padding: 0.4%;
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post div.contenuto div{
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 15%
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post div button:hover{
+  transform: scale(0.97);
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post div button.conferma{
+  margin-left:5%;
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ header .grid-post .post .nuovo-post .conferma_eliminazione_post div button.annulla{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ header .grid-post .post .nuovo-post input{
+  border-radius: 5px;
+  border: 0.5px solid #f2f2f2;
+ }
+ header .grid-post .post .nuovo-post input:hover{
+  transform: none;
+ }
+ header .grid-post .post .nuovo-post input.campo_nuovo_titolo{
+  margin-top: 0%;
+  margin-left: 0%;
+  padding:1px;
+  color:#202020;
+  background: white;
+  cursor: text;
+  font-weight: 700;
+  font-size: 16px;
+  width: 70%;
+ }
+ header .grid-post .post .nuovo-post input.campo_nuovo_contenuto{
+  margin-left: 0%;
+  padding:1px;
+  background: white;
+  color:#202020;
+  cursor: text;
+  font-weight: 400;
+  font-size: 16px;
+  width: 70%;
+  margin-top:1%;
+ }
+ header .grid-post .post .nuovo-post .feedback_modifica_post{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ header .grid-post .post .nuovo-post .feedback_modifica_post div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ header .grid-post .post .nuovo-post .feedback_modifica_post div.contenuto div{
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 40%
+ }
+ header .grid-post .post .nuovo-post .feedback_modifica_post div button:hover{
+  transform: scale(0.97);
+ }
+ header .grid-post .post .nuovo-post .feedback_modifica_post div button.ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ header .grid-post .post .nuovo-post .post_modificato{
+  font-size: 10px;
+ }
+ header .grid-post .post .nuovo-post img{
+  width: 30%;
+}
  header .grid-post .post .nuovo-post img:nth-child(1){
     float:left;
     width: 4.5%;
@@ -286,7 +435,159 @@ header .grid-post .categorie .macro-categorie{
  }
   header .grid-post .post .nuovo-post p.dataeora span{
     font-weight:600;
+    font-size: 12px;
  }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti div{
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  cursor: pointer;
+  width:8%;
+  border:1.8px solid #DCDCDC;
+  border-radius: 7px 7px 7px 7px;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commenti{
+  display: block;
+  margin-top: 2%;
+  margin-right: 5%;
+  cursor: default;
+  width: 100%;
+  border:1.8px solid #DCDCDC;
+  border-radius: 7px 7px 7px 7px;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .elenco_commenti{
+  display: block;
+  max-height: 40vh;
+  overflow: scroll;
+  cursor: default;
+  border: none;
+  width: 100%;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento{
+  font-size: 13px;
+  display: block;
+  margin-top: 2%;
+  margin-bottom: 2%;
+  margin-left: 5%;
+  cursor: default;
+  width: 90%;
+  border:1.8px solid #DCDCDC;
+  border-radius: 0px 7px 7px 7px;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p{
+  margin-left: 2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.autore{
+  font-weight: 600;
+  margin-right: 2%;
+  padding-bottom: 1%;
+  border-bottom: 1.8px solid #DCDCDC;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.modificato{
+  font-size: 10px;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento input.nuovo_contenuto{
+  margin-left: 2%;
+  background: white;
+  color: #202020;
+  font-size: 13px;
+  margin-right: 0;
+  margin-top: 0;
+  font-weight: 400;
+  border-radius: 0 0 0 0;
+  cursor: text;
+  padding:0.2%;
+  border:1.8px solid #DCDCDC;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento input.nuovo_contenuto:hover{
+  transform: none;
+ }
+  header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.autore button.modifica_commento{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  float: right;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 6px;
+  color:white;
+  padding: 0.4%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.autore button.elimina_commento{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  margin-left: 2%;
+  float: right;
+  cursor: pointer;
+  font-size: 11px;
+  border-radius: 6px;
+  color:white;
+  padding: 0.4%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.autore button:hover{
+  transform: scale(0.97);
+ }
+
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.data{
+  font-size: x-small; 
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commenti .nessun_commento{
+  color:  #a6a6a6;
+  text-align: center;
+  margin-top: 4%;
+  margin-bottom: 4%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .campo_commento{
+  font-size: 14px;
+  display: inline-block;
+  background: none;
+  color: #202020;
+  font-weight: 400;
+  margin-left:5%;
+  margin-right: 0;
+  transition: none;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  cursor: text;
+  width: 72%;
+  border:1.8px solid #DCDCDC;
+  border-radius: 7px 7px 7px 7px;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .campo_commento::placeholder{
+  color: #7e7e7e;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .campo_commento:hover{
+  transform: none;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .pubblica_commento{
+  display: inline-block;
+  margin-left:2%;
+  margin-bottom: 1%;
+  margin-top: 1%;
+  cursor: pointer;
+  width: 15%;
+  border:1.8px solid #DCDCDC;
+  border-radius: 7px 7px 7px 7px;
+  padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti img{
+    width:50%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti img[src~="foto/non-mi-piace.png"]{
+    padding-top:5%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti img[src~="foto/non-mi-piace.gif"]{
+    padding-top:5%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti img[src~="foto/commenti.png"]{
+    width:53%;
+    padding-top:8%;
+    padding-left:3%;
+    padding-right:3%;
+ }
+ 
  header .grid-post .popolari{
   margin-right:5%;
   background: #FAEBD7;
@@ -349,6 +650,15 @@ body#body_tutti_i_blog{
   font-style: italic;
   font-size: 13px;
   color: grey;
+}
+.tutti_i_blog .griglia_blog_creati .blog p.autore_tuoi_blog{
+  margin-top: 1%;
+  font-size: 13px;
+}
+.tutti_i_blog .griglia_blog_creati .blog p.autore_tuoi_blog span{ /* autore blog */
+  margin-top: 1%;
+  font-size: 13px;
+  font-weight: 600;
 }
 .tutti_i_blog .griglia_blog_creati input.campo_titolo_tuoi_blog{
   margin-top:1%;
@@ -606,11 +916,13 @@ label{
   margin-top: 1.5%;
   margin-bottom: 2%;
   font-size: 13px;
+  width: 30%;
 }
 .tuoi_blog .field select#categoria_blog{
   margin-top: 1%;
   margin-left: 1%;
   margin-bottom: 2%;
+  width: 30%;
 }
 input[value="Annulla"]{
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
@@ -645,8 +957,9 @@ div#searchResults ul{
   height: 70px;
   width: 20%;
   overflow-y: auto;
-  border-radius: 15px;
+  border-radius: 0 15px 15px 15px;
   cursor: auto;
+  width: 33%;
 }
 label.error{/*messaggi d'errore jQuery*/
   color: red;
@@ -672,7 +985,7 @@ header#header_tutti_i_blog .grid-post .colonna-blog{
  background:#fffef0;
  margin-bottom: 8%;
 }
-header#header_tutti_i_blog .grid-post .colonna-blog p:nth-child(1){
+header#header_tutti_i_blog .grid-post .colonna-blog p.titolo{
  background: #fffab3;
  padding-top:3%;
  padding-bottom:3%;
@@ -706,8 +1019,9 @@ header#header_tutti_i_blog .grid-post .p_controllo{
  margin-right:5%;
  background: #e8d7fa;
  margin-bottom: 8%;
+ overflow: scroll;
 }
-header#header_tutti_i_blog .grid-post .p_controllo p:nth-child(1){
+header#header_tutti_i_blog .grid-post .p_controllo p.titolo{
  background: #c3a4f4;
  padding-top:3%;
  padding-bottom:3%;
@@ -723,8 +1037,32 @@ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo{
  margin-left:3%;
  margin-top: 2%;
  font-weight: 400;
- height: 30vh;
+ height: 15vh;
 }
+header#header_tutti_i_blog .grid-post .p_controllo div.sottotitolo{
+  font-weight: 400;
+  border-bottom: 0.5px dotted #c3a4f4;
+  padding-bottom: 2.5%;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+header#header_tutti_i_blog .grid-post .p_controllo div.sottotitolo span{
+  font-weight: 600;
+}
+header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo p{
+  text-align:left;
+  margin-left:3%;
+  margin-top: 4%;
+  font-weight: 400;
+ }
+ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo p#nessun_post{
+  text-align:center;
+ }
+header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo img{
+  float:left;
+  width: 8%;
+  margin-right: 5%;
+ }
 .info-blog .dati-blog img{
   width: 25%;
   display: inline-block;
@@ -746,9 +1084,11 @@ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo{
 
 .tutti_i_blog .dati-blog p.autori, p.nomi_autori{
   font-size:14px;
+  font-weight: 400;
 }
 .tutti_i_blog .dati-blog p.autori{
   padding-top: 4%;
+  font-weight: 600;
 }
 .tutti_i_blog .dati-blog p.nomi_autori{
   font-weight: 400;
@@ -794,6 +1134,7 @@ header#header_tuoi_blog .grid-post .p_controllo{
  margin-right:5%;
  background: #e8d7fa;
  margin-bottom: 8%;
+ overflow: scroll;
 }
 header#header_tuoi_blog .grid-post .p_controllo p:nth-child(1){
  background: #c3a4f4;
@@ -811,8 +1152,32 @@ header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo{
  margin-left:3%;
  margin-top: 2%;
  font-weight: 400;
- height: 30vh;
+ height: 15vh;
 }
+header#header_tuoi_blog .grid-post .p_controllo div.sottotitolo{
+  font-weight: 400;
+  border-bottom: 0.5px dotted #c3a4f4;
+  padding-bottom: 2.5%;
+  margin-left: 15%;
+  margin-right: 15%;
+}
+header#header_tuoi_blog .grid-post .p_controllo div.sottotitolo span{
+  font-weight: 600;
+}
+header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo p{
+  text-align:left;
+  margin-left:3%;
+  margin-top: 4%;
+  font-weight: 400;
+ }
+ header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo p#nessun_post{
+  text-align:center;
+ }
+header#header_tuoi_blog .grid-post .p_controllo .comandi_controllo img{
+  float:left;
+  width: 8%;
+  margin-right: 5%;
+ }
 input[value="Crea un nuovo post"]{
   padding: 6px 15px;
   margin-top: -3%;
@@ -820,24 +1185,24 @@ input[value="Crea un nuovo post"]{
   font-size: 16px;
 }
 .tuoi_blog input[value="Modifica"]{
-  margin-top: 3%;
+  margin-top: 2%;
   background: linear-gradient(135deg, #83c1ff, #2e7ec0);
-  font-size: 14px;
+  font-size: 12px;
 }
 .tuoi_blog input[value="Conferma"]{
-  margin-top: 3%;
+  margin-top: 2%;
   background: linear-gradient(135deg, #33cc33, #1f7a1f);
-  font-size: 14px;
+  font-size: 12px;
 }
 .tuoi_blog input[value="Elimina"]{
-  margin-top: 3%;
+  margin-top: 2%;
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
-  font-size: 14px;
+  font-size: 12px;
 }
 .tuoi_blog input[value="Indietro"]{
-  margin-top: 3%;
+  margin-top: 2%;
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
-  font-size: 14px;
+  font-size: 12px;
 }
 .info-blog .dati-blog img{
   width: 25%;
@@ -920,6 +1285,72 @@ input[value="Crea un nuovo post"]{
 .tuoi_blog input.campo_titolo:hover,input.campo_descrizione:hover{
   transform:none;
 }
+.tuoi_blog .dati-blog div#messaggio_conferma {
+    display: none;
+    position: fixed;
+    top: -10%;
+    left: -10%;
+    width: 115.5%;
+    height: 118.2%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio div {
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio button:hover{
+    transform: scale(0.97);
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio button.conferma_modifica{
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio button.annulla_modifica{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.tuoi_blog .dati-blog div.contenuto_messaggio button.ok_modifica{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 .tuoi_blog .dati-blog input#coautori{
   cursor:auto;
   border-radius: 5px;
@@ -957,6 +1388,12 @@ input[value="Crea un nuovo post"]{
   margin-left: 22%;
   width:55%;
 }
+
+.tuoi_blog p.nessun_id_blog{
+  color:red;
+  font-weight: 500;
+  margin-bottom: 5%;
+}
 /*Form crea post*/
 
 .tuoi_blog .field input#titolo_post, input#testo_post, input#immagine_post{
@@ -967,6 +1404,7 @@ input[value="Crea un nuovo post"]{
   margin-top: 1.5%;
   margin-bottom: 2%;
   font-size: 13px;
+  width: 33%;
 }
 .tuoi_blog .field input#data_post, input#ora_post{
   background: none;
@@ -982,6 +1420,401 @@ input[value="Crea un nuovo post"]{
   transform:none;
 }
 
+/*Account*/
+
+div#account-settings{
+  margin-left: 38%;
+  margin-top: 1%;
+}
+
+div#account-settings h2{
+  color: black;
+  padding-bottom: 2%;
+  user-select: none;
+}
+
+div#account-settings form{
+  margin-top: 1%;
+}
+
+div#account-settings form span{
+  font-size: 16px;
+}
+
+div#account-settings form label {
+  margin-bottom: 3%;
+  font-weight: 600;
+  font-size: 18px;
+  text-align: left;
+}
+
+div#account-settings form input[type="text"], input[type="email"], input[type="password"] {
+  font-size: 16px;
+  padding: 0.5%;
+  margin-left: 1%;
+}
+
+div#account-settings form input[type="password"]::placeholder {
+  font-size: 13px;
+}
+
+input.campo_username, input.campo_email, input#campo_passw_corrente {
+  margin-top: 1.5%;
+  border-radius: 8px;
+  opacity: 0.5;
+  width:30%;
+  
+}
+
+input#campo_passw, input#campo_conf_passw {
+  border-radius: 8px;
+  opacity: 0.5;
+  width:30%;
+}
+div#account-settings form input#conferma, div#account-settings form input#annulla {
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 3%;
+  display: none;
+}
+
+p#msg_passw_agg {
+  margin-top: 1%;
+  margin-left: 1%;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(71, 201, 31);
+}
+
+p#msg_passw_agg_error {
+  margin-top: 1%;
+  margin-left: 1%;
+  font-size: 14px;
+  font-weight: 500;
+  color: red;
+}
+
+label#campo_passw-error.passw_error, label#campo_conf_passw-error.passw_error {
+  color: red;
+  font-weight: 500;
+  font-size: 14px;
+  margin: 1% 0 -2% 1%;
+  display: block;
+}
+
+label#campo_passw-error.passw_error {
+  margin-bottom: -4%;
+}
+
+div#account-settings input#elimina_account {
+  outline: none;
+  color: #f2f2f2;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 5%;
+  margin-left: 5%;
+  margin-bottom: 5%;
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+}
+
+div#account-settings input[type="button"]:hover{
+  transform: scale(0.97);
+}
+
+
+div#account-settings .conferma_modifica_username{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ div#account-settings .conferma_modifica_username div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ div#account-settings .conferma_modifica_username div.contenuto div{
+  text-align: center;
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 5%
+ }
+ div#account-settings .conferma_modifica_username div button:hover{
+  transform: scale(0.97);
+ }
+ div#account-settings .conferma_modifica_username div button.conferma{
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_username div button.annulla{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_username div button.ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+
+div#account-settings .conferma_modifica_email{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ div#account-settings .conferma_modifica_email div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ div#account-settings .conferma_modifica_email div.contenuto div{
+  text-align: center;
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 5%;
+ }
+ div#account-settings .conferma_modifica_email div button:hover{
+  transform: scale(0.97);
+ }
+ div#account-settings .conferma_modifica_email div button.conferma{
+  margin-left:5%;
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_email div button.annulla{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_email div button.ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+
+ div#account-settings .conferma_modifica_password{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ div#account-settings .conferma_modifica_password div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ div#account-settings .conferma_modifica_password div.contenuto div{
+  text-align: center;
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 5%;
+ }
+ div#account-settings .conferma_modifica_password div button:hover{
+  transform: scale(0.97);
+ }
+ div#account-settings .conferma_modifica_password div button.conferma{
+  margin-left:5%;
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_password div button.annulla{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_modifica_password div button.ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+
+
+div#account-settings .conferma_eliminazione_account{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ div#account-settings .conferma_eliminazione_account div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ div#account-settings .conferma_eliminazione_account div.contenuto div{
+  text-align: center;
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 5%;
+ }
+ div#account-settings .conferma_eliminazione_account div button:hover{
+  transform: scale(0.97);
+ }
+ div#account-settings .conferma_eliminazione_account div button.conferma{
+  margin-left:5%;
+  background: linear-gradient(135deg, #33cc33, #1f7a1f);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+ div#account-settings .conferma_eliminazione_account div button.annulla{
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+
+
+label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
+  color: red;
+  font-weight: 500;
+  font-size: 15px;
+  margin: 1% 0 -2% 1%;
+  display: block;
+}
+
+div#passw_elimina {
+  position: relative;
+  z-index: 2;
+  top: 35%;
+}
 
 /*Media queries*/
 @media (max-width:1005px) {
@@ -1020,4 +1853,3 @@ input[value="Crea un nuovo post"]{
     padding: 15px 10px;
 }
 }
-
