@@ -20,22 +20,9 @@ session_start();
         });
         $(".griglia_blog").on("click", ".blog", function(){
           var idBlog = $(this).data("blog-id");
-          var Blog_title = $(this).data("blog-title");
-          $.ajax({
-            url: "singolo_blog.php",
-            type: "GET",
-            data:{ idBlog : idBlog, Blog_title: Blog_title },
-            success: function(data) {
-              if(data=="Sessione annullata"){
-                location.replace("registrazione.php");
-              }else{
-              $(".tuoi_blog").html(data);
-              }
-            },
-            error: function(xhr, status, error) {
-              console.error(error);
-              }
-            })
+
+          location.replace("singolo_blog.php?id=" + idBlog);
+          
         });
         $("#crea_blog").click(function(){
           $('#form_crea_blog').toggle();
@@ -129,7 +116,11 @@ session_start();
                    location.reload();
                 } else{
                   $("#error_message").show();
-                  $("#error_message").text(data);
+                  if($(data).text().indexOf("cannot be null") !== -1){
+                    $("#error_message").text("Hai raggiunto il numero massimo di blog per un utente standard!")
+                  }else{
+                    $("#error_message").text(data);
+                  }
                 }         
               }
             });
@@ -146,7 +137,7 @@ session_start();
         <li><a href="home.php">Home</a></li>
         <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
-        <li><a href="#">Account</a></li>
+        <li><a href="account.php">Account</a></li>
         <li><a href="#">Info</a></li>
       </ul>
       <div class="buttons">
