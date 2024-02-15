@@ -1816,7 +1816,15 @@ div#passw_elimina {
   top: 35%;
 }
 
+/* Tutti i blog di categoria X */
+
+span#nome_categoria {
+  color: white;
+  text-shadow: 1px 1px 1px black;
+}
+
 /*Media queries*/
+
 @media (max-width:1005px) {
   header{
     height: 95vh;
