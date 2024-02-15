@@ -80,12 +80,12 @@ if (!isset($_SESSION["session_utente"])) {
 
 				echo json_encode(array('status' => 'OK', 'data' => $updatedData));
     		} else {
-        		echo "errore";
+        		echo json_encode(array('status' => 'errore'));
     		}
     		mysqli_stmt_close($stmt);
     	}
     }else {
-    	echo "richiesta fallita:".var_dump($_POST);
+    	echo json_encode(array('status' => 'errore', 'data' => "richiesta fallita:".var_dump($_POST))); 
 	}
 }		
 ?>
