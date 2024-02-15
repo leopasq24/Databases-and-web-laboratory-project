@@ -44,14 +44,17 @@ mysqli_stmt_close($stmt_info);
             
             $(".campo_username").on('input', function() {
                 if ($(this).val() !== old_username) {
+                    $(this).css("opacity","1");
                     $('#change-username-form').find("#conferma").css({"display":"inline", "margin-top":"1%"});
                     $('#change-username-form').find("#annulla").css({"display":"inline", "margin-top":"1%"});
                 } else {
                     $('#change-username-form').find("#conferma").hide();
                     $('#change-username-form').find("#annulla").hide();
+                    $(this).css("opacity","0.5");
                 }
             });
             $('#change-username-form').on('click', '#annulla', function() {
+                $('.campo_username').css("opacity","0.5");
                 $('.campo_username').val(old_username);
                 $('#change-username-form').find("#conferma").hide();
                 $('#change-username-form').find("#annulla").hide();
@@ -60,7 +63,10 @@ mysqli_stmt_close($stmt_info);
             $('#change-username-form').on('click', '#conferma', function() {
                 var form = $("#change-username-form");
                 var formData = new FormData(form[0]);
-                if (confirm("Sicuro di voler modificare il tuo username?")) {
+                var messaggio_conferma = "<div class='conferma_modifica_username'><div class='contenuto'>Sicuro di voler modificare il tuo username?<div><button class='conferma'>Conferma</button><button class='annulla'>Annulla</button><div></div></div>";
+                $(this).closest("#account-settings").append(messaggio_conferma);
+                $(".conferma_modifica_username").css("display","block");
+                $(".conferma_modifica_username").on("click", ".conferma", function(){
                     $.ajax({
                         type: "POST",
                         url: "modifica_info_utente.php", 
@@ -70,15 +76,23 @@ mysqli_stmt_close($stmt_info);
                         success: function(response) {
                             var responseObject = JSON.parse(response);
                             if (responseObject.status === "OK") {
-                                $('#change-username-form').find("#conferma").hide();
-                                $('#change-username-form').find("#annulla").hide();;
-                                var updatedData = responseObject.data;
-                                old_username = updatedData.campo_username;
+                                $(".conferma_modifica_username .contenuto").html("<div class='contenuto'>Username modificato correttamente<div><button class='ok'>Ok</button>");
+                                $(".conferma_modifica_username").on("click", ".ok", function(){
+                                    $(this).closest($(".conferma_modifica_username")).remove();
+                                    $(".campo_username").css("opacity","0.5");
+                                    $('#change-username-form').find("#conferma").hide();
+                                    $('#change-username-form').find("#annulla").hide();;
+                                    var updatedData = responseObject.data;
+                                    old_username = updatedData.campo_username;
+                                })
                             } else if(responseObject.status === "Errore"){
                                 if (responseObject.message === "Sessione annullata"){
                                     location.replace("login.php");
                                 } else {
-                                    $("#campo_username-error.error").text(responseObject.message);
+                                    $(".conferma_modifica_username").html("<div class='contenuto'>"+responseObject.message+"<div><button class='ok'>Ok</button>");
+                                    $(".conferma_modifica_username").on("click", ".ok", function(){
+                                        $(this).closest($(".conferma_modifica_username")).remove();
+                                    })
                                 }
                             }
                         },
@@ -86,19 +100,25 @@ mysqli_stmt_close($stmt_info);
                             alert("Errore di comunicazione con il server");
                         }
                     });
-                }
+                })
+                $(".conferma_modifica_username").on("click", ".annulla", function(){
+                    $(this).closest($(".conferma_modifica_username")).remove();
+                })
             });
 
             $(".campo_email").on('input', function() {
                 if ($(this).val() !== old_email) {
+                    $(this).css("opacity","1");
                     $('#change-email-form').find("#conferma").css({"display":"inline", "margin-top":"1%"});
                     $('#change-email-form').find("#annulla").css({"display":"inline", "margin-top":"1%"});
                 } else {
                     $('#change-email-form').find("#conferma").hide();
                     $('#change-email-form').find("#annulla").hide();
+                    $(this).css("opacity","0.5");
                 }
             });
             $('#change-email-form').on('click', '#annulla', function() {
+                $(".campo_email").css("opacity","0.5");
                 $('.campo_email').val(old_email);
                 $('#change-email-form').find("#conferma").hide();
                 $('#change-email-form').find("#annulla").hide();
@@ -107,7 +127,10 @@ mysqli_stmt_close($stmt_info);
             $('#change-email-form').on('click', '#conferma', function() {
                 var form = $("#change-email-form");
                 var formData = new FormData(form[0]);
-                if (confirm("Sicuro di voler modificare la tua email?")) {
+                var messaggio_conferma = "<div class='conferma_modifica_email'><div class='contenuto'>Sicuro di voler modificare la tua email?<div><button class='conferma'>Conferma</button><button class='annulla'>Annulla</button><div></div></div>";
+                $(this).closest("#account-settings").append(messaggio_conferma);
+                $(".conferma_modifica_email").css("display","block");
+                $(".conferma_modifica_email").on("click", ".conferma", function(){
                     $.ajax({
                         type: "POST",
                         url: "modifica_info_utente.php", 
@@ -117,15 +140,23 @@ mysqli_stmt_close($stmt_info);
                         success: function(response) {
                             var responseObject = JSON.parse(response);
                             if (responseObject.status === "OK") {
-                                $('#change-email-form').find("#conferma").hide();
-                                $('#change-email-form').find("#annulla").hide();;
-                                var updatedData = responseObject.data;
-                                old_email = updatedData.campo_email;
+                                $(".conferma_modifica_email .contenuto").html("<div class='contenuto'>Email modificata correttamente<div><button class='ok'>Ok</button>");
+                                $(".conferma_modifica_email").on("click", ".ok", function(){
+                                    $(".campo_email").css("opacity","0.5");
+                                    $(this).closest($(".conferma_modifica_email")).remove();
+                                    $('#change-email-form').find("#conferma").hide();
+                                    $('#change-email-form').find("#annulla").hide();;
+                                    var updatedData = responseObject.data;
+                                    old_email = updatedData.campo_email;
+                                }) 
                             } else if(responseObject.status === "Errore"){
                                 if (responseObject.message === "Sessione annullata"){
                                     location.replace("login.php");
                                 } else {
-                                    $("#campo_email-error.error").text(responseObject.message);
+                                    $(".conferma_modifica_email").html("<div class='contenuto'>"+responseObject.message+"<div><button class='ok'>Ok</button>");
+                                    $(".conferma_modifica_email").on("click", ".ok", function(){
+                                        $(this).closest($(".conferma_modifica_email")).remove();
+                                    })
                                 }
                             }
                         },
@@ -133,16 +164,21 @@ mysqli_stmt_close($stmt_info);
                             alert("Errore di comunicazione con il server");
                         }
                     });
-                }
+                })
+                $(".conferma_modifica_email").on("click", ".annulla", function(){
+                    $(this).closest($(".conferma_modifica_email")).remove();
+                })
             });
 
             $(".campo_passw_corrente, .campo_passw, .campo_conf_passw").on('input', function() {
+                $(this).css("opacity","1");
                 $('#msg_passw_agg').hide();
                 $('#msg_passw_agg_error').hide();
                 $('#change-password-form').find("#conferma").css({"display":"inline", "margin-top":"1%"});
                 $('#change-password-form').find("#annulla").css({"display":"inline", "margin-top":"1%"});
             });
             $('#change-password-form').on('click', '#annulla', function() {
+                $(".campo_passw_corrente, .campo_passw, .campo_conf_passw").css("opacity","0.5");
                 $('#msg_passw_agg_error').hide();
                 $("#campo_passw-error.passw_error").remove();
                 $("#campo_conf_passw-error.passw_error").remove();
@@ -154,7 +190,11 @@ mysqli_stmt_close($stmt_info);
             $('#change-password-form').on('click', '#conferma', function() {
                 var form = $("#change-password-form");
                 var formData = new FormData(form[0]);
-                if (confirm("Sicuro di voler modificare la tua password?")) {
+
+                var messaggio_conferma = "<div class='conferma_modifica_password'><div class='contenuto'>Sicuro di voler modificare la tua password?<div><button class='conferma'>Conferma</button><button class='annulla'>Annulla</button><div></div></div>";
+                $(this).closest("#account-settings").append(messaggio_conferma);
+                $(".conferma_modifica_password").css("display","block");
+                $(".conferma_modifica_password").on("click", ".conferma", function(){
                     $.ajax({
                         type: "POST",
                         url: "modifica_info_utente.php", 
@@ -165,18 +205,25 @@ mysqli_stmt_close($stmt_info);
                             var responseObject = JSON.parse(response);
                             console.log(response);
                             if (responseObject.status === "OK") {
-                                $('#msg_passw_agg').append(responseObject.message);
-                                $('#msg_passw_agg').show();
-                                $('#change-password-form').find("#conferma, #annulla").hide();
-                                $('.campo_passw_corrente, .campo_passw, .campo_conf_passw').val('');
+                                $(".conferma_modifica_password .contenuto").html("<div class='contenuto'>Password modificata correttamente<div><button class='ok'>Ok</button>");
+                                $(".conferma_modifica_password").on("click", ".ok", function(){
+                                    $(this).closest($(".conferma_modifica_password")).remove();
+                                    $(".campo_passw_corrente, .campo_passw, .campo_conf_passw").css("opacity","0.5");
+                                    $('#msg_passw_agg').append(responseObject.message);
+                                    $('#msg_passw_agg').show();
+                                    $('#change-password-form').find("#conferma, #annulla").hide();
+                                    $('.campo_passw_corrente, .campo_passw, .campo_conf_passw').val('');
+                                }) 
                             } else if(responseObject.status === "Errore"){
                                 if (responseObject.message === "Sessione annullata"){
                                     location.replace("login.php");
                                 } else {
                                     $('#campo_passw-error.passw_error').remove();
                                     $('#campo_conf_passw-error.passw_error').remove();
-                                    $('#msg_passw_agg_error').append(responseObject.message);
-                                    $('#msg_passw_agg_error').show();
+                                    $(".conferma_modifica_password").html("<div class='contenuto'>"+responseObject.message+"<div><button class='ok'>Ok</button>");
+                                    $(".conferma_modifica_password").on("click", ".ok", function(){
+                                        $(this).closest($(".conferma_modifica_password")).remove();
+                                    })
                                 }
                             }
                         },
@@ -184,11 +231,18 @@ mysqli_stmt_close($stmt_info);
                             alert("Errore di comunicazione con il server");
                         }
                     });
-                }
+                })
+                $(".conferma_modifica_password").on("click", ".annulla", function(){
+                    $(this).closest($(".conferma_modifica_password")).remove();
+                })
             });
 
             $("#elimina_account").on("click", function() {
-                if (confirm("Sicuro di voler eliminare definitivamente il tuo account? Proseguendo con l'operazione, tutti i dati e i blog associati all'account andranno persi.")) {
+                var messaggio_conferma = "<div class='conferma_eliminazione_account'><div class='contenuto'>Sicuro di voler eliminare definitivamente il tuo account? Proseguendo con l'operazione, tutti i dati e i blog associati all'account andranno persi.<div><button class='conferma'>Conferma</button><button class='annulla'>Annulla</button><div></div></div>";
+                $(this).closest("#account-settings").append(messaggio_conferma);
+                $(".conferma_eliminazione_account").css("display","block");
+                $(".conferma_eliminazione_account").on("click", ".conferma", function(){
+                    $(this).closest($(".conferma_eliminazione_account")).remove();
                     var passwordConferma = "";
                     var passwordDialog = $("#passw_elimina").html("Inserisci la tua password corrente per confermare l'eliminazione del tuo account. Cliccando su OK, sarai reindirizzato alla pagina di login.");
                     var passwordInput = $("<input>").attr({ type: "password", id: "passwordInput" });
@@ -222,7 +276,10 @@ mysqli_stmt_close($stmt_info);
                             }
                         }
                     });
-                }
+                })
+                $(".conferma_eliminazione_account").on("click", ".annulla", function(){
+                    $(this).closest($(".conferma_eliminazione_account")).remove();
+                })     
             });
 
             $.validator.addMethod("regex_username",
