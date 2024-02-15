@@ -7,7 +7,7 @@ if (!isset($_SESSION["session_utente"])) {
 } else {
     $nome_cat = $_GET['key1'];
     $html = "";
-    $stmt_subcategories = mysqli_prepare($link, "SELECT Nome FROM categoria, contiene WHERE categoria.IdCategoria = contiene.IdSottocategoria AND contiene.IdSopracategoria = (SELECT IdCategoria FROM categoria WHERE Nome = ?)");
+    $stmt_subcategories = mysqli_prepare($link, "SELECT IdCategoria, Nome FROM categoria, contiene WHERE categoria.IdCategoria = contiene.IdSottocategoria AND contiene.IdSopracategoria = (SELECT IdCategoria FROM categoria WHERE Nome = ?)");
     
     mysqli_stmt_bind_param($stmt_subcategories, "s", $nome_cat);
     mysqli_stmt_execute($stmt_subcategories);
@@ -15,7 +15,8 @@ if (!isset($_SESSION["session_utente"])) {
     
     while ($row = mysqli_fetch_assoc($result_subcategories)) {
         $subcategoryName = $row['Nome'];
-        $html .= "<div class='microcat'>";
+        $id_categoria =  $row['IdCategoria'];
+        $html .= "<div class='microcat' data-cat-id='$id_categoria'>";
         $html .= "<p>$subcategoryName</p>";
         $html .= "</div>";
     }
