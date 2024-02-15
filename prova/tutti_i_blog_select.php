@@ -45,7 +45,7 @@ if (!isset($_SESSION["session_utente"])) {
             $html .= "<img src='{$src_img}' alt='{$Title}'></img>";
             $html .= "<p class='titolo_tuoi_blog'>{$Title}</p>";
             $html .= "<p class='descrizione_tuoi_blog'>{$descrizione}</p>";
-            $html .= "<p class='autore_tuoi_blog'>{$autore}</p>";
+            $html .= "<p class='autore_tuoi_blog'>di <span>{$autore}</span></p>";
             $html .= "</div>";
         }
         mysqli_stmt_close($stmt_tutti_i_blog);
