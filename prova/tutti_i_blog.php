@@ -14,18 +14,8 @@ session_start();
       $(document).ready(function() {
         $(".griglia_blog").on("click", ".blog", function(){
           var idBlog = $(this).data("blog-id");
-          var Blog_title = $(this).data("blog-title");
-          $.ajax({
-            url: "singolo_blog.php",
-            type: "GET",
-            data:{ idBlog : idBlog, Blog_title: Blog_title },
-            success: function(data) {
-              $(".tutti_i_blog").html(data);
-              },
-            error: function(xhr, status, error) {
-              console.error(error);
-              }
-            })
+
+          location.replace("singolo_blog.php?id=" + idBlog);
         });
         var numeroBlogCaricati;
         var tipoSelezionato = "Recenti";
@@ -108,7 +98,7 @@ session_start();
         <li><a href="home.php">Home</a></li>
         <li><a href="tutti_i_blog.php">Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php">I tuoi Blog</a></li>
-        <li><a href="#">Account</a></li>
+        <li><a href="account.php">Account</a></li>
         <li><a href="#">Info</a></li>
       </ul>
       <div class="buttons">
