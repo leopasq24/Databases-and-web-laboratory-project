@@ -355,6 +355,32 @@ $id_utente = $_SESSION["session_utente"];
             microCategoria.hide();
           }
         });
+        $(".macro-categorie").on("click", "#macrocat_nome", function() {
+          var categoria = $(this).closest(".macrocat").data("cat-id");
+          $.ajax({
+            url: "categorie.php",
+            type: "GET",
+            success: function() {
+              location.replace("categoria.php?id=" + categoria);
+            },
+            error: function(xhr, status, error) {
+              console.error(error);
+            }
+          });
+        });
+        $(".macro-categorie").on("click", ".microcat", function() { 
+          var categoria = $(this).closest(".microcat").data("cat-id");
+          $.ajax({
+            url: "sottocategorie.php",
+            type: "GET",
+            success: function() {
+              location.replace("categoria.php?id=" + categoria);
+            },
+            error: function(xhr, status, error) {
+              console.error(error);
+            }
+          });
+        });
         $("#blog_personali").click(function(){
           $(".ultimi-post").hide();
           $(".ultimi-post-personali").show();
