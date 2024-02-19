@@ -15,7 +15,7 @@ if (!isset($_SESSION["session_utente"])) {
         mysqli_stmt_execute($stmt_esiste_cat);
         $results_esiste_cat = mysqli_stmt_get_result($stmt_esiste_cat);
         if (mysqli_num_rows($results_esiste_cat)==0) {
-          $html .= "<p class='nessun_id_blog'>Errore: non esiste alcuna categoria con questo id</p> </div>";
+          $html .= "<p id='nessuna_cat'>Non esiste alcuna categoria con questo Id!</p> </div>";
           mysqli_stmt_close($stmt_esiste_cat);
         } else {
           $stmt_cat = mysqli_prepare($link, "SELECT Nome FROM categoria Where IdCategoria = ?");
@@ -31,7 +31,8 @@ if (!isset($_SESSION["session_utente"])) {
         
           $nessunBlog = (mysqli_num_rows($query_blog_per_categoria) === 0);
           if ($nessunBlog) {
-              $html .= "<p class='messaggio_fine'>Nessun Blog</p>";
+            $html .= "<img src='foto/bolle.png' alt='bolle'>";
+            $html .= "<p id='nessun_blog'>Non ci sono ancora Blog per questa categoria. <a href='i_tuoi_blog.php'>Creane uno!</a></p>";
           } else {
               while ($row = mysqli_fetch_assoc($query_blog_per_categoria)) {
                 $idblog = $row['IdBlog'];
@@ -55,7 +56,7 @@ if (!isset($_SESSION["session_utente"])) {
         }
         }
     } else {
-        $html .= "<p>Id della categoria non specificato</p> </div>";
+        $html .= "<p id='nessun_id_cat'>Id della categoria non specificato!</p> </div>";
     }
 }
 ?>
@@ -80,8 +81,8 @@ if (!isset($_SESSION["session_utente"])) {
             success: function() {
               location.replace("singolo_blog.php?id=" + idBlog);
             },
-            error: function(xhr, status, error) {
-                alert(error);
+            error: function(xhr) {
+              $(".blog").after("<p class='eliminazione_error'>" + xhr + "</p>");
             }
         });
       });
@@ -109,8 +110,8 @@ if (!isset($_SESSION["session_utente"])) {
                     $("#caricablog").show(); 
                 }
             },
-            error: function(xhr, status, error) {
-                alert(error);
+            error: function(xhr) {
+              $("#caricablog").after("<p class='eliminazione_error'>" + xhr + "</p>");
             }
         });
       }
