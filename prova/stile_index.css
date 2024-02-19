@@ -1823,6 +1823,37 @@ span#nome_categoria {
   text-shadow: 1px 1px 1px black;
 }
 
+.tutti_i_blog .griglia_blog_creati p#nessun_blog {
+  font-size: 17px;
+  margin-top: 1%;
+  margin-left: 32%;
+  text-align: center;
+}
+
+.tutti_i_blog img[src~="foto/bolle.png"]{
+  margin-top: 4%;
+  margin-left: 47%;
+  width: 3.5%;
+  height: 50%;
+  object-fit: cover;
+}
+
+p#nessuna_cat, p#nessun_id_cat {
+  color: red;
+  font-weight: 500;
+  font-size: 17px;
+  text-align: center;
+  margin-top: 10%;
+}
+
+p#nessuna_cat {
+  margin-left: 37%;
+}
+
+p#nessun_id_cat {
+  margin-left: 40%;
+}
+
 /*Media queries*/
 
 @media (max-width:1005px) {
