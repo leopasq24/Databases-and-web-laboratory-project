@@ -35,7 +35,6 @@ mysqli_stmt_close($stmt_info);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script>
         $(document).ready(function() {
             
@@ -203,7 +202,6 @@ mysqli_stmt_close($stmt_info);
                         contentType: false,
                         success: function(response) {
                             var responseObject = JSON.parse(response);
-                            console.log(response);
                             if (responseObject.status === "OK") {
                                 $(".conferma_modifica_password .contenuto").html("<div class='contenuto'>Password modificata correttamente<div><button class='ok'>Ok</button>");
                                 $(".conferma_modifica_password").on("click", ".ok", function(){
@@ -238,48 +236,52 @@ mysqli_stmt_close($stmt_info);
             });
 
             $("#elimina_account").on("click", function() {
-                var messaggio_conferma = "<div class='conferma_eliminazione_account'><div class='contenuto'>Sicuro di voler eliminare definitivamente il tuo account? Proseguendo con l'operazione, tutti i dati e i blog associati all'account andranno persi.<div><button class='conferma'>Conferma</button><button class='annulla'>Annulla</button><div></div></div>";
+                var messaggio_conferma = "<div class='conferma_eliminazione_account'><div class='contenuto'>Sicuro di voler eliminare definitivamente il tuo account? Proseguendo con l'operazione, tutti i dati e i blog associati all'account andranno persi.<div><button class='conferma'>Prosegui</button><button class='annulla'>Annulla</button></div></div></div>";
                 $(this).closest("#account-settings").append(messaggio_conferma);
-                $(".conferma_eliminazione_account").css("display","block");
+                $(".conferma_eliminazione_account").css("display", "block");
+    
                 $(".conferma_eliminazione_account").on("click", ".conferma", function(){
                     $(this).closest($(".conferma_eliminazione_account")).remove();
-                    var passwordConferma = "";
-                    var passwordDialog = $("#passw_elimina").html("Inserisci la tua password corrente per confermare l'eliminazione del tuo account. Cliccando su OK, sarai reindirizzato alla pagina di login.");
-                    var passwordInput = $("<input>").attr({ type: "password", id: "passwordInput" });
-                    passwordDialog.append(passwordInput);
-                    passwordDialog.dialog({
-                        resizable: false,
-                        modal: true,
-                        buttons: {
-                            "OK": function() {
-                                passwordConferma = $("#passwordInput").val();
-                                if (passwordConferma !== "") {
-                                    $(this).dialog("close");
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "modifica_info_utente.php",
-                                        data: { elimina_account: true, passw_corrente: passwordConferma },
-                                        success: function(response) {
-                                            var responseObject = JSON.parse(response);
-                                            if (responseObject.status === "OK") {
-                                                location.replace("login.php");
-                                            }
-                                        },
-                                        error: function() {
-                                            alert("Errore nella richiesta AJAX: " + error);
-                                        }
-                                    });
+                    var messaggio_conferma_passw = "<div class='mess_conf_passw'><div class='contenuto'>Inserisci la tua password corrente per confermare l'eliminazione del tuo account. Cliccando su <b style='color:#33cc33;'>Conferma</b>, sarai reindirizzato alla pagina di login.";
+                    $("#passw_elimina").append(messaggio_conferma_passw);
+                    var passwordInput = "<br><input type='password' id='passwordInput'>";
+                    $("#passw_elimina").find(".contenuto").append(passwordInput);
+                    var pulsanti = "<br><div><button class='conferma' style='margin-left:-8%;'>Conferma</button><button class='annulla'>Annulla</button></div></div></div>";
+                    $("#passw_elimina").find(".contenuto").append(pulsanti);
+                    $(".mess_conf_passw").css("display", "block");
+
+                    $(".mess_conf_passw").on("click", ".conferma", function(){
+                        var passwordConferma = $("#passwordInput").val();
+                        if (passwordConferma !== "") {
+                            $.ajax({
+                                type: "POST",
+                                url: "modifica_info_utente.php", 
+                                data: { passw_corrente: passwordConferma },
+                                success: function(response) {
+                                    var responseObject = JSON.parse(response);
+                                    if (responseObject.status === "OK") {
+                                        location.replace("login.php");
+                                    } else {
+                                        $("#passwordInput").after("<p class='eliminazione_error'>" + responseObject.message + "</p>");
+                                        $("#passwordInput").on("input", function(){
+                                            $("p.eliminazione_error").remove();
+                                        });
+                                    }
+                                },
+                                error: function(xhr) {
+                                    $("#passwordInput").after("<p class='eliminazione_error'>"+ xhr + "</p>");
                                 }
-                            },
-                            "Annulla": function() {
-                                $(this).dialog("close");
-                            }
+                            })
                         }
                     });
-                })
+                    $(".mess_conf_passw").on("click", ".annulla", function(){
+                        $(this).closest($(".mess_conf_passw")).remove();
+                    });
+                });
+    
                 $(".conferma_eliminazione_account").on("click", ".annulla", function(){
                     $(this).closest($(".conferma_eliminazione_account")).remove();
-                })     
+                });
             });
 
             $.validator.addMethod("regex_username",
