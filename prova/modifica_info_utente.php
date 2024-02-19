@@ -100,35 +100,38 @@ if (isset($_POST["campo_passw"]) && isset($_POST["campo_conf_passw"]) && isset($
     mysqli_stmt_close($check_passw_query);
 }
 
-if (isset($_POST["elimina_account"]) && isset($_POST["passw_corrente"])) {
+if (isset($_POST["passw_corrente"])) { 
     $curr_passw = trim($_POST["passw_corrente"]);
     $hashed_curr_passw = hash('sha3-512', $curr_passw);
 
-    $check_passw_query = mysqli_prepare($link, "SELECT IdUtente, Passw FROM utente WHERE IdUtente = ?");
+    $check_passw_query = mysqli_prepare($link, "SELECT Passw FROM utente WHERE IdUtente = ?");
     mysqli_stmt_bind_param($check_passw_query, "i", $id_utente);
     mysqli_stmt_execute($check_passw_query);
     mysqli_stmt_store_result($check_passw_query);
 
-    if (mysqli_stmt_num_rows($check_passw_query) === 1) {
-        mysqli_stmt_bind_result($check_passw_query, $id_utente_db, $hashed_passw_db);
+    if (mysqli_stmt_num_rows($check_passw_query) === 0) {
+        echo json_encode(["status" => "Errore", "message" => "La password corrente fornita non è corretta!"]);
+    } else {
+        mysqli_stmt_bind_result($check_passw_query, $hashed_passw_db);
         mysqli_stmt_fetch($check_passw_query);
 
         if ($hashed_curr_passw === $hashed_passw_db) {
             $delete_account_query = mysqli_prepare($link, "DELETE FROM utente WHERE IdUtente = ?");
             mysqli_stmt_bind_param($delete_account_query, "i", $id_utente);
-            if (mysqli_stmt_execute($delete_account_query)) {
+            mysqli_stmt_execute($delete_account_query);
+
+            if (mysqli_stmt_affected_rows($delete_account_query) > 0) {
                 session_unset();
                 session_destroy();
                 echo json_encode(["status" => "OK", "message" => "Account eliminato con successo!"]);
             } else {
                 echo json_encode(["status" => "Errore", "message" => "Errore nell'eliminazione dell'account"]);
             }
+
             mysqli_stmt_close($delete_account_query);
         } else {
             echo json_encode(["status" => "Errore", "message" => "La password corrente fornita non è corretta!"]);
         }
-    } else {
-        echo json_encode(["status" => "Errore", "message" => "La password corrente fornita non è corretta!"]);
     }
     mysqli_stmt_close($check_passw_query);
 }
