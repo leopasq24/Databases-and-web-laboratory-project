@@ -1816,6 +1816,20 @@ div#passw_elimina {
   top: 35%;
 }
 
+input#passwordInput {
+  margin-left: 30%;
+  margin-top: 4%;
+}
+
+p.eliminazione_error {
+  color: red;
+  font-weight: 500;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 1.5%;
+  margin-bottom: -4%;
+}
+
 /* Tutti i blog di categoria X */
 
 span#nome_categoria {
