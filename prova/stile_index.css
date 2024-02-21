@@ -1743,8 +1743,15 @@ div#account-settings .conferma_modifica_email{
   transition: all 0.3s ease;
  }
 
+label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
+  color: red;
+  font-weight: 500;
+  font-size: 15px;
+  margin: 1% 0 -2% 1%;
+  display: block;
+}
 
-div#account-settings .conferma_eliminazione_account{
+div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_conf_passw{
   display: none;
   position: fixed;
   top: -10%;
@@ -1753,7 +1760,8 @@ div#account-settings .conferma_eliminazione_account{
   height: 118.2%;
   background-color: rgba(0, 0, 0, 0.5);
  }
- div#account-settings .conferma_eliminazione_account div.contenuto{
+
+ div#account-settings .conferma_eliminazione_account div.contenuto, div#passw_elimina .mess_conf_passw div.contenuto{
   position: absolute;
     top: 50%;
     left: 50%;
@@ -1762,7 +1770,7 @@ div#account-settings .conferma_eliminazione_account{
     padding: 20px;
     border-radius: 8px;
  }
- div#account-settings .conferma_eliminazione_account div.contenuto div{
+ div#account-settings .conferma_eliminazione_account div.contenuto div, div#passw_elimina .mess_conf_passw div.contenuto div {
   text-align: center;
   font-weight: 400;
   background-color: #fff;
@@ -1770,10 +1778,10 @@ div#account-settings .conferma_eliminazione_account{
   margin-bottom: 4%;
   margin-left: 5%;
  }
- div#account-settings .conferma_eliminazione_account div button:hover{
+ div#account-settings .conferma_eliminazione_account div button:hover, div#passw_elimina .mess_conf_passw div button:hover {
   transform: scale(0.97);
  }
- div#account-settings .conferma_eliminazione_account div button.conferma{
+ div#account-settings .conferma_eliminazione_account div button.conferma, div#passw_elimina .mess_conf_passw div button.conferma {
   margin-left:5%;
   background: linear-gradient(135deg, #33cc33, #1f7a1f);
   outline: none;
@@ -1787,7 +1795,7 @@ div#account-settings .conferma_eliminazione_account{
   cursor: pointer;
   transition: all 0.3s ease;
  }
- div#account-settings .conferma_eliminazione_account div button.annulla{
+ div#account-settings .conferma_eliminazione_account div button.annulla, div#passw_elimina .mess_conf_passw div button.annulla {
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
   outline: none;
   color: #f2f2f2;
@@ -1800,15 +1808,6 @@ div#account-settings .conferma_eliminazione_account{
   cursor: pointer;
   transition: all 0.3s ease;
  }
-
-
-label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
-  color: red;
-  font-weight: 500;
-  font-size: 15px;
-  margin: 1% 0 -2% 1%;
-  display: block;
-}
 
 div#passw_elimina {
   position: relative;
