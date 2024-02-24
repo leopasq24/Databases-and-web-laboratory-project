@@ -32,7 +32,7 @@ if (!isset($_SESSION["session_utente"])) {
           $isMacrocat = (mysqli_num_rows($results_macrocat) === 1);
           if ($isMacrocat) {
             $categoria_nome = mysqli_fetch_assoc($results_cat)["Nome"];
-            $categoria = $categoria_nome . "<p id='freccia'> &nbsp;&#8250; &nbsp; </p>";
+            $categoria = $categoria_nome . "<p id='freccia_cat'> &nbsp;&#8250; &nbsp; </p>";
           }
           else {
             $categoria = mysqli_fetch_assoc($results_cat)["Nome"];
@@ -135,7 +135,7 @@ if (!isset($_SESSION["session_utente"])) {
         caricaBlog();
       });
 
-      $("p#freccia").on("click", function() {
+      $("p#freccia_cat").on("click", function() {
         var freccia = $(this);
         var nomeCategoria = "<?php echo $categoria_nome ?>";
         var titolo = freccia.closest("h2");
@@ -152,7 +152,7 @@ if (!isset($_SESSION["session_utente"])) {
                 });
             },
             error: function(xhr) {
-                $("p#freccia").after("<p class='eliminazione_error'>" + xhr + "</p>");
+                $("p#freccia_cat").after("<p class='eliminazione_error'>" + xhr + "</p>");
             }
           });
         }
