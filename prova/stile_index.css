@@ -1868,7 +1868,7 @@ p#nessun_id_cat {
   margin-left: 40%;
 }
 
-p#freccia {
+p#freccia_cat {
   color: black;
   user-select: none;
   cursor: pointer;
@@ -1877,7 +1877,7 @@ p#freccia {
   white-space: nowrap;
 }
 
-p#freccia:hover {
+p#freccia_cat:hover {
   transform: scale(0.97);
   background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
   margin-left: 49%;
