@@ -6,24 +6,40 @@ if (!isset($_SESSION["session_utente"])) {
     echo "Sessione annullata";
     exit;
 } else {
-    $categoria = "inesistente";
-    $html = "<div class='griglia_blog_creati'>";
-    if (isset($_GET['id']) and is_numeric($_GET['id'])) {
-        $id_categoria = $_GET['id'];
-        $stmt_esiste_cat = mysqli_prepare($link, "SELECT IdCategoria FROM categoria Where IdCategoria = ?");
-        mysqli_stmt_bind_param($stmt_esiste_cat, "i", $id_categoria);
-        mysqli_stmt_execute($stmt_esiste_cat);
-        $results_esiste_cat = mysqli_stmt_get_result($stmt_esiste_cat);
-        if (mysqli_num_rows($results_esiste_cat)==0) {
-          $html .= "<p id='nessuna_cat'>Non esiste alcuna categoria con questo Id!</p> </div>";
-          mysqli_stmt_close($stmt_esiste_cat);
-        } else {
+  
+  $categoria = "inesistente";
+  $html = "<div class='griglia_blog_creati'>";
+    
+  if (isset($_GET['id']) and is_numeric($_GET['id'])) {
+    $id_categoria = $_GET['id'];
+    $stmt_esiste_cat = mysqli_prepare($link, "SELECT IdCategoria FROM categoria Where IdCategoria = ?");
+    mysqli_stmt_bind_param($stmt_esiste_cat, "i", $id_categoria);
+    mysqli_stmt_execute($stmt_esiste_cat);
+    $results_esiste_cat = mysqli_stmt_get_result($stmt_esiste_cat);
+    if (mysqli_num_rows($results_esiste_cat) === 0) {
+      $html .= "<p id='nessuna_cat'>Non esiste alcuna categoria con questo Id!</p> </div>";
+      mysqli_stmt_close($stmt_esiste_cat);
+    } else {
           $stmt_cat = mysqli_prepare($link, "SELECT Nome FROM categoria Where IdCategoria = ?");
           mysqli_stmt_bind_param($stmt_cat, "i", $id_categoria);
           mysqli_stmt_execute($stmt_cat);
           $results_cat = mysqli_stmt_get_result($stmt_cat);
-          $categoria = mysqli_fetch_assoc($results_cat)["Nome"];
-          
+
+          $stmt_macrocat = mysqli_prepare($link, "SELECT IdCategoria, Nome FROM categoria WHERE IdCategoria = ? AND IdCategoria NOT IN (SELECT IdSottocategoria FROM contiene) LIMIT 7");
+          mysqli_stmt_bind_param($stmt_macrocat, "i", $id_categoria);
+          mysqli_stmt_execute($stmt_macrocat);
+          $results_macrocat = mysqli_stmt_get_result($stmt_macrocat);
+          $isMacrocat = (mysqli_num_rows($results_macrocat) === 1);
+          if ($isMacrocat) {
+            $categoria_nome = mysqli_fetch_assoc($results_cat)["Nome"];
+            $categoria = $categoria_nome . "<p id='freccia'> &nbsp;&#8250; &nbsp; </p>";
+          }
+          else {
+            $categoria = mysqli_fetch_assoc($results_cat)["Nome"];
+          }
+          mysqli_stmt_close($stmt_cat);
+          mysqli_stmt_close($stmt_macrocat);
+
           $stmt_blog_per_categoria = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente = utente.IdUtente AND blog.IdCategoria = ? ORDER BY IdBlog DESC LIMIT ?, 9");
           mysqli_stmt_bind_param($stmt_blog_per_categoria, "ii", $id_categoria, $numeroBlog);
           mysqli_stmt_execute($stmt_blog_per_categoria);
@@ -32,7 +48,7 @@ if (!isset($_SESSION["session_utente"])) {
           $nessunBlog = (mysqli_num_rows($query_blog_per_categoria) === 0);
           if ($nessunBlog) {
             $html .= "<img src='foto/bolle.png' alt='bolle'>";
-            $html .= "<p id='nessun_blog'>Non ci sono ancora Blog per questa categoria. <a href='i_tuoi_blog.php'>Creane uno!</a></p>";
+            $html .= "<p id='nessun_blog'>Non ci sono ancora Blog per questa categoria. <a href='i_tuoi_blog.php'>Creane uno!</a> </p>";
           } else {
               while ($row = mysqli_fetch_assoc($query_blog_per_categoria)) {
                 $idblog = $row['IdBlog'];
@@ -96,7 +112,7 @@ if (!isset($_SESSION["session_utente"])) {
             method: "GET",
             data: { numero: numeroBlogCaricati, idCategoria: idCategoria },
             success: function(data) {
-                if (data.trim() === "Nessun Blog") {
+              if (data.trim() === "Nessun Blog") {
                     $("#caricablog").hide();
                     if (!isMessageAppended) {
                         $(".griglia_blog").append("<p class='messaggio_fine'>Ops, sei arrivato in fondo!</p>");
@@ -115,9 +131,42 @@ if (!isset($_SESSION["session_utente"])) {
             }
         });
       }
-      
       $("#caricablog").on("click", function() {
         caricaBlog();
+      });
+
+      $("p#freccia").on("click", function() {
+        var freccia = $(this);
+        var nomeCategoria = "<?php echo $categoria_nome ?>";
+        var titolo = freccia.closest("h2");
+        function appendiMicrocat() {
+          $.ajax({
+            url: "sottocategorie.php",
+            method: "GET",
+            data: { key1: nomeCategoria },
+            success: function(data) {
+                titolo.append("<div class='ajax-data'>" + data + "</div>");
+                $(".ajax-data p").on("click", function() {
+                  var idcat = $(this).closest(".microcat").data("cat-id");
+                  location.replace("categoria.php?id=" + idcat);
+                });
+            },
+            error: function(xhr) {
+                $("p#freccia").after("<p class='eliminazione_error'>" + xhr + "</p>");
+            }
+          });
+        }
+        function rimuoviMicrocat() {
+          $(".ajax-data").remove();
+        }
+        freccia.toggleClass("rotated"); 
+        if (freccia.hasClass("rotated")) {
+          freccia.css("transform", "rotate(90deg)");
+          appendiMicrocat()
+        } else {
+          freccia.css("transform", "rotate(0deg)");
+          rimuoviMicrocat();
+        }
       });
 
     });
@@ -140,7 +189,7 @@ if (!isset($_SESSION["session_utente"])) {
       </div>
     </nav>
     <div class="tutti_i_blog">
-      <h2>Categoria: <span id="nome_categoria"><?php echo $categoria; ?></span></h2>
+      <h2>Categoria: <p id="nome_categoria"><?php echo $categoria ?></p></h2>
       <div class="griglia_blog"><?php echo $html; ?></div>
     </div>
   </header>
