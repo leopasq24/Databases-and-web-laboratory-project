@@ -1831,9 +1831,10 @@ p.eliminazione_error {
 
 /* Tutti i blog di categoria X */
 
-span#nome_categoria {
+p#nome_categoria {
   color: white;
   text-shadow: 1px 1px 1px black;
+  display: inline;
 }
 
 .tutti_i_blog .griglia_blog_creati p#nessun_blog {
@@ -1865,6 +1866,43 @@ p#nessuna_cat {
 
 p#nessun_id_cat {
   margin-left: 40%;
+}
+
+p#freccia {
+  color: black;
+  user-select: none;
+  cursor: pointer;
+  margin-left: 49%;
+  margin-right: 49%;
+  white-space: nowrap;
+}
+
+p#freccia:hover {
+  transform: scale(0.97);
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  margin-left: 49%;
+  margin-right: 49%;
+  cursor: pointer;
+  border-radius: 12px;
+  color: white;
+}
+
+.ajax-data .microcat p {
+  color: white;
+  text-shadow: 1px 1px 1px black;
+  text-align: center;
+  font-size: 17px;
+  background: #fff292a1; 
+  padding: 0.2%;
+  margin-top: 1%;
+  margin-left: 45%;
+  margin-right: 45%;
+  border-radius: 12px;
+}
+
+.ajax-data .microcat p:hover {
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  cursor: pointer;
 }
 
 /*Media queries*/
