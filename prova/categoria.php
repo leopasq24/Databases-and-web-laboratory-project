@@ -137,7 +137,7 @@ if (!isset($_SESSION["session_utente"])) {
 
       $("p#freccia_cat").on("click", function() {
         var freccia = $(this);
-        var nomeCategoria = "<?php echo $categoria_nome ?>";
+        var nomeCategoria = "<?php echo isset($categoria_nome) ? $categoria_nome : ''; ?>";
         var titolo = freccia.closest("h2");
         function appendiMicrocat() {
           $.ajax({
