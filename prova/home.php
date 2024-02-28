@@ -747,11 +747,42 @@ $id_utente = $_SESSION["session_utente"];
           })
         } 
       });
+          
+    // Barra di ricerca (per blog e post)
+      $(document).on("click", ".search-container", function() {
+        $(this).css({"background": "white", "width": "500px", "margin-left": "32%", "box-shadow": "0px 15px 20px rgba(0,0,0,0.1)", "transform": "scale(1)"});
+        $(".search-input").css("width", "100px").show();
+        $("i").css("color", "#3aa6ff");
+        $(".close").off("click").remove();
+        $("i").append("<button type='button' class='close'>&#10006;</button>");
+        $(".close").css({"margin-left": "50px", "margin-right": "-250px"});
+
+        $(".filtri_ricerca").show();
+        
+        $(".close").on("click", function() {
+          $(".search-container").removeAttr("style");
+          $(this).remove();
+          $("i").css("color", "white");
+          $(".search-input").hide();
+          $(".filtri_ricerca").hide();
+        });
+      });
+
+    // Filtri barra di ricerca
+      $("#cerca_blog").on("click", function() {
+        $("label#cerca_blog").addClass("selected");
+        $("label#cerca_post").removeClass("selected");
+      });
+      $("#cerca_post").on("click", function() {
+        $("label#cerca_post").addClass("selected");
+        $("label#cerca_blog").removeClass("selected");
+      });
+
     });
     </script>
    </head>
-<body>
-  <header>
+<body id="body_tuoi_blog">
+  <header id="header_tuoi_blog">
     <nav class="navbar">
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
@@ -759,13 +790,27 @@ $id_utente = $_SESSION["session_utente"];
         <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
         <li><a href="account.php">Account</a></li>
-        <li><a href="#">Info</a></li>
+        <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
         <a href="logout.php"><input type="button" value="Logout"></a>
       </div>
     </nav>
+
+    <div class="search-container">
+      <input type="text" placeholder="Cerca..." class="search-input">
+      <button type="submit" class="search-btn">
+        <i class="fas fa-search"></i>      
+      </button>
+    </div>
+    <div class="filtri_ricerca" hidden>
+      <p>Filtri: &#160 
+      <input type="radio" id="cerca_blog" name="cerca_blog" value="Cerca Blog"><label for="cerca_blog" id="cerca_blog" class="selected">Blog</label>
+      <input type="radio" id="cerca_post" name="cerca_post" value="Cerca Post"><label for="cerca_post" id="cerca_post">Post</label>
+      </p>
+    </div>
+
     <div class="grid-post">
       <div class="categorie">
         <p class="titolo">Categorie</p>
