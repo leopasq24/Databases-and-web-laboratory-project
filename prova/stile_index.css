@@ -110,7 +110,7 @@ header .navbar{
 
  header .text-content{
    width: 50%;
-   margin: 2% 0 0 24% ;
+   margin: 0 0 0 23% ;
    text-align: center;
  }
 .text-content h2{
@@ -123,9 +123,11 @@ header .navbar{
   text-shadow: 1px 1px 1px black;
 }
 .text-content p{
-  font-size: 18px;
+  font-size: 20px;
   margin-top: 5%;
-  padding: 2%;
+  padding:2%;
+  border-right: 5px solid #e0960b;
+  border-left: 5px solid #e0960b;
 }
 .text-content p span{
   font-weight: bold;
@@ -133,14 +135,15 @@ header .navbar{
 .text-content input{
   outline: none;
   color: #f2f2f2;
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 500;
   border-radius: 12px;
   padding: 6px 15px;
   border: none;
+  margin: 0 8px;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  background: linear-gradient(135deg, #ff6de285, #008cff7a);
   margin-top: 5%;
 }
 .text-content input:hover{
@@ -148,11 +151,21 @@ header .navbar{
 }
 
 /*Home*/
-
+body#home{
+  height:auto;
+  position:relative;
+ }
+ header#home{
+  min-height:85vh;
+  height:auto;
+  margin:3.5% 5% 3.5% 5%;
+  position: relative;
+}
 header .grid-post{
    display: grid;
    grid-template-columns: 1fr 2fr 1fr;
    column-gap: 3%;
+   margin-bottom: 2%
  }
  header .grid-post .categorie, header .grid-post .post, header .grid-post .popolari{
   border-radius: 15px;
@@ -163,6 +176,9 @@ header .grid-post{
  .titolo{
   border-bottom:1.5px solid #DCDCDC;
   padding-bottom: 1.5%;
+ }
+ header .grid-post .categorie, header .grid-post .post, header .grid-post .popolari{
+  height: 55vh;
  }
  header .grid-post .categorie{
   margin-left:5%;
@@ -182,7 +198,7 @@ header .grid-post{
 header .grid-post .categorie .macro-categorie{
   overflow-y: auto;
   overflow-x: hidden;
-  height: 52vh;
+  height: 46vh;
 }
  header .grid-post .categorie .macrocat{
   text-align: left;
@@ -227,7 +243,7 @@ header .grid-post .categorie .macro-categorie{
   background:#fff;
  }
  header .grid-post .post .ultimi-post, .ultimi-post-personali{
-  height: 48vh;
+  height: 42vh;
   overflow: scroll;
  }
  header .grid-post img[src~="foto/vuoto.png"]{
@@ -257,6 +273,9 @@ header .grid-post .categorie .macro-categorie{
  header .grid-post .post p{
   margin-top:1.3%;
   margin-bottom:1.3%;
+ }
+ header .grid-post .post p.titolo_blog{
+  cursor: pointer;
  }
   header .grid-post .post .nuovo-post{
   text-align:left;
@@ -417,6 +436,17 @@ header .grid-post .categorie .macro-categorie{
  header .grid-post .post .nuovo-post .post_modificato{
   font-size: 10px;
  }
+ header .grid-post .post .nuovo-post .immagine_blog{
+  width: 200px; /* Set the width of the container */
+  height: 150px;
+  overflow: hidden;
+  display: inline;
+ }
+ header .grid-post .post .nuovo-post .immagine_blog .img_blog {
+  width: 4%;
+  height: auto;
+  display: block;
+}
  header .grid-post .post .nuovo-post img{
   width: 30%;
 }
@@ -444,6 +474,12 @@ header .grid-post .categorie .macro-categorie{
   border-radius: 7px 7px 7px 7px;
   padding:0.2%;
  }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti div.piaciuto{
+  background-color: #c7c7c7;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti div.non_piaciuto{
+  background-color: #c7c7c7;
+ }
  header .grid-post .post .nuovo-post div.feedback_e_commenti .commenti{
   display: block;
   margin-top: 2%;
@@ -453,6 +489,11 @@ header .grid-post .categorie .macro-categorie{
   border:1.8px solid #DCDCDC;
   border-radius: 7px 7px 7px 7px;
   padding:0.2%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .commenti p.inserire_commento{
+  color: red;
+  margin-left: 5%;
+  font-size: 14px;
  }
  header .grid-post .post .nuovo-post div.feedback_e_commenti .elenco_commenti{
   display: block;
@@ -522,6 +563,21 @@ header .grid-post .categorie .macro-categorie{
   color:white;
   padding: 0.4%;
  }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti .elenco_commenti .caricamento{
+  width: 10%;
+  margin-left: 45%;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti input.altri_commenti{
+  cursor:pointer;
+  margin-left:50%;
+  padding:0.5%;
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  color: #f2f2f2;
+  font-size: 14px;
+ }
+ header .grid-post .post .nuovo-post div.feedback_e_commenti input.altri_commenti:hover{
+  transform: scale(0.97);
+ }
  header .grid-post .post .nuovo-post div.feedback_e_commenti .commento p.autore button:hover{
   transform: scale(0.97);
  }
@@ -588,7 +644,6 @@ header .grid-post .categorie .macro-categorie{
  header .grid-post .popolari{
   margin-right:5%;
   background: #FAEBD7;
-  height: 60vh;
  }
  header .grid-post .popolari p:nth-child(1){
   background: #f4d1a4;
@@ -606,6 +661,7 @@ header .grid-post .categorie .macro-categorie{
   margin-left:3%;
   margin-top: 2%;
   font-weight: 400;
+  cursor: pointer;
  }
  header .grid-post .popolari .blog-pop img{
   float:left;
@@ -613,6 +669,112 @@ header .grid-post .categorie .macro-categorie{
   margin-right: 5%;
  }
 
+ /* Ricerca */
+
+header .search-container {
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  width: 40px;
+  height: 30px;
+  border-radius: 10px;
+  padding: 1.5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-top: -2%;
+  margin-bottom: 1%;
+  margin-left: 48%;
+}
+
+header .search-container button {
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+header .search-container .search-input{
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 0px;
+  font-weight: 400;
+  font-size: 16px;
+  transition: 0.8s;
+}
+
+header .search-container .search-btn .fas{
+  color: white;
+}
+
+header .search-container:hover {
+  transform: scale(0.97);
+}
+
+header button.close {
+ color: red;
+}
+
+header .filtri_ricerca p{
+  font-size: 15px;
+  margin: 0 0 1% 43%;
+  font-weight: 500;
+  background: #fff292;
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  width: 13%;
+  padding: 1% 1% 1% 1%;
+  border-radius: 10px;
+}
+
+header .filtri_ricerca label{
+  font-size: 15px;
+  display: inline-block;
+  padding: 4%;
+  margin-right: 5px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+header .filtri_ricerca input[type="radio"] {
+  display: none;
+}
+
+header .filtri_ricerca label.selected {
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  color: #fff;
+  border-radius: 10px;
+}
+
+/* Info */
+
+.info_container {
+  text-align: center;
+  margin: 1% 12% 0 12%;
+  font-size: 18px;
+  background: rgba(255, 236, 90, 0.259);
+  padding: 1% 1% 1% 1%;
+  border-radius: 10px;
+  user-select: none;
+}
+
+.info_container p {
+  margin-top: 1%;
+}
+
+.speciale {
+  font-weight: 600;
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  background-image: linear-gradient(to right 135deg, #ff6dc7, #3aa6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 1;
+}
+
+.credits {
+  font-size: 15px;
+}
  /*Tutti i blog*/
 
 body#body_tutti_i_blog{
@@ -742,6 +904,9 @@ body#body_tutti_i_blog{
 .messaggio_fine{
   padding: 2% 2% 3% 2%;
   font-size: 17px;
+}
+.messaggio_fine img.ops{
+  width: 2%;
 }
 .tutti_i_blog img{
   width:30%;
@@ -1060,6 +1225,9 @@ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo img{
   width: 8%;
   margin-right: 5%;
  }
+ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo .altro_blog, .blog_simile{
+  cursor: pointer;
+ }
 .info-blog .dati-blog img{
   width: 25%;
   display: inline-block;
@@ -1073,6 +1241,7 @@ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo img{
   font-style: italic;
   font-weight: 400;
   color: grey;
+  padding: 3%;
 }
 .info-blog .dati-blog p:nth-child(4){
   font-size: 14px;
@@ -1270,6 +1439,49 @@ input[value="Crea un nuovo post"]{
   float:left;
   margin-bottom: 2%;
 }
+
+.tuoi_blog div.feedback_creazione_post{
+  display: none;
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 115.5%;
+  height: 118.2%;
+  background-color: rgba(0, 0, 0, 0.5);
+ }
+ .tuoi_blog div.feedback_creazione_post div.contenuto{
+  position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+ }
+ .tuoi_blog div.feedback_creazione_post div.contenuto div{
+  font-weight: 400;
+  background-color: #fff;
+  margin-top: 4%;
+  margin-bottom: 4%;
+  margin-left: 5%
+ }
+ .tuoi_blog div.feedback_creazione_post div button:hover{
+  transform: scale(0.97);
+ }
+ .tuoi_blog div.feedback_creazione_post div button.ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
+
 .tuoi_blog .dati-blog p.autori, p.nomi_autori{
   font-size:14px;
 }
@@ -1740,15 +1952,8 @@ div#account-settings .conferma_modifica_email{
   transition: all 0.3s ease;
  }
 
-label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
-  color: red;
-  font-weight: 500;
-  font-size: 15px;
-  margin: 1% 0 -2% 1%;
-  display: block;
-}
 
-div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_conf_passw{
+div#account-settings .conferma_eliminazione_account{
   display: none;
   position: fixed;
   top: -10%;
@@ -1757,8 +1962,7 @@ div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_con
   height: 118.2%;
   background-color: rgba(0, 0, 0, 0.5);
  }
-
- div#account-settings .conferma_eliminazione_account div.contenuto, div#passw_elimina .mess_conf_passw div.contenuto{
+ div#account-settings .conferma_eliminazione_account div.contenuto{
   position: absolute;
     top: 50%;
     left: 50%;
@@ -1767,7 +1971,7 @@ div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_con
     padding: 20px;
     border-radius: 8px;
  }
- div#account-settings .conferma_eliminazione_account div.contenuto div, div#passw_elimina .mess_conf_passw div.contenuto div {
+ div#account-settings .conferma_eliminazione_account div.contenuto div{
   text-align: center;
   font-weight: 400;
   background-color: #fff;
@@ -1775,10 +1979,10 @@ div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_con
   margin-bottom: 4%;
   margin-left: 5%;
  }
- div#account-settings .conferma_eliminazione_account div button:hover, div#passw_elimina .mess_conf_passw div button:hover {
+ div#account-settings .conferma_eliminazione_account div button:hover{
   transform: scale(0.97);
  }
- div#account-settings .conferma_eliminazione_account div button.conferma, div#passw_elimina .mess_conf_passw div button.conferma {
+ div#account-settings .conferma_eliminazione_account div button.conferma{
   margin-left:5%;
   background: linear-gradient(135deg, #33cc33, #1f7a1f);
   outline: none;
@@ -1792,7 +1996,7 @@ div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_con
   cursor: pointer;
   transition: all 0.3s ease;
  }
- div#account-settings .conferma_eliminazione_account div button.annulla, div#passw_elimina .mess_conf_passw div button.annulla {
+ div#account-settings .conferma_eliminazione_account div button.annulla{
   background: linear-gradient(135deg, #ff1414, #6b0c0c);
   outline: none;
   color: #f2f2f2;
@@ -1806,17 +2010,24 @@ div#account-settings .conferma_eliminazione_account, div#passw_elimina .mess_con
   transition: all 0.3s ease;
  }
 
+
+label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
+  color: red;
+  font-weight: 500;
+  font-size: 15px;
+  margin: 1% 0 -2% 1%;
+  display: block;
+}
+
 div#passw_elimina {
   position: relative;
   z-index: 2;
   top: 35%;
 }
-
 input#passwordInput {
-  margin-left: 30%;
+  margin-left: 28%;
   margin-top: 4%;
 }
-
 p.eliminazione_error {
   color: red;
   font-weight: 500;
@@ -1825,7 +2036,6 @@ p.eliminazione_error {
   margin-top: 1.5%;
   margin-bottom: -4%;
 }
-
 /* Tutti i blog di categoria X */
 
 p#nome_categoria {
@@ -1833,7 +2043,6 @@ p#nome_categoria {
   text-shadow: 1px 1px 1px black;
   display: inline;
 }
-
 .tutti_i_blog .griglia_blog_creati p#nessun_blog {
   font-size: 17px;
   margin-top: 1%;
@@ -1884,7 +2093,7 @@ p#freccia_cat:hover {
   color: white;
 }
 
-.ajax-data .microcat p {
+.sottocat .microcat p {
   color: white;
   text-shadow: 1px 1px 1px black;
   text-align: center;
@@ -1897,120 +2106,13 @@ p#freccia_cat:hover {
   border-radius: 12px;
 }
 
-.ajax-data .microcat p:hover {
+.sottocat .microcat p:hover {
   background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
   cursor: pointer;
 }
 
-/* Ricerca */
-
-.search-container {
-  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
-  width: 40px;
-  height: 30px;
-  border-radius: 10px;
-  padding: 1.5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: 0.2s;
-  margin-top: -2%;
-  margin-bottom: 1%;
-  margin-left: 48%;
-}
-
-.search-container button {
-  cursor: pointer;
-  background: transparent;
-  border: none;
-  outline: none;
-}
-
-.search-container .search-input{
-  background: transparent;
-  border: none;
-  outline: none;
-  width: 0px;
-  font-weight: 400;
-  font-size: 16px;
-  transition: 0.8s;
-}
-
-.search-container .search-btn .fas{
-  color: white;
-}
-
-.search-container:hover {
-  transform: scale(0.97);
-}
-
-button.close {
- color: red;
-}
-
-.filtri_ricerca p{
-  font-size: 15px;
-  margin: 0 0 1% 43%;
-  font-weight: 500;
-  background: #fff292;
-  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
-  width: 13%;
-  padding: 1% 1% 1% 1%;
-  border-radius: 10px;
-}
-
-.filtri_ricerca label{
-  font-size: 15px;
-  display: inline-block;
-  padding: 4%;
-  margin-right: 5px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.filtri_ricerca input[type="radio"] {
-  display: none;
-}
-
-.filtri_ricerca label.selected {
-  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
-  color: #fff;
-  border-radius: 10px;
-}
-
-/* Info */
-
-.info_container {
-  text-align: center;
-  margin: 1% 12% 0 12%;
-  font-size: 18px;
-  background: rgba(255, 236, 90, 0.259);
-  padding: 1% 1% 1% 1%;
-  border-radius: 10px;
-  user-select: none;
-}
-
-.info_container p {
-  margin-top: 1%;
-}
-
-.speciale {
-  font-weight: 600;
-  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
-  background-image: linear-gradient(to right 135deg, #ff6dc7, #3aa6ff);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  z-index: 1;
-}
-
-.credits {
-  font-size: 15px;
-}
 
 /*Media queries*/
-
 @media (max-width:1005px) {
   header{
     height: 95vh;
@@ -2047,3 +2149,4 @@ button.close {
     padding: 15px 10px;
 }
 }
+
