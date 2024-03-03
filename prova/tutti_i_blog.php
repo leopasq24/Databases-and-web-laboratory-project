@@ -30,7 +30,7 @@ session_start();
               if (data.trim() === "Nessun Blog") {
                 $("#caricablog").hide();
                 if (!isMessageAppended) {
-                  $(".griglia_blog").append("<p class='messaggio_fine'>Ops, sei arrivato in fondo!</p>");
+                  $(".griglia_blog").append("<p class='messaggio_fine'><img class='ops' src='foto/ops.png'><br>Ops, sei arrivato in fondo!</p>");
                   isMessageAppended = true;
                 }
               } else {
@@ -99,7 +99,7 @@ session_start();
         <li><a href="tutti_i_blog.php">Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php">I tuoi Blog</a></li>
         <li><a href="account.php">Account</a></li>
-        <li><a href="#">Info</a></li>
+        <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
