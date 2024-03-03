@@ -1,10 +1,9 @@
 <?php
 session_start();
 include_once("connect.php");
-
+$titolo_info = "Info Blog";
 if (isset($_GET['id']) and is_numeric($_GET['id'])){
   $idBlog = $_GET['id'];
-
   $stmt_esiste_blog = mysqli_prepare($link, "SELECT IdBlog FROM Blog Where IdBlog=?");
   mysqli_stmt_bind_param($stmt_esiste_blog, "i", $idBlog);
   mysqli_stmt_execute($stmt_esiste_blog);
@@ -59,6 +58,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       <input type='button' data-blog-id='{$idBlog}' class='elimina_blog' value='Elimina'>";
       $html .= "<div id='messaggio_conferma' class='modal'><div class='contenuto_messaggio'><div class='domanda'>Sicuro di voler <span></span> il seguente Blog?</div><button class='conferma_modifica'>Conferma</button> <button class='annulla_modifica'>Annulla</button></div></div>";
       $crea = "<input type='button' id='crea_post' value='Crea un nuovo post'>";
+      $titolo_info ="Info e gestione Blog";
     }else{
       $creatore = $row["IdUtente"];
     }
@@ -128,11 +128,13 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
   mysqli_stmt_execute($stmt_post_rec);
   $result_post_rec = mysqli_stmt_get_result($stmt_post_rec);
   
+  $conta_post_rec = 0;
   if  (mysqli_num_rows($result_post_rec) == 0){
       $post_rec  .="<img src='foto/vuoto.png' alt='vuoto'></img>";
       $post_rec  .= "<p id='nessun_post'>Non ci sono ancora post</p>";
   }else{
     while ($row = mysqli_fetch_assoc($result_post_rec)) {
+      $conta_post_rec = $conta_post_rec + 1;
       $id_post = $row['IdPost'];
       $img_blog = $row['immagine_blog'];
       $img_post = $row['immagine_post'];
@@ -200,32 +202,31 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
         }
         mysqli_stmt_close($stmt_autore_post);
 
-      if ($img_post === null) {
-        $post_rec .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-        $post_rec .= "<img src='{$src_img}' alt='{$blog}'></img>";
-        if($verifica_autore_blog==true){
-          if($verifica_autore_post==true){
-            $post_rec .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-          }else{
-            $post_rec .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-          }
-        }else{
-          $post_rec .= "<p>{$blog}</p>";
+        $piaciuto = false;
+        $stmt_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=1");
+        mysqli_stmt_bind_param($stmt_piaciuto,"ii", $id_post, $id_utente);
+        mysqli_stmt_execute($stmt_piaciuto);
+        $results_stmt_piaciuto = mysqli_stmt_get_result($stmt_piaciuto);
+        if(mysqli_num_rows($results_stmt_piaciuto)!=0){
+          $piaciuto = true;
         }
-        $post_rec .= "<h4 class='titolo_post'>{$title}</h4>";
-        $post_rec .= "<p class='contenuto_post'>{$testo}</p>";
-        if($modificato==1){
-          $post_rec .= "<p class ='post_modificato'>(modificato)</p>";
+        mysqli_stmt_close($stmt_piaciuto);
+
+        $non_piaciuto = false;
+        $stmt_non_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=0");
+        mysqli_stmt_bind_param($stmt_non_piaciuto,"ii", $id_post, $id_utente);
+        mysqli_stmt_execute($stmt_non_piaciuto);
+        $results_stmt_non_piaciuto = mysqli_stmt_get_result($stmt_non_piaciuto);
+        if(mysqli_num_rows($results_stmt_non_piaciuto)!=0){
+          $non_piaciuto = true;
         }
-        $post_rec .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-        $post_rec .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-        $post_rec .= "</div>";
-      } else {
+        mysqli_stmt_close($stmt_non_piaciuto);
+            
         $post_rec .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-        $post_rec .= "<img src='{$src_img}' alt='{$blog}'></img>";
+        $post_rec .= "<div class='immagine_blog'><img src='{$src_img}' alt='{$blog}' class='img_blog'></div>";
         if($verifica_autore_blog==true){
-          if($verifica_autore_post==true){
-            $post_rec .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
+          if($verifica_autore_post==true and $modificato==0){
+        $post_rec .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
           }else{
             $post_rec .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
           }
@@ -233,31 +234,44 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           $post_rec .= "<p>{$blog}</p>";
         }
         $post_rec .= "<h4 class = 'titolo_post'>{$title}</h4>";
-        $post_rec .= "<img class='immagine_post' src='{$img_post}' alt='{$title}'></img>";
+        if($img_post != null) {
+          $post_rec .= "<img class = 'immagine_post' src='{$img_post}' alt='{$title}'></img>";
+        }
         $post_rec .= "<p class='contenuto_post'>{$testo}</p>";
         if($modificato==1){
           $post_rec .= "<p class ='post_modificato'>(modificato)</p>";
         }
         $post_rec .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-        $post_rec .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+        $post_rec .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'>";
+        if($piaciuto==true){
+          $post_rec .="<div class='mi_piace piaciuto'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+        }else{
+          $post_rec .="<div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+        }
+        if($non_piaciuto==true){
+          $post_rec .="<div class='non_mi_piace non_piaciuto'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+        }else{
+          $post_rec .="<div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+        }
         $post_rec .= "</div>";
-      }
     }
   }
   
   mysqli_stmt_close($stmt_post_rec);
   
   //Post Popolari
-  $stmt_post_pop = mysqli_prepare($link, "SELECT post.Titolo AS Titolo_post, IdPost, Testo, Data, Ora, post.Immagine AS immagine_post, blog.Titolo AS Argomento, blog.Immagine AS immagine_blog, Username, Modificato FROM post, blog, utente, post_popolari WHERE post.IdBlog=blog.IdBlog AND post.IdUtente=utente.IdUtente AND post.IdPost=post_popolari.codice AND blog.IdBlog=? ORDER BY post_popolari.conta DESC");
+  $stmt_post_pop = mysqli_prepare($link, "SELECT post.Titolo AS Titolo_post, IdPost, Testo, Data, Ora, post.Immagine AS immagine_post, blog.Titolo AS Argomento, blog.Immagine AS immagine_blog, Username, Modificato FROM post, blog, utente, post_popolari WHERE post.IdBlog=blog.IdBlog AND post.IdUtente=utente.IdUtente AND post.IdPost=post_popolari.codice AND blog.IdBlog=? ORDER BY post_popolari.conta DESC LIMIT 7");
   mysqli_stmt_bind_param($stmt_post_pop, "i", $idBlog);
   mysqli_stmt_execute($stmt_post_pop);
   $result_post_pop = mysqli_stmt_get_result($stmt_post_pop);
-  
+  $conta_post_pop = 0;
+
   if  (mysqli_num_rows($result_post_pop)==0){
       $post_pop  .="<img src='foto/solitario.png' alt='solitario'></img>";
       $post_pop  .= "<p id='nessun_post'>Non ci sono ancora post popolari</p>";
   }else{
     while ($row = mysqli_fetch_assoc($result_post_pop)) {
+      $conta_post_pop = $conta_post_pop + 1;
       $id_post = $row['IdPost'];
       $img_blog = $row['immagine_blog'];
       $img_post = $row['immagine_post'];
@@ -328,56 +342,68 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           }
         }
         mysqli_stmt_close($stmt_autore_post);
+        
+        $piaciuto = false;
+        $stmt_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=1");
+        mysqli_stmt_bind_param($stmt_piaciuto,"ii", $id_post, $id_utente);
+        mysqli_stmt_execute($stmt_piaciuto);
+        $results_stmt_piaciuto = mysqli_stmt_get_result($stmt_piaciuto);
+        if(mysqli_num_rows($results_stmt_piaciuto)!=0){
+          $piaciuto = true;
+        }
+        mysqli_stmt_close($stmt_piaciuto);
 
-      if ($img_post === null) {
+        $non_piaciuto = false;
+        $stmt_non_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=0");
+        mysqli_stmt_bind_param($stmt_non_piaciuto,"ii", $id_post, $id_utente);
+        mysqli_stmt_execute($stmt_non_piaciuto);
+        $results_stmt_non_piaciuto = mysqli_stmt_get_result($stmt_non_piaciuto);
+        if(mysqli_num_rows($results_stmt_non_piaciuto)!=0){
+          $non_piaciuto = true;
+        }
+        mysqli_stmt_close($stmt_non_piaciuto);
+            
         $post_pop .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-        $post_pop .= "<img src='{$src_img}' alt='{$blog}'></img>";
+        $post_pop .= "<div class='immagine_blog'><img src='{$src_img}' alt='{$blog}' class='img_blog'></div>";
         if($verifica_autore_blog==true){
-          if($verifica_autore_post==true){
-            $post_pop .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
+          if($verifica_autore_post==true and $modificato==0){
+        $post_pop .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
           }else{
             $post_pop .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
           }
         }else{
           $post_pop .= "<p>{$blog}</p>";
         }
-        $post_pop .= "<h4 class='titolo_post'>{$title}</h4>";
+        $post_pop .= "<h4 class = 'titolo_post'>{$title}</h4>";
+        if($img_post != null) {
+          $post_pop .= "<img class = 'immagine_post' src='{$img_post}' alt='{$title}'></img>";
+        }
         $post_pop .= "<p class='contenuto_post'>{$testo}</p>";
         if($modificato==1){
           $post_pop .= "<p class ='post_modificato'>(modificato)</p>";
         }
         $post_pop .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-        $post_pop .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-        $post_pop .= "</div>";
-      } else {
-        $post_pop .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-        $post_pop .= "<img src='{$src_img}' alt='{$blog}'></img>";
-        if($verifica_autore_blog==true){
-          if($verifica_autore_post==true){
-            $post_pop .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-          }else{
-            $post_pop .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-          }
+        $post_pop .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'>";
+        if($piaciuto==true){
+          $post_pop .="<div class='mi_piace piaciuto'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
         }else{
-          $post_pop .= "<p>{$blog}</p>";
+          $post_pop .="<div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
         }
-        $post_pop .= "<h4 class='titolo_post'>{$title}</h4>";
-        $post_pop .= "<img class='immagine_post' src='{$img_post}' alt='{$title}'></img>";
-        $post_pop .= "<p class='contenuto_post'>{$testo}</p>";
-        if($modificato==1){
-          $post_pop .= "<p class ='post_modificato'>(modificato)</p>";
+        if($non_piaciuto==true){
+          $post_pop .="<div class='non_mi_piace non_piaciuto'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+        }else{
+          $post_pop .="<div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
         }
-        $post_pop .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-        $post_pop .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
         $post_pop .= "</div>";
-      }
     }
   }
 
   mysqli_stmt_close($stmt_post_pop);
 
+
+  //Altri blog
   $altri_blog .= "<div class='altri-blog'>";
-  $stmt_altri_blog = mysqli_prepare($link, "SELECT Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdUtente=(SELECT IdUtente FROM blog WHERE IdBlog=?)");
+  $stmt_altri_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdUtente=(SELECT IdUtente FROM blog WHERE IdBlog=?)");
   mysqli_stmt_bind_param($stmt_altri_blog, "ii", $idBlog, $idBlog);
   mysqli_stmt_execute($stmt_altri_blog);
   $results_altri_blog = mysqli_stmt_get_result($stmt_altri_blog);
@@ -387,20 +413,25 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
     while ($row = mysqli_fetch_assoc($results_altri_blog)) {
       $img_blog = $row['Immagine'];
       $blog_title = $row['Titolo'];
+      $blog_id = $row['IdBlog'];
       if ($img_blog == null) {
           $src_img = "foto/blog.png";
         } else {
           $src_img = $img_blog;
         }
+      $altri_blog  .= "<div class='altro_blog' data-blog-id='{$blog_id}'>";
       $altri_blog  .= "<img src='{$src_img}' alt='{$blog_title}'></img>";
       $altri_blog  .= "<p>{$blog_title}</p>";
+      $altri_blog  .= "</div>";
     }
   }
   $altri_blog .="</div>";
   mysqli_stmt_close($stmt_altri_blog);
 
+
+  //Blog simili
   $blog_simili .= "<div class='blog-simili'>";
-  $stmt_blog_simili = mysqli_prepare($link, "SELECT Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdCategoria=(SELECT IdCategoria FROM blog WHERE IdBlog=?) UNION SELECT Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdCategoria IN(SELECT contiene.IdSottocategoria FROM contiene WHERE IdSopracategoria=(SELECT IdCategoria FROM blog WHERE IdBlog=?))LIMIT 7");
+  $stmt_blog_simili = mysqli_prepare($link, "SELECT IdBlog, Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdCategoria=(SELECT IdCategoria FROM blog WHERE IdBlog=?) UNION SELECT IdBlog, Titolo, Immagine FROM blog WHERE IdBlog!=? AND IdCategoria IN(SELECT contiene.IdSottocategoria FROM contiene WHERE IdSopracategoria=(SELECT IdCategoria FROM blog WHERE IdBlog=?))LIMIT 7");
   mysqli_stmt_bind_param($stmt_blog_simili, "iiii", $idBlog, $idBlog, $idBlog, $idBlog);
   mysqli_stmt_execute($stmt_blog_simili);
   $results_blog_simili = mysqli_stmt_get_result($stmt_blog_simili);
@@ -410,13 +441,16 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
     while ($row = mysqli_fetch_assoc($results_blog_simili)) {
       $img_blog = $row['Immagine'];
       $blog_title = $row['Titolo'];
+      $blog_id = $row['IdBlog'];
       if ($img_blog == null) {
           $src_img = "foto/blog.png";
         } else {
           $src_img = $img_blog;
         }
+      $blog_simili  .= "<div class='blog_simile' data-blog-id='{$blog_id}'>";
       $blog_simili  .= "<img src='{$src_img}' alt='{$blog_title}'></img>";
-      $blog_simili  .= "<p>{$blog_title}</p>";
+      $blog_simili  .= "<p class='blog_simile' data-blog-id='{$blog_id}'>{$blog_title}</p>";
+      $blog_simili  .= "</div>";
     }
   }
   $blog_simili .="</div>";
@@ -438,6 +472,10 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     <script>
       $(document).ready(function() {
+
+        var n_post_recenti = <?php echo $conta_post_rec ?>;
+        var n_post_popolari = <?php echo $conta_post_rec ?>;
+
         var old_p_titolo;
         var new_input_titolo;
         var old_p_desc;
@@ -518,29 +556,10 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
               if(response === "Sessione annullata"){
                 location.replace("registrazione.php");
               }else{
-                var responseObject = JSON.parse(response);
-                if (responseObject.status === "OK") {
+                if (response == "OK") {
                   risposta = "Modifiche avvenute con successo!";
-                  var updatedData = responseObject.data;
-
-                  form.remove();
-                  old_img.show();
-                  old_p_titolo.show();
-                  old_p_cat.show();
-                  old_p_desc.show();
-
-                  old_img.attr('src', updatedData.img_blog);
-                  old_p_titolo.text(updatedData.titolo_blog);
-                  old_p_desc.text(updatedData.descrizione_blog);
-                  old_p_cat.text(updatedData.cat_blog);
-
-                  $(".modifica_blog").val("Modifica");
-                  $(".modifica_blog").siblings(".elimina_blog").val("Elimina");
-
-                } else if(responseObject.status === "richiesta fallita"){
-                  risposta = responseObject.data;
-                }else if(responseObject.status === "errore"){
-                  risposta = "Errore nel DataBase";
+                } else {
+                  risposta = response;
                 }
 
                 $("#messaggio_conferma").find(".domanda").hide();
@@ -549,6 +568,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
                 $("#messaggio_conferma").find(".contenuto_messaggio").append("<div class='modifica_avvenuta'>"+risposta+"</div><button class='ok_modifica'>Ok</button>");
                 $("#messaggio_conferma").on("click",".ok_modifica", function(){
                   $("#messaggio_conferma").css("display","none");
+                  location.reload();
                 })
               }
               
@@ -583,7 +603,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           url: "elimina_blog.php", 
           data: { blogId: blogId },
           success: function(response) {
-            if (response === "OK") {
+            if (response == "OK") {
               risposta="Blog eliminato correttamente";
             } else if(response === "Sessione annullata"){
               location.replace("registrazione.php");
@@ -592,7 +612,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
             }else if(response === "errore"){
              risposta= "Errore nel DataBase";
             }
-
+            
             $("#messaggio_conferma").find(".domanda").hide();
             $("#messaggio_conferma").find(".conferma_modifica").hide();
             $("#messaggio_conferma").find(".annulla_modifica").hide();
@@ -659,71 +679,76 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       });
 
       form.on("click", "#searchResults li", function() {
-        var selezione = $(this).text();
-        var valore = searchInput.val();
-        if (valore) {
-          var elenco = valore.split(' ');
-          if (elenco.indexOf(selezione) === -1) {
-            searchInput.val(valore + ' ' + selezione);
+        if($(this).text()!="Nessun risultato"){
+          var selezione = $(this).text();
+          var valore = searchInput.val();
+          if (valore) {
+            var elenco = valore.split(' ');
+            if (elenco.indexOf(selezione) === -1) {
+              searchInput.val(valore + ' ' + selezione);
+            }
+          } else {
+            searchInput.val(selezione);
           }
-        } else {
-          searchInput.val(selezione);
         }
       });
     }else{
 
-      $("#messaggio_conferma").find("span").text("modificare");
-      $("#messaggio_conferma").css("display","block");
-      $("#messaggio_conferma").find(".domanda").show();
-      $("#messaggio_conferma").find(".conferma_modifica").show();
-      $("#messaggio_conferma").find(".annulla_modifica").show();
-      $("#messaggio_conferma").find(".modifica_avvenuta").remove();
-      $("#messaggio_conferma").find(".ok_modifica").remove();
+      function messaggio_conferma() {
+        $("#messaggio_conferma").find("span").text("modificare");
+        $("#messaggio_conferma").css("display", "block");
+        $("#messaggio_conferma").find(".domanda").show();
+        $("#messaggio_conferma").find(".conferma_modifica").show();
+        $("#messaggio_conferma").find(".annulla_modifica").show();
+        $("#messaggio_conferma").find(".modifica_avvenuta").remove();
+        $("#messaggio_conferma").find(".ok_modifica").remove();
+      }
+    
+      messaggio_conferma();
 
-      $("#messaggio_conferma").on("click", ".annulla_modifica", function(){
-        $("#messaggio_conferma").css("display","none");
+      $("#messaggio_conferma").off("click", ".annulla_modifica").on("click", ".annulla_modifica", function() {
+        $("#messaggio_conferma").css("display", "none");
       });
-      $("#messaggio_conferma").off("click", ".conferma_modifica");
-      $("#messaggio_conferma").on("click", ".conferma_modifica", function() {
 
+
+      $(document).off("click", "#messaggio_conferma .conferma_modifica").on("click", "#messaggio_conferma .conferma_modifica", function() {
         var risposta;
         var formData = form.serialize();
         var idblog = $(".modifica_blog").data("blog-id");
-        formData +="&idblog=" + idblog;
+        formData += "&idblog=" + idblog;
 
         $.ajax({
-          type: form.attr("method"),
-          url: form.attr("action"),
-          data: formData,
-          success: function(response) {
-            var responseObject = JSON.parse(response);
-            if(responseObject.status=="OK"){
+            type: form.attr("method"),
+            url: form.attr("action"),
+            data: formData,
+            success: function(response) {
+                var responseObject = JSON.parse(response);
+                if (responseObject.status == "OK") {
+                  risposta = "modifiche avvenute con successo";
+                  var updatedData = responseObject.data;
 
-             risposta = "modifiche avvenute con successo";
-              var updatedData = responseObject.data;
+                  form.remove();
+                  old_p_coautori.show();
+                  old_p_coautori.text(updatedData);
 
-              form.remove();
-              old_p_coautori.show();
-              old_p_coautori.text(updatedData);
-
-              $(".modifica_coautore").val("Modifica");
-              $(".modifica_coautore").siblings(".indietro_coautori").hide();
-            }else if(responseObject.status=="Errore"){
-              risposta = responseObject.data;
-            }
-            $("#messaggio_conferma").find(".domanda").hide();
-            $("#messaggio_conferma").find(".conferma_modifica").hide();
-            $("#messaggio_conferma").find(".annulla_modifica").hide();
-            $("#messaggio_conferma").find(".contenuto_messaggio").append("<div class='modifica_avvenuta'>"+risposta+"</div><button class='ok_modifica'>Ok</button>");
-            $("#messaggio_conferma").on("click",".ok_modifica", function(){
-              $("#messaggio_conferma").css("display","none");
-            })
-          },
-          error: function() {
-            alert("Errore nel comunicare col server");
-          },
-        });  
+                  $(".modifica_coautore").val("Modifica");
+                  $(".modifica_coautore").siblings(".indietro_coautori").hide();
+                } else if (responseObject.status == "Errore") {
+                  risposta = responseObject.data;
+              }
+              $("#messaggio_conferma").find(".domanda").hide();
+              $("#messaggio_conferma").find(".conferma_modifica").hide();
+              $("#messaggio_conferma").find(".annulla_modifica").hide();
+              $("#messaggio_conferma").find(".contenuto_messaggio").append("<div class='modifica_avvenuta'>" + risposta + "</div><button class='ok_modifica'>Ok</button>");
+              $("#messaggio_conferma").off("click", ".ok_modifica").on("click", ".ok_modifica", function() {
+                $(this).closest("#messaggio_conferma").css("display", "none");
+              })
+        },
+        error: function(xhr, status, error) {
+            alert("Errore nel comunicare col server:".error);
+        },
       });
+});
     }
   });
 
@@ -748,7 +773,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           rules : {
             titolo_post: {
               required : true,
-              maxlength:30
+              maxlength:50
               },
             testo_post : {
               required : true
@@ -757,7 +782,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           messages : {
             titolo_post: {
               required: "Inserire un titolo",
-              maxlength: "Inserire massimo 30 caratteri"
+              maxlength: "Inserire massimo 50 caratteri"
             },
             testo_post: {
               required : "Inserire un contenuto"
@@ -788,7 +813,15 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
         data: formData,
         success: function(data){
           if(data == "OK"){
-            location.reload();
+            $("#crea_post").val("Crea un nuovo post");
+            $("#crea_post").css("margin-left","");
+            $("#form_crea_post").hide();
+            var feedback = "<div class='feedback_creazione_post'><div class='contenuto'>Post creato correttamente<div><button type='button' class='ok'>Ok</button><div></div></div>";
+            $("#crea_post").after(feedback);
+            $(".feedback_creazione_post").css("display","block");
+            $(".feedback_creazione_post").on("click",".ok",function(){
+              location.reload();
+            });
           } else{
             $("#error_message").show();
             $("#error_message").text(data);
@@ -807,11 +840,23 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       idBlog : <?php if (isset($idBlog)){echo $idBlog;} ?>,
       operazione : "recenti",
     };
-    $.get("post_singolo_blog.php", Data, function(data){
-      $(".post_rec").empty();
-      $(".post_rec").append(data);
+    $.ajax({
+      url: "post_singolo_blog.php",
+      type: "GET",
+      data: Data,
+      dataType: "json",
+      success: function(res) {
+        $(".post_rec").empty();
+        $(".post_rec").append(res.data);
+        n_post_recenti = res.conta;
+      },
+      error: function(xhr, status, error) {
+        console.error("AJAX error:", status, error);
+      }
     });
+    $(".post_rec").scrollTop(0);
   });
+
   $("#post_popolari").click(function(){
     $(".post_rec").hide();
     $(".post_pop").show();
@@ -821,11 +866,35 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       idBlog : <?php if (isset($idBlog)){echo $idBlog;} ?>,
       operazione : "popolari",
     };
-    $.get("post_singolo_blog.php", Data, function(data){
-      $(".post_pop").empty();
-      $(".post_pop").append(data);
+    $.ajax({
+      url: "post_singolo_blog.php",
+      type: "GET",
+      data: Data,
+      dataType: "json",
+      success: function(res) {
+        $(".post_pop").empty();
+        $(".post_pop").append(res.data);
+        n_post_popolari = res.conta;
+      },
+      error: function(xhr, status, error) {
+        console.error("AJAX error:", status, error);
+      }
     });
+    $(".post_pop").scrollTop(0);
   });
+
+  $(document).on("click", ".altri-blog .altro_blog", function(){
+    var idBlog = $(this).data("blog-id");
+
+    location.replace("singolo_blog.php?id=" + idBlog);
+  });
+
+  $(document).on("click", ".blog-simili .blog_simile", function(){
+    var idBlog = $(this).data("blog-id");
+
+    location.replace("singolo_blog.php?id=" + idBlog);
+  });
+
 
   $(document).on("click", ".nuovo-post .elimina_post", function(){
     if($(this).text()=="Elimina"){
@@ -840,14 +909,34 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       $.get("manipola_post.php", Data, function(response){
         if(response=="OK"){
           if($("#label_recenti").hasClass("selected")){
-            $.get("post_singolo_blog.php",{operazione:"recenti", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"recenti", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_rec").empty();
-                $(".post_rec").append(data);
+                $(".post_rec").append(res.data);
+                n_post_recenti = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }else{
-            $.get("post_singolo_blog.php",{operazione:"popolari", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"popolari", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_pop").empty();
-                $(".post_pop").append(data);
+                $(".post_pop").append(res.data);
+                n_post_popolari = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }
         }else{
@@ -857,27 +946,67 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
     })
     $(".conferma_eliminazione_post").on("click", ".annulla", Data, function(){
       if($("#label_recenti").hasClass("selected")){
-            $.get("post_singolo_blog.php",{operazione:"recenti", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"recenti", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_rec").empty();
-                $(".post_rec").append(data);
+                $(".post_rec").append(res.data);
+                n_post_recenti = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }else{
-            $.get("post_singolo_blog.php",{operazione:"popolari", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"popolari", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_pop").empty();
-                $(".post_pop").append(data);
+                $(".post_pop").append(res.data);
+                n_post_popolari = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }
       })  
       }else{
         if($("#label_recenti").hasClass("selected")){
-            $.get("post_singolo_blog.php",{operazione:"recenti", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"recenti", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_rec").empty();
-                $(".post_rec").append(data);
+                $(".post_rec").append(res.data);
+                n_post_recenti = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }else{
-            $.get("post_singolo_blog.php",{operazione:"popolari", idBlog: <?php echo $idBlog ?>}, function(data){
+            $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"popolari", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_pop").empty();
-                $(".post_pop").append(data);
+                $(".post_pop").append(res.data);
+                n_post_popolari = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
             });
           }
       }
@@ -914,15 +1043,35 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           $(".feedback_modifica_post").css("display","block");
           $(".feedback_modifica_post").on("click", ".ok", function(){
             if($("#label_recenti").hasClass("selected")){
-              $.get("post_singolo_blog.php",{operazione:"recenti", idBlog: <?php echo $idBlog ?>}, function(data){
+              $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"recenti", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_rec").empty();
-                $(".post_rec").append(data);
-              });
+                $(".post_rec").append(res.data);
+                n_post_recenti = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
+            });
             }else{
-              $.get("post_singolo_blog.php",{operazione:"popolari", idBlog: <?php echo $idBlog ?>}, function(data){
+              $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"popolari", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_pop").empty();
-                $(".post_pop").append(data);
-              });
+                $(".post_pop").append(res.data);
+                n_post_popolari = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
+            });
             }
           })
                 
@@ -932,15 +1081,35 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           $(".feedback_modifica_post").css("display","block");
           $(".feedback_modifica_post").on("click", ".ok", function(){
             if($("#label_recenti").hasClass("selected")){
-              $.get("post_singolo_blog.php",{operazione:"recenti", idBlog: <?php echo $idBlog ?>}, function(data){
+              $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"recenti", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_rec").empty();
-                $(".post_rec").append(data);
-              });
+                $(".post_rec").append(res.data);
+                n_post_recenti = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
+            });
             }else{
-              $.get("post_singolo_blog.php",{operazione:"popolari", idBlog: <?php echo $idBlog ?>}, function(data){
+              $.ajax({
+              url: "post_singolo_blog.php",
+              type: "GET",
+              data: {operazione:"popolari", idBlog: <?php echo $idBlog ?>},
+              dataType: "json",
+              success: function(res) {
                 $(".post_pop").empty();
-                $(".post_pop").append(data);
-              });
+                $(".post_pop").append(res.data);
+                n_post_popolari = res.conta;
+              },
+              error: function(xhr, status, error) {
+                console.error("AJAX error:", status, error);
+              }
+            });
             }
           })
         }
@@ -965,6 +1134,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
               pulsante.find("span").html(new_value);
+              pulsante.addClass('piaciuto');
             }else if(data=="CAMBIATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
@@ -972,10 +1142,13 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
               var old_value_non_mi_piace = parseInt( pulsante.siblings(".non_mi_piace").find("span").html());
               var new_value_non_mi_piace = old_value_non_mi_piace-1;
               pulsante.siblings(".non_mi_piace").find("span").html(new_value_non_mi_piace);
+              pulsante.addClass('piaciuto');
+              pulsante.siblings(".non_mi_piace").removeClass("non_piaciuto");
             }else if(data=="ELIMINATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value-1;
               pulsante.find("span").html(new_value);
+              pulsante.removeClass('piaciuto');
             }
           }).fail(function() {
             alert("Errore nella richesta");
@@ -1007,6 +1180,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
               pulsante.find("span").html(new_value);
+              pulsante.addClass('non_piaciuto');
             }else if(data=="CAMBIATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
@@ -1014,10 +1188,13 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
               var old_value_mi_piace = parseInt( pulsante.siblings(".mi_piace").find("span").html());
               var new_value_mi_piace = old_value_mi_piace-1;
               pulsante.siblings(".mi_piace").find("span").html(new_value_mi_piace);
+              pulsante.addClass('non_piaciuto');
+              pulsante.siblings(".mi_piace").removeClass("piaciuto");
             }else if(data=="ELIMINATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value-1;
               pulsante.find("span").html(new_value);
+              pulsante.removeClass('non_piaciuto');
             }
           }).fail(function() {
             alert("Errore nella richesta");
@@ -1051,6 +1228,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           })
       }
   });
+  var messaggio_errore = false;
   $(document).on("click", ".nuovo-post .pubblica_commento", function(){
         
         var pulsante = $(this);
@@ -1081,11 +1259,14 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
             let new_value = num_commenti+1;
             pulsante.closest(".commenti").siblings(".commenta").find("span").html(new_value);
           }else{
-            pulsante.parent(".commenti").append(data);
+            if(!messaggio_errore){
+              pulsante.parent(".commenti").append(data);
+              messaggio_errore = true;
+            }
           }
           })
       });
-      $(".nuovo-post").on("click", ".elimina_commento", function(){
+      $(document).on("click", ".nuovo-post .elimina_commento", function(){
         if($(this).text()=="Elimina"){
           var bottone =$(this);
           var Commento_Id = bottone.closest(".commento").data("commento-id");
@@ -1122,7 +1303,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
        
       })
 
-      $(".nuovo-post").on("click", ".modifica_commento", function(){
+      $(document).on("click", ".nuovo-post .modifica_commento", function(){
         
         if ($(this).text()=="Modifica"){
           var pulsante = $(this);
@@ -1162,6 +1343,81 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
           })
         } 
       });
+
+      var loading = false;
+      $(document).find(".post_rec, .post_pop").scroll(function() {
+        var bottomDistance = $(this)[0].scrollHeight - $(this).scrollTop() - $(this).outerHeight();
+        if (bottomDistance <= 1 && loading==false) {
+          loading = true;
+          $(this).append("<img style ='width:8%' class='caricamento' src='foto/caricamento.gif'>");
+
+          setTimeout(function() {
+            if($("#label_recenti").hasClass("selected")){
+              $.ajax({
+                url: "post_singolo_blog.php",
+                type: "GET",
+                data: { operazione: "nuovi_recenti", numero: n_post_recenti, idBlog: <?php echo $idBlog ?>},
+                dataType: "json",
+                success: function(res) {
+                  $(".post_rec").find(".caricamento").remove();
+                  $(".post_rec").append(res.data);
+                  n_post_recenti += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+          }else{
+              $.ajax({
+                url: "post_singolo_blog.php",
+                type: "GET",
+                data: { operazione: "nuovi_popolari", numero: n_post_popolari, idBlog: <?php echo $idBlog ?>},
+                dataType: "json",
+                success: function(res) {
+                  $(".post_pop").find(".caricamento").remove();
+                  $(".post_pop").append(res.data);
+                  n_post_popolari += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+          }
+          loading = false;
+          }, 1000);
+        }
+      });
+
+      var loading_commenti = false;
+      $(document).on("click", ".nuovo-post .feedback_e_commenti .commenti .elenco_commenti .altri_commenti", function(){
+          loading_commenti = true;
+          var elenco = $(this).closest(".elenco_commenti");
+          var PostId = $(this).closest(".feedback_e_commenti").data("post-id");
+          var n_commenti = 0;
+          elenco.find(".commento").each(function(){
+            n_commenti++;
+          });
+          $(this).replaceWith("<img class='caricamento' src='foto/caricamento_2.gif'>"); 
+          setTimeout(function() {
+            $.ajax({
+                url: "commento.php",
+                type: "GET",
+                data: { key1: PostId, key2:"carica_nuovi", numero: n_commenti },
+                dataType: "json",
+                success: function(res) {
+                  elenco.find(".caricamento").remove();
+                  elenco.append(res.data);
+                  n_commenti += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+            lading_commenti = false;
+          }, 1000);
+      });
+
+
 });
   </script>
   </head>
@@ -1174,7 +1430,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
         <li><a href="tutti_i_blog.php">Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php">I tuoi Blog</a></li>
         <li><a href="account.php">Account</a></li>
-        <li><a href="#">Info</a></li>
+        <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
@@ -1212,7 +1468,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
       </form>
     <div class="grid-post">
       <div class="colonna-blog">
-        <p class="titolo">Info e gestione blog</p>
+        <p class="titolo"><?php echo $titolo_info ?></p>
         <div class="info-blog"><?php if (isset($html)){echo $html;} ?></div>
       </div>
       <div class="post">
@@ -1235,3 +1491,5 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])){
     </body>
   </header>
 </html>
+
+
