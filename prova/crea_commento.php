@@ -15,7 +15,7 @@ if (!isset($_SESSION["session_utente"])) {
         $contenuto = trim($_POST["contenuto"]);
 
         if(strlen($contenuto)==0){
-            echo "<p>Inserire un commento!</p>";
+            echo "<p class=inserire_commento>Inserire un commento!</p>";
             exit;
         }else{
             $stmt = mysqli_prepare($link, "INSERT INTO commenta(IdPost, Contenuto, Data, Ora, IdUtente) VALUES (?, ?, ?, ?, ?)");
@@ -34,7 +34,7 @@ if (!isset($_SESSION["session_utente"])) {
         $modificato = 1;
 
         if(strlen($contenuto)==0){
-            echo "<p>Inserire un commento!</p>";
+            echo "<p class='inserire_commento'>Inserire un commento!</p>";
             exit;
         }else{
             $stmt = mysqli_prepare($link, "UPDATE commenta SET Contenuto = ?, Modificato=? WHERE IdCommento = ?");
