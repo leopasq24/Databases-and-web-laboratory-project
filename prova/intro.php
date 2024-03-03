@@ -27,8 +27,8 @@ session_start();
         <li><a href="home.php">Home</a></li>
         <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
-        <li><a href="#">Account</a></li>
-        <li><a href="#">Info</a></li>
+        <li><a href="account.php">Account</a></li>
+        <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
