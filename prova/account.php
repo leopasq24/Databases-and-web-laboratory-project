@@ -207,7 +207,7 @@ mysqli_stmt_close($stmt_info);
                                 $(".conferma_modifica_password").on("click", ".ok", function(){
                                     $(this).closest($(".conferma_modifica_password")).remove();
                                     $(".campo_passw_corrente, .campo_passw, .campo_conf_passw").css("opacity","0.5");
-                                    $('#msg_passw_agg').append(responseObject.message);
+                                    $('#msg_passw_agg').text(responseObject.message);
                                     $('#msg_passw_agg').show();
                                     $('#change-password-form').find("#conferma, #annulla").hide();
                                     $('.campo_passw_corrente, .campo_passw, .campo_conf_passw').val('');
@@ -241,18 +241,11 @@ mysqli_stmt_close($stmt_info);
                 $(".conferma_eliminazione_account").css("display", "block");
     
                 $(".conferma_eliminazione_account").on("click", ".conferma", function(){
-                    $(this).closest($(".conferma_eliminazione_account")).remove();
-                    var messaggio_conferma_passw = "<div class='mess_conf_passw'><div class='contenuto'>Inserisci la tua password corrente per confermare l'eliminazione del tuo account. Cliccando su <b style='color:#33cc33;'>Conferma</b>, sarai reindirizzato alla pagina di login.";
-                    $("#passw_elimina").append(messaggio_conferma_passw);
-                    var passwordInput = "<br><input type='password' id='passwordInput'>";
-                    $("#passw_elimina").find(".contenuto").append(passwordInput);
-                    var pulsanti = "<br><div><button class='conferma' style='margin-left:-8%;'>Conferma</button><button class='annulla'>Annulla</button></div></div></div>";
-                    $("#passw_elimina").find(".contenuto").append(pulsanti);
-                    $(".mess_conf_passw").css("display", "block");
+                    var messaggio_conferma_passw = "<div class='mess_conf_passw'><div class='contenuto'>Inserisci la tua <span style='font-weight:bold'>password corrente</span> per confermare l'eliminazione del tuo account. Cliccando su <b style='color:#33cc33;'>Conferma</b>, sarai reindirizzato alla pagina di login.<br><input type='password' placeholder='Password' id='passwordInput'><br><div><button class='conferma' style='margin-left:-8%;'>Conferma</button><button class='annulla'>Annulla</button></div></div></div>";
+                    $(this).closest($(".conferma_eliminazione_account")).html(messaggio_conferma_passw);
 
                     $(".mess_conf_passw").on("click", ".conferma", function(){
                         var passwordConferma = $("#passwordInput").val();
-                        if (passwordConferma !== "") {
                             $.ajax({
                                 type: "POST",
                                 url: "modifica_info_utente.php", 
@@ -269,18 +262,17 @@ mysqli_stmt_close($stmt_info);
                                     }
                                 },
                                 error: function(xhr) {
-                                    $("#passwordInput").after("<p class='eliminazione_error'>"+ xhr + "</p>");
+                                    $("#passwordInput").after("<p class='eliminazione_error'>"+ xhr.statusText + "</p>");
                                 }
                             })
-                        }
                     });
                     $(".mess_conf_passw").on("click", ".annulla", function(){
-                        $(this).closest($(".mess_conf_passw")).remove();
+                        $(this).closest($(".conferma_eliminazione_account")).remove();
                     });
                 });
     
                 $(".conferma_eliminazione_account").on("click", ".annulla", function(){
-                    $(this).closest($(".conferma_eliminazione_account")).remove();
+                    $(this).closest(".conferma_eliminazione_account").remove();
                 });
             });
 
@@ -365,7 +357,7 @@ mysqli_stmt_close($stmt_info);
                 <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
                 <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
                 <li><a href="account.php">Account</a></li>
-                <li><a href="#">Info</a></li>
+                <li><a href="info.php">Info</a></li>
             </ul>
             <div class="buttons">
                 <input type="button" value="Premium">
