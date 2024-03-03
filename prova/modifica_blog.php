@@ -14,6 +14,7 @@ if (!isset($_SESSION["session_utente"])) {
     	$uploadDir = "foto_utenti/";
     	$target_file = null;
 
+
     	$stmt_id_cat= mysqli_prepare($link, "SELECT IdCategoria FROM categoria WHERE Nome=?");
   		mysqli_stmt_bind_param($stmt_id_cat, "s", $nuova_cat);
   		mysqli_stmt_execute($stmt_id_cat);
@@ -46,7 +47,7 @@ if (!isset($_SESSION["session_utente"])) {
   				$newname = $num.".".$imageFileType;
   				$target_file = $uploadDir.basename($newname);
 			}
-			if ($_FILES["campo_img"]["size"] > 500000) {
+			if ($_FILES["campo_img"]["size"] > 5000000) {
 				$output="<p class='errore_modifica'>Il file caricato è troppo pesante</p>";
   				echo $output;
   				exit;
@@ -63,29 +64,25 @@ if (!isset($_SESSION["session_utente"])) {
     			exit;
 			}
 			$stmt = mysqli_prepare($link, "UPDATE blog SET Immagine=?,Titolo=?,Descrizione=?,IdCategoria=? WHERE IdBlog = ?");
-    		mysqli_stmt_bind_param($stmt, "sssii",$target_file, $nuovo_titolo, $nuova_desc, $nuova_cat, $blogId);
+    		mysqli_stmt_bind_param($stmt, "sssii",$target_file, $nuovo_titolo, $nuova_desc, $id_nuova_cat, $blogId);
 			if (mysqli_stmt_execute($stmt)) {
-				$updatedData = array( 'img_blog' => $target_file, 'titolo_blog' => $nuovo_titolo, 'cat_blog' => $nuova_cat, 'descrizione_blog' => $nuova_desc);
-
-				echo json_encode(array('status' => 'OK', 'data' => $updatedData));
+				echo "OK";
     		} else {
-        		echo "errore";
+        		echo "Errore";
     		}
     		mysqli_stmt_close($stmt);
     	}else{
     		$stmt = mysqli_prepare($link, "UPDATE blog SET Titolo=?,Descrizione=?,IdCategoria=? WHERE IdBlog = ?");
     		mysqli_stmt_bind_param($stmt, "ssii", $nuovo_titolo, $nuova_desc, $id_nuova_cat, $blogId);
 			if (mysqli_stmt_execute($stmt)) {
-				$updatedData = array('titolo_blog' =>  $nuovo_titolo, 'cat_blog' => $nuova_cat, 'descrizione_blog' => $nuova_desc);
-
-				echo json_encode(array('status' => 'OK', 'data' => $updatedData));
+				echo "OK";
     		} else {
-        		echo json_encode(array('status' => 'errore'));
+        		echo "Errore";
     		}
     		mysqli_stmt_close($stmt);
     	}
     }else {
-    	echo json_encode(array('status' => 'errore', 'data' => "richiesta fallita:".var_dump($_POST))); 
+    	echo "Richiesta fallita"; 
 	}
 }		
 ?>
