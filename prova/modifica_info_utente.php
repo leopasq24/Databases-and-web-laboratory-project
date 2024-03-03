@@ -2,11 +2,6 @@
 session_start();
 include_once("connect.php");
 
-if (!isset($_SESSION["session_utente"])) {
-    echo json_encode(["status" => "Errore", "message" => "Sessione annullata"]);
-    exit;
-}
-
 $id_utente = $_SESSION["session_utente"];
 
 if (isset($_POST["campo_username"])) {
