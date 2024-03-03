@@ -32,13 +32,13 @@ session_start();
         <p>Benvenuto su <span class="speciale">Bluggle</span>, dove le idee prendono forma e fluttuano come bolle di sapone!</p>
         <p>Immagina di immergerti in un mondo dove la tua creatività è libera di esplodere in colori vivaci e forme inaspettate. <i>Bluggle</i> ti offre un palcoscenico digitale per condividere le tue passioni e le tue storie con il mondo.</p>
         <p>Che tu sia un appassionato di cucina, un viaggiatore incallito, un esperto di tecnologia o un'anima poetica, qui troverai il tuo spazio per brillare e prendere il volo. Divertiti a fluttuare tra i blog degli altri utenti o crea i tuoi, dando vita alle tue idee più audaci e alle tue visioni più creative.</p>
-        <p>Con <i>Bluggle</i>, il cielo non è il limite, ma solo il punto di partenza! 🫧</p>
+        <p>Pronto a volare con noi? 🫧</p>
     </div>
 </div>
 
 <div class="info_container">
     <div class="credits">
-        <p>Il presente sito è stato realizzato da <b>Leonardo Pasquale</b> e <b>Matilde Campanardi</b> per il corso di <i>Basi di dati</i>
+        <p>Il presente sito è stato realizzato da <b>Leonardo Pasquale</b> e <b>Matilde Campanardi</b> per il corso di <i>Basi di dati e Laboratorio Web</i>
         <br>[CdL in Informatica Umanistica - Università di Pisa]</p>
     </div>
 </div>
