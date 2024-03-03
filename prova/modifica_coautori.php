@@ -1,8 +1,15 @@
 <?php
 include_once("connect.php");
 session_start();
-if(isset($_POST["coautori"]) && isset($_POST["idblo"])){
+if(isset($_POST["coautori"]) && isset($_POST["idblog"])){
 	$idblog=$_POST["idblog"];
+	if(trim($_POST["coautori"])==""){
+		$stmt_elimina_coautori=mysqli_prepare($link, "DELETE FROM coautore WHERE IdBlog=?");
+		mysqli_stmt_bind_param($stmt_elimina_coautori,"i",$idblog);
+		mysqli_stmt_execute($stmt_elimina_coautori);
+		echo json_encode(array('status' => 'OK', 'data' => "Nessun coautore"));
+		exit;
+	}
 	$coautori = explode(", ", trim($_POST["coautori"]));
 	$a=array();
 	$updatedData=array();
@@ -13,6 +20,10 @@ if(isset($_POST["coautori"]) && isset($_POST["idblo"])){
 		mysqli_stmt_bind_param($stmt_idcoautori,"s",$value);
 		mysqli_stmt_execute($stmt_idcoautori);
 		$result_idcoautori=mysqli_stmt_get_result($stmt_idcoautori);
+		if(mysqli_num_rows($result_idcoautori)==0){
+			echo json_encode(array('status' => 'Errore', 'data' => "Username inesistente o sintassi errata"));
+			exit;
+		}
 		while($row = mysqli_fetch_assoc($result_idcoautori)){
 			array_push($a, $row["IdUtente"]);
 		}
@@ -25,11 +36,19 @@ if(isset($_POST["coautori"]) && isset($_POST["idblo"])){
 
 
 	foreach ($a as $key => $value) {
-           $stmt_coautori = mysqli_prepare($link, "INSERT INTO coautore(IdUtente, IdBlog) VALUES (?, ?)");
-           mysqli_stmt_bind_param($stmt_coautori, "ii", $value, $idblog);
-           mysqli_stmt_execute($stmt_coautori);
-           mysqli_stmt_close($stmt_coautori);
-        }
+
+        $stmt_coautori = mysqli_prepare($link, "INSERT INTO coautore(IdUtente, IdBlog) VALUES (?, ?)");
+        mysqli_stmt_bind_param($stmt_coautori, "ii", $value, $idblog);
+		try {
+			if (!mysqli_stmt_execute($stmt_coautori)) {
+				die(json_encode(array('status' => 'Errore', 'data' => 'Errore nella connessione col DataBase')));
+			}
+		} catch (mysqli_sql_exception) {
+			die(json_encode(array('status' => 'Errore', 'data' => 'Limite coautori raggiunto')));
+		}
+		
+		mysqli_stmt_close($stmt_coautori);
+	}
 
     $stmt_nuovi_coautori = mysqli_prepare($link, "SELECT Username FROM coautore, utente WHERE coautore.IdUtente=utente.IdUtente AND coautore.IdBlog=?");
     mysqli_stmt_bind_param($stmt_nuovi_coautori, "i", $idblog);
