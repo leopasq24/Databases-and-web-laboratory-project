@@ -89,15 +89,17 @@ session_start();
           });
         });
         searchResults.on("click", "li", function() {
-          var selezione = $(this).text();
-          var valore = searchInput.val();
-          if (valore) {
-            var elenco = valore.split(' ');
-            if (elenco.indexOf(selezione) === -1) {
-              searchInput.val(valore + selezione);
+          if($(this)!="Nessun risultato"){
+            var selezione = $(this).text();
+            var valore = searchInput.val();
+            if (valore) {
+              var elenco = valore.split(' ');
+              if (elenco.indexOf(selezione) === -1) {
+                searchInput.val(valore + selezione);
+              }
+            } else {
+              searchInput.val(selezione);
             }
-          } else {
-            searchInput.val(selezione);
           }
         });
         $("#form_crea_blog").on("submit", function(event){
@@ -138,7 +140,7 @@ session_start();
         <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
         <li><a href="i_tuoi_blog.php"> I tuoi Blog</a></li>
         <li><a href="account.php">Account</a></li>
-        <li><a href="#">Info</a></li>
+        <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
         <input type="button" value="Premium">
