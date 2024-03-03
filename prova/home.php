@@ -1,11 +1,15 @@
 <?php
 session_start();
 include_once("connect.php");
-$id_utente = $_SESSION["session_utente"];
+if(isset($_SESSION["session_utente"])){
+  $id_utente = $_SESSION["session_utente"];
+}else{
+  $id_utente = false;
+};
 
     //Blog popolari
     $html_blog_pop = "<div class='blog-pop-container'>";
-    $stmt_blog_pop = mysqli_prepare($link, "SELECT Immagine, Titolo FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC)) LIMIT 7");
+    $stmt_blog_pop = mysqli_prepare($link, "SELECT IdBlog, Immagine, Titolo FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC)) LIMIT 7");
     
     mysqli_stmt_execute($stmt_blog_pop);
     $result_blog_pop = mysqli_stmt_get_result($stmt_blog_pop);
@@ -17,11 +21,12 @@ $id_utente = $_SESSION["session_utente"];
         }else{
             $src_img = $blog_pop_img;
         }
-        $blog_pop_title = $row['Titolo'];
+        $blog_pop_titolo = $row['Titolo'];
+        $IdBlog =  $row['IdBlog'];
         
-        $html_blog_pop .= "<div class='blog-pop'>";
-        $html_blog_pop .= "<img src='{$src_img}' alt='{$blog_pop_title}'></img>";
-        $html_blog_pop .= "<p>{$blog_pop_title}</p>";
+        $html_blog_pop .= "<div class='blog-pop' data-blog-id='{$IdBlog}'>";
+        $html_blog_pop .= "<img src='{$src_img}' alt='{$blog_pop_titolo}'></img>";
+        $html_blog_pop .= "<p>{$blog_pop_titolo}</p>";
         $html_blog_pop .= "</div>";
     }
     
@@ -31,6 +36,7 @@ $id_utente = $_SESSION["session_utente"];
 
     //Post recenti
     $html_post = "";
+    $conta_post = 0;
     $stmt_posts = mysqli_prepare($link, "SELECT IdPost, post.Titolo AS Titolo_post, Testo, Data, Ora, post.Immagine AS immagine_post, blog.Titolo AS Argomento, blog.Immagine AS immagine_blog, Username, blog.IdBlog, Modificato FROM post, blog, utente WHERE post.IdBlog=blog.IdBlog AND post.IdUtente=utente.IdUtente ORDER BY Data DESC LIMIT 7");
     
     if(mysqli_stmt_execute($stmt_posts)){
@@ -40,6 +46,7 @@ $id_utente = $_SESSION["session_utente"];
           $html_post .= "<p class='nessun_post'>Nessun post</p>";
       }else{
         while ($row = mysqli_fetch_assoc($result_posts)) {
+            $conta_post = $conta_post + 1;
             $id_blog = $row['IdBlog'];
             $id_post = $row['IdPost'];
             $img_blog = $row['immagine_blog'];
@@ -120,49 +127,58 @@ $id_utente = $_SESSION["session_utente"];
             }
             mysqli_stmt_close($stmt_autore_blog);
 
+            $piaciuto = false;
+            $stmt_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=1");
+            mysqli_stmt_bind_param($stmt_piaciuto,"ii", $id_post, $id_utente);
+            mysqli_stmt_execute($stmt_piaciuto);
+            $results_stmt_piaciuto = mysqli_stmt_get_result($stmt_piaciuto);
+            if(mysqli_num_rows($results_stmt_piaciuto)!=0){
+              $piaciuto = true;
+            }
+            mysqli_stmt_close($stmt_piaciuto);
+
+            $non_piaciuto = false;
+            $stmt_non_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=0");
+            mysqli_stmt_bind_param($stmt_non_piaciuto,"ii", $id_post, $id_utente);
+            mysqli_stmt_execute($stmt_non_piaciuto);
+            $results_stmt_non_piaciuto = mysqli_stmt_get_result($stmt_non_piaciuto);
+            if(mysqli_num_rows($results_stmt_non_piaciuto)!=0){
+              $non_piaciuto = true;
+            }
+            mysqli_stmt_close($stmt_non_piaciuto);
             
-            if ($img_post === null) {
-                $html_post .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-                $html_post .= "<img src='{$src_img}' alt='{$blog}'></img>";
-                if($verifica_autore_blog==true){
-                  if($verifica_autore_post==true){
-                    $html_post .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-                  }else{
-                    $html_post .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-                  }
-                }else{
-                  $html_post .= "<p>{$blog}</p>";
-                }
-                $html_post .= "<h4 class = 'titolo_post'>{$title}</h4>";
-                $html_post .= "<p class='contenuto_post'>{$testo}</p>";
-                if($modificato==1){
-                  $html_post .= "<p class ='post_modificato'>(modificato)</p>";
-                }
-                $html_post .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-                $html_post .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-                $html_post .= "</div>";
-            } else {
-                $html_post .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-                $html_post .= "<img src='{$src_img}' alt='{$blog}'></img>";
-                if($verifica_autore_blog==true){
-                  if($verifica_autore_post==true){
-                    $html_post .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-                  }else{
-                    $html_post .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-                  }
-                }else{
-                  $html_post .= "<p>{$blog}</p>";
-                }
-                $html_post .= "<h4>{$title}</h4>";
-                $html_post .= "<img class = 'immagine_post' src='{$img_post}' alt='{$title}'></img>";
-                $html_post .= "<p  class='contenuto_post'>{$testo}</p>";
-                if($modificato==1){
-                  $html_post .= "<p class ='post_modificato'>(modificato)</p>";
-                }
-                $html_post .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-                $html_post .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-                $html_post .= "</div>";
-            } 
+            $html_post .= "<div class='nuovo-post' data-post-id ='{$id_post}' data-blog-id ='{$id_blog}'>";
+            $html_post .= "<div class='immagine_blog'><img src='{$src_img}' alt='{$blog}' class='img_blog'></div>";
+            if($verifica_autore_blog==true){
+              if($verifica_autore_post==true and $modificato==0){
+                $html_post .= "<p class='titolo_blog'><span>{$blog}</span> <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
+              }else{
+                $html_post .= "<p class='titolo_blog'><span>{$blog}</span> <button class='elimina_post'>Elimina</button></p>";
+              }
+            }else{
+              $html_post .= "<p class='titolo_blog'><span>{$blog}</span></p>";
+            }
+            $html_post .= "<h4 class = 'titolo_post'>{$title}</h4>";
+            if($img_post != null) {
+              $html_post .= "<img class = 'immagine_post' src='{$img_post}' alt='{$title}'></img> ";
+            }
+            $html_post .= "<p class='contenuto_post'>{$testo}</p>";
+            if($modificato==1){
+              $html_post .= "<p class ='post_modificato'>(modificato)</p>";
+            }
+            $html_post .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
+            $html_post .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'>";
+            if($piaciuto==true){
+              $html_post .="<div class='mi_piace piaciuto'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+            }else{
+              $html_post .="<div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+            }
+            if($non_piaciuto==true){
+              $html_post .="<div class='non_mi_piace non_piaciuto'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+            }else{
+              $html_post .="<div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+            }
+            $html_post .= "</div>";
         }
       }
       
@@ -174,6 +190,7 @@ $id_utente = $_SESSION["session_utente"];
 
     //Post personali
     $html_post_personali = "";
+    $conta_post_personali = 0;
     $stmt_post_personali = mysqli_prepare($link, "SELECT IdPost, post.Titolo AS Titolo_post, Testo, Data, Ora, post.Immagine AS immagine_post, blog.Titolo AS Argomento, blog.Immagine AS immagine_blog, Username, blog.IdBlog, Modificato FROM post, blog, utente WHERE post.IdBlog=blog.IdBlog AND post.IdUtente=utente.IdUtente AND blog.IdUtente = ? ORDER BY Data DESC LIMIT 7");
     
     mysqli_stmt_bind_param($stmt_post_personali, "i", $id_utente);
@@ -185,6 +202,7 @@ $id_utente = $_SESSION["session_utente"];
           $html_post_personali .= "<p id='nessun_post'>Non hai ancora nessun post. <a href='i_tuoi_blog.php'>Creane uno!</a></p>";
       } else {
         while ($row = mysqli_fetch_assoc($result_post_personali)) {
+          $conta_post_personali = $conta_post_personali + 1;
           $id_blog = $row['IdBlog'];
           $id_post = $row['IdPost'];
           $img_blog = $row['immagine_blog'];
@@ -265,54 +283,88 @@ $id_utente = $_SESSION["session_utente"];
           }
           mysqli_stmt_close($stmt_autore_blog);
 
-          if ($img_post === null) {
-            $html_post_personali .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-            $html_post_personali .= "<img src='{$src_img}' alt='{$blog}'></img>";
-            if($verifica_autore_blog==true){
-              if($verifica_autore_post==true){
-                $html_post_personali .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-              }else{
-                $html_post_personali .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-              }
-            }else{
-              $html_post_personali .= "<p>{$blog}</p>";
-            }
-            $html_post_personali .= "<h4>{$title}</h4>";
-            $html_post_personali .= "<p  class='contenuto_post'>{$testo}</p>";
-            if($modificato==1){
-              $html_post_personali .= "<p class ='post_modificato'>(modificato)</p>";
-            }
-            $html_post_personali .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-            $html_post_personali .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-            $html_post_personali .= "</div>";
-          } else {
-            $html_post_personali .= "<div class='nuovo-post' data-post-id ='{$id_post}'>";
-            $html_post_personali .= "<img src='{$src_img}' alt='{$blog}'></img>";
-            if($verifica_autore_blog==true){
-              if($verifica_autore_post==true){
-                $html_post_personali .= "<p>{$blog} <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
-              }else{
-                $html_post_personali .= "<p>{$blog} <button class='elimina_post'>Elimina</button></p>";
-              }
-            }else{
-              $html_post_personali .= "<p>{$blog}</p>";
-            }
-            $html_post_personali .= "<h4>{$title}</h4>";
-            $html_post_personali .= "<img  class = 'immagine_post' src='{$img_post}' alt='{$title}'></img>";
-            $html_post_personali .= "<p  class='contenuto_post'>{$testo}</p>";
-            if($modificato==1){
-              $html_post_personali .= "<p class ='post_modificato'>(modificato)</p>";
-            }
-            $html_post_personali .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
-            $html_post_personali .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'><div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div><div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
-            $html_post_personali .= "</div>";
+          $piaciuto = false;
+          $stmt_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=1");
+          mysqli_stmt_bind_param($stmt_piaciuto,"ii", $id_post, $id_utente);
+          mysqli_stmt_execute($stmt_piaciuto);
+          $results_stmt_piaciuto = mysqli_stmt_get_result($stmt_piaciuto);
+          if(mysqli_num_rows($results_stmt_piaciuto)!=0){
+            $piaciuto = true;
           }
+          mysqli_stmt_close($stmt_piaciuto);
+
+          $non_piaciuto = false;
+          $stmt_non_piaciuto = mysqli_prepare($link, "SELECT * FROM feedback WHERE IdPost=? AND IdUtente=? AND Tipo=0");
+          mysqli_stmt_bind_param($stmt_non_piaciuto,"ii", $id_post, $id_utente);
+          mysqli_stmt_execute($stmt_non_piaciuto);
+          $results_stmt_non_piaciuto = mysqli_stmt_get_result($stmt_non_piaciuto);
+          if(mysqli_num_rows($results_stmt_non_piaciuto)!=0){
+            $non_piaciuto = true;
+          }
+          mysqli_stmt_close($stmt_non_piaciuto);
+
+          $html_post_personali .= "<div class='nuovo-post' data-post-id ='{$id_post}' data-blog-id ='{$id_blog}'>";
+          $html_post_personali .= "<div class='immagine_blog'><img src='{$src_img}' alt='{$blog}' class='img_blog'></div>";
+          if($verifica_autore_blog==true){
+            if($verifica_autore_post==true and $modificato==0){
+              $html_post_personali .= "<p class='titolo_blog'><span>{$blog}</span> <button class='elimina_post'>Elimina</button><button class='modifica_post'>Modifica</button></p>";
+            }else{
+              $html_post_personali .= "<p class='titolo_blog'><span>{$blog}</span> <button class='elimina_post'>Elimina</button></p>";
+            }
+          }else{
+            $html_post_personali .= "<p class='titolo_blog'><span>{$blog}</span></p>";
+          }
+          $html_post_personali .= "<h4 class = 'titolo_post'>{$title}</h4>";
+          if($img_post != null){
+            $html_post_personali .= "<img  class = 'immagine_post' src='{$img_post}' alt='{$title}'></img>";
+          }
+          $html_post_personali .= "<p  class='contenuto_post'>{$testo}</p>";
+          if($modificato==1){
+            $html_post_personali .= "<p class ='post_modificato'>(modificato)</p>";
+          }
+          $html_post_personali .= "<p class='dataeora'><span>~ {$autore_post}</span> il {$data} alle {$ora}</p>";
+          $html_post_personali .= "<div class='feedback_e_commenti' data-post-id='{$id_post}'>";
+          if($piaciuto==true){
+            $html_post_personali .="<div class='mi_piace piaciuto'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+          }else{
+            $html_post_personali .="<div class='mi_piace'><img src='foto/mi-piace.png' alt='mi_piace'><span>{$num_feedback_positivi}</span></div>";
+          }
+          if($non_piaciuto==true){
+            $html_post_personali .="<div class='non_mi_piace non_piaciuto'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+          }else{
+            $html_post_personali .="<div class='non_mi_piace'><img src='foto/non-mi-piace.png' alt='non_mi_piace'><span>{$num_feedback_negativi}</span></div><div class='commenta'><img src='foto/commenti.png' alt='commenti_icona'><span>{$numero_commenti}</span></div></div>";
+          }
+          $html_post_personali .= "</div>";
         } 
       }
   }else{
     $html_post_personali .="Error: " . mysqli_error($link);
   } 
   mysqli_stmt_close($stmt_post_personali);
+
+  //categorie
+  $html_cat = "";
+  $stmt_categorie = mysqli_prepare($link, "SELECT IdCategoria, Icona, Nome FROM categoria WHERE IdCategoria NOT IN (SELECT IdSottocategoria FROM contiene) LIMIT 7");
+    
+  if (mysqli_stmt_execute($stmt_categorie)){
+    $result_categorie = mysqli_stmt_get_result($stmt_categorie);
+    while ($row = mysqli_fetch_assoc($result_categorie)) {
+      $iconData = $row['Icona'];
+      $base64Icon = base64_encode($iconData);
+      $nome_categoria = $row['Nome'];
+      $id_categoria =  $row['IdCategoria'];
+
+      $html_cat .= "<div class='macrocat' data-cat-id='$id_categoria'>";
+      $html_cat .= "<img src='data:image/png;base64, $base64Icon' alt='$nome_categoria'></img>";
+      $html_cat .= "<p id='macrocat_nome'>{$nome_categoria}</p><p id='freccia'>&#8250;</p>";
+      $html_cat .= "<div class='micro-categoria'></div>";
+      $html_cat .= "</div>";
+    }
+    mysqli_stmt_close($stmt_categorie);
+  }else{
+    $html_cat = "Error: " . mysqli_error($link);
+  }
+    
 ?>
 <html lang="it" dir="ltr">
   <head>
@@ -324,19 +376,22 @@ $id_utente = $_SESSION["session_utente"];
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script>
       $(document).ready(function() {
-        $.get("categorie.php", function(data) {
-          if(data=="Sessione annullata"){
-            location.replace("registrazione.php");
-          }
-          $(".macro-categorie").html(data);
-        });
+
+        var n_post_generali = <?php echo $conta_post ?>;
+        var n_post_personali = <?php echo $conta_post_personali ?>;
+
+        var sessione = "<?php echo $id_utente ?>";
+        if (sessione==""){
+          location.replace("registrazione.php");
+        }
+
         $(".macro-categorie").on("click", ".macrocat", function(){
           var macrocat = $(this);
-          var macrocat_nome = macrocat.find("#macrocat_nome").text();
+          var macrocat_id = macrocat.data("cat-id");
           var freccia = macrocat.find("#freccia");
           var microCategoria = macrocat.find(".micro-categoria");
           var requestData = {
-            key1: macrocat_nome
+            key1: macrocat_id
           };
 
           microCategoria.toggleClass("visible");
@@ -344,43 +399,50 @@ $id_utente = $_SESSION["session_utente"];
           if (microCategoria.hasClass("visible")) {
             freccia.css({'transform': 'rotate(90deg)'});
             $.get("sottocategorie.php", requestData, function(data) {
-             if(data=="Sessione annullata"){
-              location.replace("registrazione.php");
-             }
-             microCategoria.html(data);
-             microCategoria.show();
+              if(data=="Sessione annullata"){
+                location.replace("registrazione.php");
+              }
+              microCategoria.html(data);
+              microCategoria.show();
             });
           } else {
             freccia.css({'transform': 'rotate(0deg)'});
             microCategoria.hide();
           }
         });
-        $(".macro-categorie").on("click", "#macrocat_nome", function() {
+
+        $(".griglia_blog").on("click", ".blog", function(){
+          var idBlog = $(this).data("blog-id");
+
+          location.replace("singolo_blog.php?id=" + idBlog);
+        });
+
+        $(".macro-categorie").on("click", "#macrocat_nome", function(){
           var categoria = $(this).closest(".macrocat").data("cat-id");
-          $.ajax({
-            url: "categorie.php",
-            type: "GET",
-            success: function() {
-              location.replace("categoria.php?id=" + categoria);
-            },
-            error: function(xhr, status, error) {
-              console.error(error);
-            }
-          });
+
+          location.replace("categoria.php?id=" + categoria);
         });
-        $(".macro-categorie").on("click", ".microcat", function() { 
-          var categoria = $(this).closest(".microcat").data("cat-id");
-          $.ajax({
-            url: "sottocategorie.php",
-            type: "GET",
-            success: function() {
-              location.replace("categoria.php?id=" + categoria);
-            },
-            error: function(xhr, status, error) {
-              console.error(error);
-            }
-          });
+
+        $(".macro-categorie").on("click", ".microcat", function(){
+          var categoria = $(this).data("cat-id");
+
+          location.replace("categoria.php?id=" + categoria);
         });
+
+        $(document).on("click", ".nuovo-post .titolo_blog span" , function(){
+          var idBlog = $(this).closest(".nuovo-post").data("blog-id");
+
+          location.replace("singolo_blog.php?id=" + idBlog);
+        });
+
+        $(document).on("click", ".popolari .blog-pop" , function(){
+          var idBlog = $(this).data("blog-id");
+
+          location.replace("singolo_blog.php?id=" + idBlog);
+        });
+
+      
+
         $("#blog_personali").click(function(){
           $(".ultimi-post").hide();
           $(".ultimi-post-personali").show();
@@ -389,10 +451,21 @@ $id_utente = $_SESSION["session_utente"];
           var Data={
             operazione : "personali",
           };
-          $.get("post_home.php", Data, function(data){
-            $(".ultimi-post-personali").empty();
-            $(".ultimi-post-personali").append(data);
-          });
+          $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: Data,
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
+                    });
+          $(".ultimi-post-personali").scrollTop(0);
         });
         $("#blog_generali").click(function(){
           $(".ultimi-post-personali").hide();
@@ -402,10 +475,21 @@ $id_utente = $_SESSION["session_utente"];
           var Data={
             operazione : "generali",
           };
-          $.get("post_home.php",Data, function(data){
-            $(".ultimi-post").empty();
-            $(".ultimi-post").append(data);
-          });
+          $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: Data,
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
+                    });
+          $(".ultimi-post").scrollTop(0);
         });  
         
         $(document).on("click", ".nuovo-post .elimina_post", function(){
@@ -421,14 +505,34 @@ $id_utente = $_SESSION["session_utente"];
               $.get("manipola_post.php", Data, function(response){
                 if(response=="OK"){
                   if($("#label_generali").hasClass("selected")){
-                    $.get("post_home.php",{operazione:"generali"}, function(data){
-                      $(".ultimi-post").empty();
-                      $(".ultimi-post").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "generali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }else{
-                    $.get("post_home.php",{operazione:"personali"}, function(data){
-                      $(".ultimi-post-personali").empty();
-                      $(".ultimi-post-personali").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "personali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post-personali").empty();
+                        $(".ultimi-post-personali").append(res.data);
+                        n_post_personali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }
                 }else{
@@ -438,28 +542,68 @@ $id_utente = $_SESSION["session_utente"];
             })
             $(".conferma_eliminazione_post").on("click", ".annulla", Data, function(){
               if($("#label_generali").hasClass("selected")){
-                    $.get("post_home.php",{operazione:"generali"}, function(data){
-                      $(".ultimi-post").empty();
-                      $(".ultimi-post").append(data);
+                $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "generali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
               }else{
-                    $.get("post_home.php",{operazione:"personali"}, function(data){
-                      $(".ultimi-post-personali").empty();
-                      $(".ultimi-post-personali").append(data);
+                $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "personali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post-personali").empty();
+                        $(".ultimi-post-personali").append(res.data);
+                        n_post_personali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
               }
             })  
           }else{
             if($("#label_generali").hasClass("selected")){
-              $.get("post_home.php",{operazione:"generali"}, function(data){
-                $(".ultimi-post").empty();
-                $(".ultimi-post").append(data);
-              });
+              $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "generali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
+                    });
             }else{
-              $.get("post_home.php",{operazione:"personali"}, function(data){
-                $(".ultimi-post-personali").empty();
-                $(".ultimi-post-personali").append(data);
-              });
+              $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "personali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post-personali").empty();
+                        $(".ultimi-post-personali").append(res.data);
+                        n_post_personali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
+                    });
             }
           }
         });
@@ -495,14 +639,34 @@ $id_utente = $_SESSION["session_utente"];
                 $(".feedback_modifica_post").css("display","block");
                 $(".feedback_modifica_post").on("click", ".ok", function(){
                   if($("#label_generali").hasClass("selected")){
-                    $.get("post_home.php",{operazione:"generali"}, function(data){
-                      $(".ultimi-post").empty();
-                      $(".ultimi-post").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "generali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }else{
-                    $.get("post_home.php",{operazione:"personali"}, function(data){
-                      $(".ultimi-post-personali").empty();
-                      $(".ultimi-post-personali").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "personali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post-personali").empty();
+                        $(".ultimi-post-personali").append(res.data);
+                        n_post_personali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }
                 })
@@ -513,14 +677,34 @@ $id_utente = $_SESSION["session_utente"];
                 $(".feedback_modifica_post").css("display","block");
                 $(".feedback_modifica_post").on("click", ".ok", function(){
                   if($("#label_generali").hasClass("selected")){
-                    $.get("post_home.php",{operazione:"generali"}, function(data){
-                      $(".ultimi-post").empty();
-                      $(".ultimi-post").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "generali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post").empty();
+                        $(".ultimi-post").append(res.data);
+                        n_post_generali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }else{
-                    $.get("post_home.php",{operazione:"personali"}, function(data){
-                      $(".ultimi-post-personali").empty();
-                      $(".ultimi-post-personali").append(data);
+                    $.ajax({
+                      url: "post_home.php",
+                      type: "GET",
+                      data: { operazione: "personali"},
+                      dataType: "json",
+                      success: function(res) {
+                        $(".ultimi-post-personali").empty();
+                        $(".ultimi-post-personali").append(res.data);
+                        n_post_personali = res.conta;
+                      },
+                      error: function(xhr, status, error) {
+                        console.error("AJAX error:", status, error);
+                      }
                     });
                   }
                 })
@@ -550,6 +734,7 @@ $id_utente = $_SESSION["session_utente"];
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
               pulsante.find("span").html(new_value);
+              pulsante.addClass('piaciuto');
             }else if(data=="CAMBIATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
@@ -557,10 +742,13 @@ $id_utente = $_SESSION["session_utente"];
               var old_value_non_mi_piace = parseInt( pulsante.siblings(".non_mi_piace").find("span").html());
               var new_value_non_mi_piace = old_value_non_mi_piace-1;
               pulsante.siblings(".non_mi_piace").find("span").html(new_value_non_mi_piace);
+              pulsante.addClass('piaciuto');
+              pulsante.siblings(".non_mi_piace").removeClass("non_piaciuto");
             }else if(data=="ELIMINATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value-1;
               pulsante.find("span").html(new_value);
+              pulsante.removeClass('piaciuto');
             }
           }).fail(function() {
             alert("Errore nella richesta");
@@ -592,6 +780,7 @@ $id_utente = $_SESSION["session_utente"];
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
               pulsante.find("span").html(new_value);
+              pulsante.addClass('non_piaciuto');
             }else if(data=="CAMBIATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value+1;
@@ -599,10 +788,13 @@ $id_utente = $_SESSION["session_utente"];
               var old_value_mi_piace = parseInt( pulsante.siblings(".mi_piace").find("span").html());
               var new_value_mi_piace = old_value_mi_piace-1;
               pulsante.siblings(".mi_piace").find("span").html(new_value_mi_piace);
+              pulsante.addClass('non_piaciuto');
+              pulsante.siblings(".mi_piace").removeClass("piaciuto");
             }else if(data=="ELIMINATO"){
               var old_value = parseInt(pulsante.find("span").html());
               var new_value = old_value-1;
               pulsante.find("span").html(new_value);
+              pulsante.removeClass('non_piaciuto');
             }
           }).fail(function() {
             alert("Errore nella richesta");
@@ -637,6 +829,7 @@ $id_utente = $_SESSION["session_utente"];
       }
       });
 
+      var messaggio_errore = false;
       $(document).on("click", ".nuovo-post .pubblica_commento", function(){  
         var pulsante = $(this);
         var contenuto_campo = $(this).siblings(".campo_commento").val();
@@ -666,7 +859,10 @@ $id_utente = $_SESSION["session_utente"];
             let new_value = num_commenti+1;
             pulsante.closest(".commenti").siblings(".commenta").find("span").html(new_value);
           }else{
-            pulsante.parent(".commenti").append(data);
+            if(!messaggio_errore){
+              messaggio_errore=true;
+              pulsante.parent(".commenti").append(data);
+            }
           }
           })
       });
@@ -747,9 +943,85 @@ $id_utente = $_SESSION["session_utente"];
           })
         } 
       });
-          
-    // Barra di ricerca (per blog e post)
+
+
+
+      var loading_post = false;
+      $(document).find(".ultimi-post, .ultimi-post-personali").scroll(function() {
+        var bottomDistance = $(this)[0].scrollHeight - $(this).scrollTop() - $(this).outerHeight();
+        if (bottomDistance <= 1 && loading_post==false) {
+          loading_post = true;
+          $(this).append("<img class='caricamento' src='foto/caricamento.gif'>");
+
+          setTimeout(function() {
+            if($("#label_generali").hasClass("selected")){
+              $.ajax({
+                url: "post_home.php",
+                type: "GET",
+                data: { operazione: "nuovi_generali", numero: n_post_generali },
+                dataType: "json",
+                success: function(res) {
+                  $(".ultimi-post").find(".caricamento").remove();
+                  $(".ultimi-post").append(res.data);
+                  n_post_generali += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+            }else{
+              $.ajax({
+                url: "post_home.php",
+                type: "GET",
+                data: { operazione: "nuovi_personali", numero: n_post_personali },
+                dataType: "json",
+                success: function(res) {
+                  $(".ultimi-post-personali").find(".caricamento").remove();
+                  $(".ultimi-post-personali").append(res.data);
+                  n_post_personali += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+          }
+          loading_post = false;
+          }, 1000);
+        }
+      });
+
+      var loading_commenti = false;
+      $(document).on("click", ".nuovo-post .feedback_e_commenti .commenti .elenco_commenti .altri_commenti", function(){
+          loading_commenti = true;
+          var elenco = $(this).closest(".elenco_commenti");
+          var PostId = $(this).closest(".feedback_e_commenti").data("post-id");
+          var n_commenti = 0;
+          elenco.find(".commento").each(function(){
+            n_commenti++;
+          });
+          $(this).replaceWith("<img class='caricamento' src='foto/caricamento_2.gif'>"); 
+          setTimeout(function() {
+            $.ajax({
+                url: "commento.php",
+                type: "GET",
+                data: { key1: PostId, key2:"carica_nuovi", numero: n_commenti },
+                dataType: "json",
+                success: function(res) {
+                  elenco.find(".caricamento").remove();
+                  elenco.append(res.data);
+                  n_commenti += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+            lading_commenti = false;
+          }, 1000);
+      });
+
+          // Barra di ricerca (per blog e post)
       $(document).on("click", ".search-container", function() {
+        $(".results_ricerca").show();
         $(this).css({"background": "white", "width": "500px", "margin-left": "32%", "box-shadow": "0px 15px 20px rgba(0,0,0,0.1)", "transform": "scale(1)"});
         $(".search-input").css("width", "100px").show();
         $("i").css("color", "#3aa6ff");
@@ -758,8 +1030,9 @@ $id_utente = $_SESSION["session_utente"];
         $(".close").css({"margin-left": "50px", "margin-right": "-250px"});
 
         $(".filtri_ricerca").show();
-        
+
         $(".close").on("click", function() {
+          $(".results_ricerca").hide();
           $(".search-container").removeAttr("style");
           $(this).remove();
           $("i").css("color", "white");
@@ -772,17 +1045,80 @@ $id_utente = $_SESSION["session_utente"];
       $("#cerca_blog").on("click", function() {
         $("label#cerca_blog").addClass("selected");
         $("label#cerca_post").removeClass("selected");
+        var stringa = $(".search-input").val();
+        if(stringa!=""){
+          $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione:"blog", str: stringa},
+                success: function(data) {
+                  $(".results_ricerca").empty();
+                  $(".results_ricerca").append(data);
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+        }
       });
+
       $("#cerca_post").on("click", function() {
         $("label#cerca_post").addClass("selected");
         $("label#cerca_blog").removeClass("selected");
+        var stringa = $(".search-input").val();
+        if(stringa!=""){
+          $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione:"post", str: stringa},
+                success: function(data) {
+                  $(".results_ricerca").empty();
+                  $(".results_ricerca").append(data);
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+        }
+      });
+
+      $(document).find(".search-input").on("input", function(){
+        var stringa = $(this).val();
+        $(".results_ricerca").html("<img class = 'caricamento_risultati' src='foto/caricamento_2.gif'>");
+        setTimeout(function(){if($(".filtri_ricerca #cerca_blog").hasClass("selected")){
+          $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione:"blog", str: stringa},
+                success: function(data) {
+                  $(".results_ricerca").empty();
+                  $(".results_ricerca").append(data);
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+        }else{
+          $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione:"post", str: stringa},
+                success: function(data) {
+                  $(".results_ricerca").empty();
+                  $(".results_ricerca").append(data);
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+        }}, 1000);
       });
 
     });
     </script>
    </head>
-<body id="body_tuoi_blog">
-  <header id="header_tuoi_blog">
+<body id="home">
+  <header id ="home">
     <nav class="navbar">
       <div class="logo"><a href="home.php">Bluggle</a></div>
       <ul class="menu">
@@ -797,7 +1133,6 @@ $id_utente = $_SESSION["session_utente"];
         <a href="logout.php"><input type="button" value="Logout"></a>
       </div>
     </nav>
-
     <div class="search-container">
       <input type="text" placeholder="Cerca..." class="search-input">
       <button type="submit" class="search-btn">
@@ -810,11 +1145,11 @@ $id_utente = $_SESSION["session_utente"];
       <input type="radio" id="cerca_post" name="cerca_post" value="Cerca Post"><label for="cerca_post" id="cerca_post">Post</label>
       </p>
     </div>
-
+    <div class='results_ricerca' hidden></div>
     <div class="grid-post">
       <div class="categorie">
         <p class="titolo">Categorie</p>
-        <div class="macro-categorie"></div>
+        <div class="macro-categorie"><?php echo $html_cat ?></div>
       </div>
       <div class="post">
         <p class="titolo">Nuovi post</br>
