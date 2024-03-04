@@ -349,13 +349,12 @@ if(isset($_SESSION["session_utente"])){
   if (mysqli_stmt_execute($stmt_categorie)){
     $result_categorie = mysqli_stmt_get_result($stmt_categorie);
     while ($row = mysqli_fetch_assoc($result_categorie)) {
-      $iconData = $row['Icona'];
-      $base64Icon = base64_encode($iconData);
+      $icona = $row['Icona'];
       $nome_categoria = $row['Nome'];
       $id_categoria =  $row['IdCategoria'];
 
       $html_cat .= "<div class='macrocat' data-cat-id='$id_categoria'>";
-      $html_cat .= "<img src='data:image/png;base64, $base64Icon' alt='$nome_categoria'></img>";
+      $html_cat .= "<img src='{$icona}' alt='$nome_categoria'></img>";
       $html_cat .= "<p id='macrocat_nome'>{$nome_categoria}</p><p id='freccia'>&#8250;</p>";
       $html_cat .= "<div class='micro-categoria'></div>";
       $html_cat .= "</div>";
@@ -414,31 +413,31 @@ if(isset($_SESSION["session_utente"])){
         $(".griglia_blog").on("click", ".blog", function(){
           var idBlog = $(this).data("blog-id");
 
-          location.replace("singolo_blog.php?id=" + idBlog);
+          window.location.href = "singolo_blog.php?id=" + idBlog;
         });
 
         $(".macro-categorie").on("click", "#macrocat_nome", function(){
           var categoria = $(this).closest(".macrocat").data("cat-id");
 
-          location.replace("categoria.php?id=" + categoria);
+          window.location.href = "categoria.php?id=" + categoria;
         });
 
         $(".macro-categorie").on("click", ".microcat", function(){
           var categoria = $(this).data("cat-id");
 
-          location.replace("categoria.php?id=" + categoria);
+          window.location.href = "categoria.php?id=" + categoria;
         });
 
         $(document).on("click", ".nuovo-post .titolo_blog span" , function(){
           var idBlog = $(this).closest(".nuovo-post").data("blog-id");
 
-          location.replace("singolo_blog.php?id=" + idBlog);
+          window.location.href = "singolo_blog.php?id=" + idBlog;
         });
 
         $(document).on("click", ".popolari .blog-pop" , function(){
           var idBlog = $(this).data("blog-id");
 
-          location.replace("singolo_blog.php?id=" + idBlog);
+          window.location.href = "singolo_blog.php?id=" + idBlog;
         });
 
       
@@ -1114,6 +1113,61 @@ if(isset($_SESSION["session_utente"])){
         }}, 1000);
       });
 
+      $(document).on("click", ".results_ricerca #risultati", function(){
+        var idBlog = $(this).data("blog-id");
+        
+        window.location.href = "singolo_blog.php?id=" + idBlog;
+      });
+
+      var loading_risultati = false;
+
+      $(document).find(".results_ricerca").scroll(function() {
+        var stringa = $(".search-input").val();
+        var bottomDistance = $(this)[0].scrollHeight - $(this).scrollTop() - $(this).outerHeight();
+        var n_risultati = 0;
+        $(this).find("tr#risultati").each(function(){
+          n_risultati++;
+        });
+        if (bottomDistance <= 1 && loading_risultati==false) {
+          loading_risultati = true;
+          $(this).find("table").append("<img class='caricamento_nuovi_risultati' src='foto/caricamento.gif'>");
+
+          setTimeout(function() {
+            if($(".filtri_ricerca #cerca_blog").hasClass("selected")){
+              $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione: "nuovi_risultati_blog", str: stringa, numero: n_risultati },
+                dataType: "json",
+                success: function(res) {
+                  $(".results_ricerca").find(".caricamento_nuovi_risultati").remove();
+                  $(".results_ricerca table tbody").append(res.data);
+                  n_risultati += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+            }else{
+              $.ajax({
+                url: "ricerca.php",
+                type: "GET",
+                data: { selezione: "nuovi_risultati_post", str: stringa, numero: n_risultati },
+                dataType: "json",
+                success: function(res) {
+                  $(".results_ricerca").find(".caricamento_nuovi_risultati").remove();
+                  $(".results_ricerca table tbody").append(res.data);
+                  n_risultati += res.conta;
+                },
+                error: function(xhr, status, error) {
+                  console.error("AJAX error:", status, error);
+                }
+              });
+          }
+          loading_risultati = false;
+          }, 1000);
+        }
+      });
     });
     </script>
    </head>
