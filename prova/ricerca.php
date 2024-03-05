@@ -11,7 +11,6 @@ if($selezione == "blog" and $str!=""){
 	if (mysqli_num_rows($results) == 0) {
         echo "<div class='nessun_risulato_ricerca'>Nessun risultato</div>";
     }else{
-        $arr = array($str => "<span>".$str."</span>");
         $res = "";
         $res.="<table>
         <thead>
@@ -25,10 +24,12 @@ if($selezione == "blog" and $str!=""){
         <tbody>";
         while($row = mysqli_fetch_assoc($results)){
             $idBlog = $row['idblog'];
-            $titolo_blog = str_replace($str, $arr[$str], $row['Titolo']);
-            $desc_blog = str_replace($str, $arr[$str], $row['Descrizione']);
-            $cat_blog = str_replace($str, $arr[$str], $row['Nome']);
-            $autore_blog = str_replace($str, $arr[$str], $row['Username']);
+            $pattern = '/('.$str.')/i';
+            $replacement = '<span>$1</span>';
+            $titolo_blog = preg_replace($pattern, $replacement, $row['Titolo']);
+            $desc_blog = preg_replace($pattern, $replacement, $row['Descrizione']);
+            $cat_blog = preg_replace($pattern, $replacement, $row['Nome']);
+            $autore_blog = preg_replace($pattern, $replacement, $row['Username']);
             $res.="<tr id='risultati' data-blog-id='{$idBlog}'>
                 <td class='titolo_blog'>".$titolo_blog."</td>
                 <td class='descrizione_blog'>".$desc_blog."</td>
@@ -49,7 +50,6 @@ if($selezione == "blog" and $str!=""){
 	if (mysqli_num_rows($results) == 0) {
         echo "<div class='nessun_risulato_ricerca'>Nessun risultato</div>";
     }else{
-        $arr = array($str => "<span>".$str."</span>");
         $res = "";
         $res.="<table>
         <thead>
@@ -62,9 +62,11 @@ if($selezione == "blog" and $str!=""){
         <tbody>";
         while($row = mysqli_fetch_assoc($results)){
             $idBlog = $row['IdBlog'];
-            $titolo_post = str_replace($str, $arr[$str], $row['Titolo']);
-            $testo_post = str_replace($str, $arr[$str], $row['Testo']);
-            $autore_post = str_replace($str, $arr[$str], $row['Username']);
+            $pattern = '/('.$str.')/i';
+            $replacement = '<span>$1</span>';
+            $titolo_post = preg_replace($pattern, $replacement, $row['Titolo']);
+            $testo_post = preg_replace($pattern, $replacement, $row['Testo']);
+            $autore_post = preg_replace($pattern, $replacement, $row['Username']);
             $res.="<tr id='risultati'  data-blog-id='{$idBlog}'>
                 <td class='titolo_post'>".$titolo_post."</td>
                 <td class='testo_post'>".$testo_post."</td>
@@ -84,14 +86,15 @@ if($selezione == "blog" and $str!=""){
 	mysqli_stmt_execute($stmt);
 	$results = mysqli_stmt_get_result($stmt);
 	if (mysqli_num_rows($results) != 0) {
-        $arr = array($str => "<span>".$str."</span>");
         while($row = mysqli_fetch_assoc($results)){
             $conta = $conta + 1;
             $idBlog = $row['idblog'];
-            $titolo_blog = str_replace($str, $arr[$str], $row['Titolo']);
-            $desc_blog = str_replace($str, $arr[$str], $row['Descrizione']);
-            $cat_blog = str_replace($str, $arr[$str], $row['Nome']);
-            $autore_blog = str_replace($str, $arr[$str], $row['Username']);
+            $pattern = '/('.$str.')/i';
+            $replacement = '<span>$1</span>';
+            $titolo_blog = preg_replace($pattern, $replacement, $row['Titolo']);
+            $desc_blog = preg_replace($pattern, $replacement, $row['Descrizione']);
+            $cat_blog = preg_replace($pattern, $replacement, $row['Nome']);
+            $autore_blog = preg_replace($pattern, $replacement, $row['Username']);
             $res.="<tr id='risultati' data-blog-id='{$idBlog}'>
                 <td class='titolo_blog'>".$titolo_blog."</td>
                 <td class='descrizione_blog'>".$desc_blog."</td>
@@ -112,13 +115,14 @@ if($selezione == "blog" and $str!=""){
 	mysqli_stmt_execute($stmt);
 	$results = mysqli_stmt_get_result($stmt);
 	if (mysqli_num_rows($results) != 0) {
-        $arr = array($str => "<span>".$str."</span>");
         while($row = mysqli_fetch_assoc($results)){
             $conta = $conta + 1;
             $idBlog = $row['IdBlog'];
-            $titolo_post = str_replace($str, $arr[$str], $row['Titolo']);
-            $testo_post = str_replace($str, $arr[$str], $row['Testo']);
-            $autore_post = str_replace($str, $arr[$str], $row['Username']);
+            $pattern = '/('.$str.')/i';
+            $replacement = '<span>$1</span>';
+            $titolo_post = preg_replace($pattern, $replacement, $row['Titolo']);
+            $testo_post = preg_replace($pattern, $replacement, $row['Testo']);
+            $autore_post = preg_replace($pattern, $replacement, $row['Username']);
             $res.="<tr id='risultati' data-blog-id='{$idBlog}'>
                 <td class='titolo_post'>".$titolo_post."</td>
                 <td class='testo_post'>".$testo_post."</td>
