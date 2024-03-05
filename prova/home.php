@@ -1021,8 +1021,8 @@ if(isset($_SESSION["session_utente"])){
           // Barra di ricerca (per blog e post)
       $(document).on("click", ".search-container", function() {
         $(".results_ricerca").show();
-        $(this).css({"background": "white", "width": "500px", "margin-left": "32%", "box-shadow": "0px 15px 20px rgba(0,0,0,0.1)", "transform": "scale(1)"});
-        $(".search-input").css("width", "100px").show();
+        $(this).css({"background": "white", "width": "35%", "margin-left": "32%", "box-shadow": "0px 15px 20px rgba(0,0,0,0.1)", "transform": "scale(1)"});
+        $(".search-input").css("width", "20%").show();
         $("i").css("color", "#3aa6ff");
         $(".close").off("click").remove();
         $("i").append("<button type='button' class='close'>&#10006;</button>");
