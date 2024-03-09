@@ -2370,6 +2370,62 @@ header#premium .grid-premium {
   transition: all 0.3s ease;
 }
 
+/* Insight */
+
+body#insight{
+  height: auto;
+  position: relative;
+  background-image: linear-gradient( 135deg, #ffffff, #d0dcff);
+ }
+ header#insight{
+  min-height: 85vh;
+  height: auto;
+  margin:3.5% 5% 3.5% 5%;
+  position: relative;
+}
+body#insight::selection{
+  color: #f2f2f2;
+  background: rgb(11, 85, 224);
+}
+body#insight::before{
+  clip-path: circle(30% at left 20%);
+  opacity: 0.4;
+  background-image: linear-gradient(135deg, rgb(1, 64, 180), #1c59f4);
+}
+body#insight::after{
+  opacity: 0.4;
+  clip-path: circle(25% at right 80%);
+  background-image: linear-gradient(135deg, rgb(1, 64, 180), #1c59f4);
+}
+
+body#insight .navbar .menu a:hover{
+  color: rgb(11, 85, 224);
+}
+
+header#insight .grid-insight {
+  display: grid;
+  grid-template-columns: 2fr 2fr;
+  column-gap: 2%;
+  row-gap: 50%;
+}
+
+ul#menu_insight {
+  padding-right: 10.4%;
+}
+
+.wrapper-insight {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  padding: 4% 4% 4% 4%;
+  margin-left: 20%;
+  margin-right: 20%;
+}
+
+.wrapper-insight h3 {
+  text-align: center;
+}
+
 
 /*Media queries*/
 @media (max-width:1005px) {
