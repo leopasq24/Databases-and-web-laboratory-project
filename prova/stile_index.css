@@ -2168,6 +2168,208 @@ p#freccia_cat:hover {
   cursor: pointer;
 }
 
+/* Premium */
+
+body#premium{
+  height:auto;
+  position:relative;
+  background-image: linear-gradient( 135deg, #ffffff, #fed0ff);
+ }
+ header#premium{
+  min-height:85vh;
+  height:auto;
+  margin:3.5% 5% 3.5% 5%;
+  position: relative;
+}
+body#premium::selection{
+  color: #f2f2f2;
+  background: #c70be0;
+}
+body#premium::before{
+  clip-path: circle(30% at left 20%);
+  opacity: 0.4;
+  background-image: linear-gradient(135deg, #8b0084, #ff00dd);
+}
+body#premium::after{
+  opacity: 0.4;
+  clip-path: circle(25% at right 80%);
+  background-image: linear-gradient(135deg, #8b0084, #ff00dd);
+}
+
+body#premium .navbar .menu a:hover{
+  color: #ff00dd;
+}
+
+header#premium .grid-premium {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 2%;
+}
+
+.piano_premium {
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+  color: white;
+  text-align: center;
+  margin: 1.5% 1.5% 7% 15%;
+  font-size: 17px;
+  background: linear-gradient(135deg, #ff00dd, #8b0084);
+  padding: 2% 2% 4% 2%;
+  border-radius: 10px;
+}
+
+.piano_premium ::selection {
+  background-color: white;
+  color: black;
+}
+
+.piano_premium p {
+  margin-top: 1.5%;
+}
+
+.piano_premium ul {
+  list-style-type: none;
+  margin-left: 2%;
+}
+
+.piano_premium ul li {
+  text-align: left;
+}
+
+.piano_premium ul li::before {
+  content: "\2713"; 
+  display: inline-block; 
+  width: 0.5em; 
+  margin-right: 1em; 
+  font-weight: 600;
+  padding-left: -8%;
+}
+
+.piano_premium .disclaimer {
+  font-size: 14px;
+}
+
+.form-premium {
+  margin: 1.5% 1.5% 4% 15%;
+}
+
+.form-premium .wrapper{ 
+  width: 450px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
+}
+.form-premium .wrapper .title{ 
+  font-size: 28px;
+  font-weight: 600;
+  text-align: center;
+  line-height: 100px;
+  color: #fff;
+  user-select: none;
+  border-radius: 15px 15px 0 0;
+  background: linear-gradient(-135deg, #ff00dd, #8b0084);
+}
+.form-premium .wrapper form{
+  padding: 2% 10% 4% 8%;
+  margin-bottom: 5%;
+}
+.form-premium .wrapper form .field{ 
+  height: 45px;
+  width: 100%;
+  margin-top: 37px;
+  position: relative;
+}
+.form-premium .wrapper form .field input{ 
+  height: 100%;
+  width: 100%;
+  outline: none;
+  font-size: 17px;
+  padding-left: 20px;
+  border: 1px solid #8b0084;
+  border-radius: 25px;
+}
+.form-premium label { 
+  position: absolute;
+  left: 20px;
+  color: #8b0084;
+  background: #fff; 
+  font-weight: 400;
+  font-size: 17px;
+  user-select: none;
+  transform: translateY(-50%);
+}
+.form-premium .wrapper form .field label.error{ 
+  position: absolute;
+  top: 130%;
+  left: 5px;
+  color: red;
+  font-weight: 400;
+  font-size: 13px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.form-premium #error_message{ 
+  position: relative;
+  text-align: center;
+  color: red;
+  font-weight: 400;
+  font-size: 15px;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.form-premium form .field input[type="submit"]{ 
+  color: #fff;
+  border: none;
+  padding-left: 0;
+  margin-top: -15px;
+  font-size: 17px;
+  font-weight: 500;
+  cursor: pointer;
+  background: linear-gradient(-135deg, #ff00dd, #8b0084);
+  transition: all 0.3s ease;
+}
+.form-premium form .field input[type="submit"]:active{
+  transform: scale(0.95);
+}
+
+.form-premium p#error_message{
+  color:red;
+  font-size: 13px;
+}
+
+.form-premium .contenuto button.ok {
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 5% auto 5% 40%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.form-premium .contenuto button.ok:hover {
+  transform: scale(0.97);
+}
+
+.disdetta_premium {
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 0 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
 
 /*Media queries*/
 @media (max-width:1005px) {
