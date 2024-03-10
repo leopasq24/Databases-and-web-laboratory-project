@@ -10,6 +10,18 @@ if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
 }
 $id_utente = $_SESSION["session_utente"];
 
+$stmt_premium = mysqli_prepare($link, "SELECT Premium FROM utente WHERE IdUtente=?");
+mysqli_stmt_bind_param($stmt_premium, "i", $id_utente);
+mysqli_stmt_execute($stmt_premium);
+$results_premium = mysqli_stmt_get_result($stmt_premium);
+if(mysqli_fetch_assoc($results_premium)["Premium"]==0){
+    session_unset();
+    session_destroy();
+    header("Location: registrazione.php");
+    exit;
+}
+mysqli_stmt_close($stmt_premium);
+
 //Primo wrapper
 $data = date("Y-m-d");
 $data_un_mese_fa = date("Y-m-d", strtotime("-1 month"));
@@ -69,7 +81,43 @@ if(mysqli_num_rows($results_ultimo_mese)!=0){
 }
 mysqli_stmt_close($stmt_ultimo_mese);
 
+//Quarto wrapper
 
+$stmt_blog_pop = mysqli_prepare($link, "SELECT IdBlog FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC))");
+mysqli_stmt_execute($stmt_blog_pop);
+$result_blog_pop = mysqli_stmt_get_result($stmt_blog_pop);
+
+$stmt_blog_personali = mysqli_prepare($link, "SELECT IdBlog, Immagine, Titolo FROM blog WHERE IdUtente = ?");
+mysqli_stmt_bind_param($stmt_blog_personali, "i", $id_utente);
+mysqli_stmt_execute($stmt_blog_personali);
+$result_blog_personali = mysqli_stmt_get_result($stmt_blog_personali);
+
+$pos = 0;
+$tuoi_blog_pop = array();
+$html_blog_pop = "";
+
+while ($row = mysqli_fetch_assoc($result_blog_pop)) {
+    $blog_pop = $row["IdBlog"];
+    $pos = $pos + 1;
+    mysqli_data_seek($result_blog_personali, 0);
+    while($rec = mysqli_fetch_assoc($result_blog_personali)){
+        if($rec['IdBlog'] == $blog_pop){
+            $imgpath = $rec["Immagine"];
+            if($rec["Immagine"]==NULL){
+                $imgpath = "foto/blog.png";
+            }
+            array_push($tuoi_blog_pop, [$pos, $rec["IdBlog"], $imgpath, $rec["Titolo"]]);
+        };
+    }
+}
+mysqli_stmt_close($stmt_blog_pop);
+if(empty($tuoi_blog_pop)){
+    $html_blog_pop = "<p>Nessuno dei tuoi blog è in classifica :(</p>";
+}else{
+    foreach ($tuoi_blog_pop as $value) {
+        $html_blog_pop.="<div class='tuo_blog_pop' data-blog-id='".$value[1]."'>Pos: ".$value[0]." | <img src='".$value[2]."'> ".$value[3]."</div>";
+    }
+}
 ?>
 <html lang="it" dir="ltr">
     <head>
@@ -107,7 +155,7 @@ mysqli_stmt_close($stmt_ultimo_mese);
                     <h3>Nell'ultimo mese, hai pubblicato <?php echo $conta_post ?> post con <?php echo $numero_positivi ?> like, <?php echo $numero_negativi ?> dislike e <?php echo $numerocommenti ?> comment<?php if ($numerocommenti ==1){echo "o";}else{echo "i";}?></h3>
                 </div>
                 <div class="wrapper-insight">
-                    <h3>I post che ti sono piaciuti nell'ultima settimana:</h3>
+                    <h3>I post che ti sono piaciuti nell'ultimo mese:</h3>
                     <p>Lista post</p>
                 </div>
                 <div class="wrapper-insight">
@@ -115,7 +163,10 @@ mysqli_stmt_close($stmt_ultimo_mese);
                     <p>Lista utenti</p>
                 </div>
                 <div class="wrapper-insight">
-                    <h3>Nella classifica dei blog più popolari, il tuo blog è alla Xesima posizione</h3>
+                    <h3>I tuoi Blog nella classifica dei blog popolari:</h3>
+                    <div class='tuoi_blog_pop'>
+                        <?php echo $html_blog_pop?>
+                    </div>
                 </div>
             </div>
 
