@@ -1,5 +1,75 @@
 <?php
 session_start();
+include_once("connect.php");
+
+if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
+    session_unset();
+    session_destroy();
+    header("Location: registrazione.php");
+    exit;
+}
+$id_utente = $_SESSION["session_utente"];
+
+//Primo wrapper
+$data = date("Y-m-d");
+$data_un_mese_fa = date("Y-m-d", strtotime("-1 month"));
+$stmt_ultimo_mese = mysqli_prepare($link, "SELECT IdPost FROM post WHERE IdUtente=? AND post.Data BETWEEN ? AND ? GROUP BY post.IdPost");
+mysqli_stmt_bind_param($stmt_ultimo_mese, "iss", $id_utente, $data_un_mese_fa, $data);
+mysqli_stmt_execute($stmt_ultimo_mese);
+$results_ultimo_mese = mysqli_stmt_get_result($stmt_ultimo_mese);
+if(mysqli_num_rows($results_ultimo_mese)!=0){
+    $conta_post = 0;
+    $numerocommenti = 0;
+    $numero_positivi = 0;
+    $numero_negativi = 0;
+    while($row=mysqli_fetch_assoc($results_ultimo_mese)){
+        $id_post = $row['IdPost'];
+        $conta_post = $conta_post + 1;
+        $stmt_feedback_positivi = mysqli_prepare($link, "SELECT numerofeedbackpositivi FROM numero_feedback_positivi WHERE IdPost=?");
+        mysqli_stmt_bind_param($stmt_feedback_positivi,"i", $id_post);
+        mysqli_stmt_execute($stmt_feedback_positivi);
+         $results_feedback_positivi = mysqli_stmt_get_result($stmt_feedback_positivi);
+        if (mysqli_num_rows($results_feedback_positivi) != 0) {
+            while ($row = mysqli_fetch_assoc($results_feedback_positivi)){
+            $num_feedback_positivi=$row['numerofeedbackpositivi'];
+            $numero_positivi = $numero_positivi + $num_feedback_positivi;
+            }
+        }
+        mysqli_stmt_close($stmt_feedback_positivi);
+
+        $stmt_feedback_negativi = mysqli_prepare($link, "SELECT numerofeedbacknegativi FROM numero_feedback_negativi WHERE IdPost=?");
+        mysqli_stmt_bind_param($stmt_feedback_negativi,"i", $id_post);
+        mysqli_stmt_execute($stmt_feedback_negativi);
+        $results_feedback_negativi = mysqli_stmt_get_result($stmt_feedback_negativi);
+        if (mysqli_num_rows($results_feedback_negativi) != 0) {
+            while ($row = mysqli_fetch_assoc($results_feedback_negativi)){
+            $num_feedback_negativi=$row['numerofeedbacknegativi'];
+            $numero_negativi = $numero_negativi + $num_feedback_negativi;
+            }
+        }
+        mysqli_stmt_close($stmt_feedback_negativi);
+
+        $stmt_numero_commenti = mysqli_prepare($link, "SELECT numerocommenti FROM numero_commenti WHERE IdPost=?");
+        mysqli_stmt_bind_param($stmt_numero_commenti,"i", $id_post);
+        mysqli_stmt_execute($stmt_numero_commenti);
+        $results_numero_commenti = mysqli_stmt_get_result($stmt_numero_commenti);
+        if (mysqli_num_rows($results_numero_commenti) != 0) {
+            while ($row = mysqli_fetch_assoc($results_numero_commenti)){
+            $commenti=$row['numerocommenti'];
+            $numerocommenti =  $numerocommenti + $commenti;
+            }
+        }
+        mysqli_stmt_close($stmt_numero_commenti);
+    }
+}else{
+    $conta_post = 0;
+    $numerocommenti = 0;
+    $numero_positivi = 0;
+    $numero_negativi = 0;
+}
+mysqli_stmt_close($stmt_ultimo_mese);
+
+
 ?>
 <html lang="it" dir="ltr">
     <head>
@@ -34,7 +104,7 @@ session_start();
 
             <div class="grid-insight">
                 <div class="wrapper-insight">
-                    <h3>Nell'ultima settimana, hai pubblicato X post con X like e X commenti</h3>
+                    <h3>Nell'ultimo mese, hai pubblicato <?php echo $conta_post ?> post con <?php echo $numero_positivi ?> like, <?php echo $numero_negativi ?> dislike e <?php echo $numerocommenti ?> comment<?php if ($numerocommenti ==1){echo "o";}else{echo "i";}?></h3>
                 </div>
                 <div class="wrapper-insight">
                     <h3>I post che ti sono piaciuti nell'ultima settimana:</h3>
