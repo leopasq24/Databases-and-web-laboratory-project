@@ -149,7 +149,7 @@ if(empty($tuoi_blog_pop)){
     $html_blog_pop = "<p>Nessuno dei tuoi blog è ancora in classifica :(</p>";
 }else{
     foreach ($tuoi_blog_pop as $value) {
-        $html_blog_pop.="</br><div class='tuo_blog_pop' data-blog-id='".$value[1]."'>".$value[0]."° | <img src='".$value[2]."'> ".$value[3]."</div>";
+        $html_blog_pop.="</br><div class='tuo_blog_pop' data-blog-id='".$value[1]."'><span id = 'valori-insight'>".$value[0]."°</span> | <img src='".$value[2]."'> ".$value[3]."</div>";
     }
 }
 ?>
@@ -208,7 +208,7 @@ if(empty($tuoi_blog_pop)){
                     </div>
                 </div>
                 <div class="wrapper-insight">
-                    <h3>Nella classifica dei blog più popolari, il tuo blog è in <span id="valori-insight"><?php echo $value[0] ?>°</span> posizione!</h3>
+                    <h3>Nella classifica dei blog più popolari, i tuoi blog sono nelle seguenti posizioni:</h3>
                         <div class='tuoi_blog_pop'>
                             <?php echo $html_blog_pop ?>
                         </div>
