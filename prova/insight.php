@@ -10,19 +10,8 @@ if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
 }
 $id_utente = $_SESSION["session_utente"];
 
-$stmt_premium = mysqli_prepare($link, "SELECT Premium FROM utente WHERE IdUtente=?");
-mysqli_stmt_bind_param($stmt_premium, "i", $id_utente);
-mysqli_stmt_execute($stmt_premium);
-$results_premium = mysqli_stmt_get_result($stmt_premium);
-if(mysqli_fetch_assoc($results_premium)["Premium"]==0){
-    session_unset();
-    session_destroy();
-    header("Location: registrazione.php");
-    exit;
-}
-mysqli_stmt_close($stmt_premium);
+// Dati dell'ultimo mese
 
-//Primo wrapper
 $data = date("Y-m-d");
 $data_un_mese_fa = date("Y-m-d", strtotime("-1 month"));
 $stmt_ultimo_mese = mysqli_prepare($link, "SELECT IdPost FROM post WHERE IdUtente=? AND post.Data BETWEEN ? AND ? GROUP BY post.IdPost");
@@ -81,7 +70,52 @@ if(mysqli_num_rows($results_ultimo_mese)!=0){
 }
 mysqli_stmt_close($stmt_ultimo_mese);
 
-//Quarto wrapper
+// Post piaciuti nell'ultimo mese
+
+$data = date("Y-m-d");
+$data_un_mese_fa = date("Y-m-d", strtotime("-1 month"));
+$html_post_mese = "";
+
+$stmt_post_ultimo_mese = mysqli_prepare($link, "SELECT blog.IdBlog, blog.Titolo AS nomeblog, blog.Immagine AS imgblog, post.Titolo AS titolopost, post.Testo, post.Immagine FROM post, feedback, blog WHERE post.IdBlog = blog.IdBlog AND post.IdPost = feedback.IdPost AND feedback.IdUtente = ? AND feedback.Tipo = 1 AND post.Data BETWEEN ? AND ?");
+mysqli_stmt_bind_param($stmt_post_ultimo_mese, "iss", $id_utente, $data_un_mese_fa, $data);
+mysqli_stmt_execute($stmt_post_ultimo_mese);
+$results_post_ultimo_mese = mysqli_stmt_get_result($stmt_post_ultimo_mese);
+$post_ultimo_mese = [];
+$i = 0;
+while ($row = mysqli_fetch_assoc($results_post_ultimo_mese)) {
+    $imgBlog = $row["imgblog"];
+    if($imgBlog == NULL){
+        $imgBlog = "foto/blog.png";
+    }
+    $nomeBlog = $row["nomeblog"];
+    $titolo = $row["titolopost"];
+    $testo = $row["Testo"];
+    $immagine = $row["Immagine"];
+    $idblog = $row["IdBlog"];
+    $post_ultimo_mese[$i] = [$imgBlog, $nomeBlog, $titolo, $testo, $immagine, $idblog];
+    $i = $i + 1;
+}
+foreach ($post_ultimo_mese as $value){
+    if (empty($post_ultimo_mese)) {
+        $html_post_mese = "</br><p>Non hai ancora messo like a nessun post! :(</p>";
+    } else {
+        $html_post_mese .= "<div class='singolo_post_mese'>
+        <img class='img_blog' src='".$value[0]."'></img>
+        <p class='nome_blog' data-blog-id='".$value[5]."'>".$value[1]."</p>
+        <h4 class='titolo_post'>".$value[2]."</h4>";
+        if (!empty($value[4])) {
+            $html_post_mese .= "<img class='img_post' src='".$value[4]."'></img>";
+            $html_post_mese .= "<p class='testo_post'>".$value[3]."</p>
+            </div> </br></br>";
+        } else {
+            $html_post_mese .= "<p class='testo_post'>".$value[3]."</p>
+            </div> </br></br>";
+        }
+    }
+}
+mysqli_stmt_close($stmt_post_ultimo_mese);
+
+// Classifica blog
 
 $stmt_blog_pop = mysqli_prepare($link, "SELECT IdBlog FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC))");
 mysqli_stmt_execute($stmt_blog_pop);
@@ -112,13 +146,14 @@ while ($row = mysqli_fetch_assoc($result_blog_pop)) {
 }
 mysqli_stmt_close($stmt_blog_pop);
 if(empty($tuoi_blog_pop)){
-    $html_blog_pop = "<p>Nessuno dei tuoi blog è in classifica :(</p>";
+    $html_blog_pop = "<p>Nessuno dei tuoi blog è ancora in classifica :(</p>";
 }else{
     foreach ($tuoi_blog_pop as $value) {
-        $html_blog_pop.="<div class='tuo_blog_pop' data-blog-id='".$value[1]."'>Pos: ".$value[0]." | <img src='".$value[2]."'> ".$value[3]."</div>";
+        $html_blog_pop.="</br><div class='tuo_blog_pop' data-blog-id='".$value[1]."'>".$value[0]."° | <img src='".$value[2]."'> ".$value[3]."</div>";
     }
 }
 ?>
+
 <html lang="it" dir="ltr">
     <head>
         <meta charset="UTF-8">
@@ -129,9 +164,20 @@ if(empty($tuoi_blog_pop)){
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     </head>
-    <!-- <script>
+    <script>
+    
     $(document).ready(function(){
-    </script> -->
+        $("p.nome_blog").on("click", function(){
+            var idBlog = $(this).data("blog-id");
+            window.location.href = "singolo_blog.php?id=" + idBlog;
+        });
+        $("img.img_blog").on("click", function(){
+            var idBlog = $(this).data("blog-id");
+            windows.location.href = "singolo_blog.php?id=" + idBlog;
+        });
+    });
+    
+    </script>
     
     <body id="insight">
         <header id="insight">
@@ -152,21 +198,24 @@ if(empty($tuoi_blog_pop)){
 
             <div class="grid-insight">
                 <div class="wrapper-insight">
-                    <h3>Nell'ultimo mese, hai pubblicato <?php echo $conta_post ?> post con <?php echo $numero_positivi ?> like, <?php echo $numero_negativi ?> dislike e <?php echo $numerocommenti ?> comment<?php if ($numerocommenti ==1){echo "o";}else{echo "i";}?></h3>
+                    <h3>Nell'ultimo mese hai pubblicato <span id="valori-insight"><?php echo $conta_post ?></span> post, per un totale di <span id="valori-insight"><?php echo $numero_positivi ?></span> like,
+                    <span id="valori-insight"><?php echo $numero_negativi ?></span> dislike e <span id="valori-insight"><?php echo $numerocommenti ?></span> comment<?php if ($numerocommenti == 1){echo "o";}else{echo "i";}?></h3>
                 </div>
                 <div class="wrapper-insight">
                     <h3>I post che ti sono piaciuti nell'ultimo mese:</h3>
-                    <p>Lista post</p>
-                </div>
-                <div class="wrapper-insight">
-                    <h3>Gli utenti che hanno interagito di più con i tuoi post sono:</h3>
-                    <p>Lista utenti</p>
-                </div>
-                <div class="wrapper-insight">
-                    <h3>I tuoi Blog nella classifica dei blog popolari:</h3>
-                    <div class='tuoi_blog_pop'>
-                        <?php echo $html_blog_pop?>
+                    <div class='post_mese'>
+                        <?php echo $html_post_mese ?>
                     </div>
+                </div>
+                <div class="wrapper-insight">
+                    <h3>Nella classifica dei blog più popolari, il tuo blog è in <span id="valori-insight"><?php echo $value[0] ?>°</span> posizione!</h3>
+                        <div class='tuoi_blog_pop'>
+                            <?php echo $html_blog_pop ?>
+                        </div>
+                </div>
+                <div class="wrapper-insight">
+                    <h3>Gli utenti che hanno interagito di più con i tuoi post sono:</h3></br>
+                    <p>Lista utenti</p>
                 </div>
             </div>
 
