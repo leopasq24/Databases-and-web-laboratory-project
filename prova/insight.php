@@ -69,6 +69,53 @@ if(mysqli_num_rows($results_ultimo_mese)!=0){
     $numero_negativi = 0;
 }
 mysqli_stmt_close($stmt_ultimo_mese);
+//utenti più attivi
+$stmt_utenti_attivi_commenti = mysqli_prepare($link, "SELECT utente.Username as nome, Count(*) as contacommenti FROM utente, commenta WHERE Utente.IdUtente = commenta.IdUtente AND Utente.IdUtente != ? AND IdPost IN(SELECT IdPost FROM post WHERE IdUtente = ?) GROUP BY utente.IdUtente ORDER BY contacommenti DESC");
+mysqli_stmt_bind_param($stmt_utenti_attivi_commenti, "ii", $id_utente, $id_utente);
+mysqli_stmt_execute($stmt_utenti_attivi_commenti);
+$results_utenti_attivi_commenti = mysqli_stmt_get_result($stmt_utenti_attivi_commenti);
+if(mysqli_num_rows($results_utenti_attivi_commenti)==0){
+    $html_utenti_attivi_commenti = "<p>Nessuna statistica disponibile</p>";
+}else{
+    $html_utenti_attivi_commenti = "<table><tr><th>Username</th><th>Totale</th></tr>";
+    while ($row = mysqli_fetch_assoc($results_utenti_attivi_commenti)) {
+        $html_utenti_attivi_commenti.= "<tr><td>".$row["nome"]."</td>";
+        $html_utenti_attivi_commenti.= "<td>".$row["contacommenti"]."</td></tr>";
+    }
+    $html_utenti_attivi_commenti.= "</table>";
+}
+
+
+$stmt_utenti_attivi_positivi = mysqli_prepare($link, "SELECT utente.Username as nome, COUNT(*) AS conta_like FROM utente, feedback, post WHERE utente.IdUtente = feedback.IdUtente AND post.IdPost = feedback.IdPost AND Utente.IdUtente != ? AND post.IdUtente = ? AND Tipo = 1 GROUP BY utente.IdUtente  ORDER BY conta_like DESC");
+mysqli_stmt_bind_param($stmt_utenti_attivi_positivi, "ii", $id_utente, $id_utente);
+mysqli_stmt_execute($stmt_utenti_attivi_positivi); 
+$results_utenti_attivi_positivi = mysqli_stmt_get_result($stmt_utenti_attivi_positivi);
+if(mysqli_num_rows($results_utenti_attivi_positivi)==0){
+    $html_utenti_attivi_positivi = "<p>Nessuna statistica disponibile</p>";
+}else{
+    $html_utenti_attivi_positivi = "<table><tr><th>Username</th><th>Totale</th></tr>";
+    while ($row = mysqli_fetch_assoc($results_utenti_attivi_positivi)) {
+        $html_utenti_attivi_positivi.= "<tr><td>".$row["nome"]."</td>";
+        $html_utenti_attivi_positivi.= "<td>".$row["conta_like"]."</td></tr>";
+    }
+    $html_utenti_attivi_positivi.= "</table>";
+}
+
+$stmt_utenti_attivi_negativi = mysqli_prepare($link, "SELECT utente.Username as nome, COUNT(*) AS conta_dislike FROM utente, feedback, post WHERE utente.IdUtente = feedback.IdUtente AND utente.IdUtente != ? AND post.IdPost = feedback.IdPost AND post.IdUtente = ? AND Tipo = 0 GROUP BY utente.IdUtente  ORDER BY conta_dislike DESC");
+mysqli_stmt_bind_param($stmt_utenti_attivi_negativi, "ii", $id_utente,$id_utente);
+mysqli_stmt_execute($stmt_utenti_attivi_negativi);
+$results_utenti_attivi_negativi = mysqli_stmt_get_result($stmt_utenti_attivi_negativi);
+if(mysqli_num_rows($results_utenti_attivi_negativi)==0){
+    $html_utenti_attivi_negativi = "<p>Nessuna statistica disponibile</p>";
+}else{
+    $html_utenti_attivi_negativi = "<table><tr><th>Username</th><th>Totale</th></tr>";
+    while ($row = mysqli_fetch_assoc($results_utenti_attivi_negativi)) {
+        $html_utenti_attivi_negativi.= "<tr><td>".$row["nome"]."</td>";
+        $html_utenti_attivi_negativi.= "<td>".$row["conta_dislike"]."</td></tr>";
+    }
+    $html_utenti_attivi_negativi.= "</table>";
+}
+
 
 // Post piaciuti nell'ultimo mese
 
@@ -175,6 +222,26 @@ if(empty($tuoi_blog_pop)){
             var idBlog = $(this).data("blog-id");
             windows.location.href = "singolo_blog.php?id=" + idBlog;
         });
+
+        $("input#cerca_like").on("click", function() {
+            $("label#cerca_like").addClass("selected");
+            $("label#cerca_dislike").removeClass("selected");
+            $("label#cerca_commenti").removeClass("selected");
+            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_positivi?>");
+        })
+        $("input#cerca_dislike").on("click", function() {
+            $("label#cerca_like").removeClass("selected");
+            $("label#cerca_dislike").addClass("selected");
+            $("label#cerca_commenti").removeClass("selected");
+            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_negativi?>");
+        })
+        $("input#cerca_commenti").on("click", function() {
+            $("label#cerca_like").removeClass("selected");
+            $("label#cerca_dislike").removeClass("selected");
+            $("label#cerca_commenti").addClass("selected");
+            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_commenti?>");
+        })
+
     });
     
     </script>
@@ -214,8 +281,24 @@ if(empty($tuoi_blog_pop)){
                         </div>
                 </div>
                 <div class="wrapper-insight">
-                    <h3>Gli utenti che hanno interagito di più con i tuoi post sono:</h3></br>
-                    <p>Lista utenti</p>
+                    <h3>Gli utenti che hanno interagito di più con i tuoi post, in base a:</h3></br>
+                    <div class="filtri_interazione">
+                        <p>
+                        <input type="radio" id="cerca_like" name="cerca_like" value="Cerca Like">
+                        <label for="cerca_like" id="cerca_like" class="selected">
+                            <img src="foto/mi-piace.png" alt="like"></img>
+                        </label>
+                        <input type="radio" id="cerca_dislike" name="cerca_dislike" value="Cerca Dislike">
+                        <label for="cerca_dislike" id="cerca_dislike">
+                            <img src="foto/non-mi-piace.png" alt="dislike"></img>
+                        </label>
+                        <input type="radio" id="cerca_commenti" name="cerca_commenti" value="Cerca Commenti">
+                        <label for="cerca_commenti" id="cerca_commenti">
+                            <img src="foto/commenti.png" alt="commenti"></img>
+                        </label>
+                    </p>
+                    </div>
+                    <div class = 'results_interazione'><?php echo $html_utenti_attivi_positivi ?></div>
                 </div>
             </div>
 
