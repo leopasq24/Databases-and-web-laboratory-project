@@ -2380,7 +2380,7 @@ body#insight{
  header#insight{
   min-height: 85vh;
   height: auto;
-  margin:3.5% 5% 3.5% 5%;
+  margin: 3.5% 5% 3.5% 5%;
   position: relative;
 }
 body#insight::selection{
@@ -2404,9 +2404,8 @@ body#insight .navbar .menu a:hover{
 
 header#insight .grid-insight {
   display: grid;
-  grid-template-columns: 2fr 2fr;
-  column-gap: 2%;
-  row-gap: 50%;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 1%;
 }
 
 ul#menu_insight {
@@ -2418,14 +2417,78 @@ ul#menu_insight {
   border-radius: 15px;
   box-shadow: 0px 15px 20px rgba(0,0,0,0.1);
   padding: 4% 4% 4% 4%;
-  margin-left: 20%;
-  margin-right: 20%;
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 5%;
 }
+
+.wrapper-insight:nth-child(1) {
+  height: 35%;
+}
+
+.wrapper-insight:nth-child(4) {
+  margin-top: -50%;
+}
+
 
 .wrapper-insight h3 {
   text-align: center;
 }
 
+span#valori-insight {
+  font-size: 23px;
+  background: linear-gradient(135deg, #ff6dc7, #3aa6ff);
+  background-image: linear-gradient(to right 135deg, #ff6dc7, #3aa6ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 1;
+}
+
+.tuoi_blog_pop{
+  text-align: center;
+}
+.tuo_blog_pop{
+  border-bottom: 0.5px solid #e6e6e6;
+  margin: 2% 15% 2% 15%;
+}
+.tuo_blog_pop img, img.img_blog {
+  width: 7%;
+}
+
+.post_mese {
+  font-size: 14px;
+  border: 2px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 4%;
+  overflow-y: scroll;
+  max-height: 300px;
+  margin-top: 3%;
+}
+.singolo_post_mese {
+  border: 2px solid #e6e6e6;
+  border-radius: 12px;
+  padding: 4%;
+  background: linear-gradient(135deg, #ff6dc78d, #3aa6ff7d);
+}
+.singolo_post_mese p.nome_blog {
+  margin-bottom: 3%;
+}
+.singolo_post_mese p.nome_blog:hover {
+  cursor: pointer;
+  color: white;
+  text-shadow: 1px 1px 1px black;
+}
+.singolo_post_mese h4.titolo_post, p.testo_post, img.img_post{
+  margin-top: 2%;
+}
+.singolo_post_mese img.img_blog {
+  float: left;
+  margin-right: 3%;
+}
+.singolo_post_mese img.img_post {
+  width: 50%;
+}
 
 /*Media queries*/
 @media (max-width:1005px) {
