@@ -1,5 +1,25 @@
 <?php
 session_start();
+include_once("connect.php");
+if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
+  session_unset();
+  session_destroy();
+  header("Location: registrazione.php");
+  exit;
+} else {
+	$id_utente = $_SESSION["session_utente"];
+
+	$stmt = mysqli_prepare($link, "SELECT Username FROM utente WHERE IdUtente = ?");
+	mysqli_stmt_bind_param($stmt, "i", $id_utente);
+	mysqli_stmt_execute($stmt);
+	mysqli_stmt_bind_result($stmt, $username);
+	if (mysqli_stmt_fetch($stmt)) {
+    	echo $username;
+	} else {
+    	echo "Utente non trovato";
+	}
+	mysqli_stmt_close($stmt);
+}
 ?>
 <html lang="en" dir="ltr">
   <head>
@@ -8,16 +28,6 @@ session_start();
     <link rel="stylesheet" href="stile_index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script>
-      $(document).ready(function(){
-        $("#nome_utente").load("nome_utente.php", function(response) {
-          if (response == "Sessione annullata") {
-            location.replace("registrazione.php");
-            }
-        });
-      });
-    </script>
    </head>
 <body>
   <header>
@@ -36,7 +46,7 @@ session_start();
       </div>
     </nav>
     <div class="text-content">
-      <h2>Ti diamo il benvenuto,<br><span id="nome_utente"></span></h2>
+      <h2>Ti diamo il benvenuto,<br><span id="nome_utente"><?php echo $id_utente ?></span></h2>
       <p> <span>Crea</span> il tuo blog personale, <span>posta</span> quello che più ti piace, <span>condividi</span> un pensiero...
       o divertiti a <span>galleggiare</span> tra i post degli altri utenti! 🫧 </br></p>
       <a href="home.php"><input type="button" value="Iniziamo!"></a>
