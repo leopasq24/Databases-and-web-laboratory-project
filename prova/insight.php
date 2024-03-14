@@ -265,23 +265,12 @@ if(empty($tuoi_blog_pop)){
 
             <div class="grid-insight">
                 <div class="wrapper-insight">
-                    <h3>Nell'ultimo mese hai pubblicato <span id="valori-insight"><?php echo $conta_post ?></span> post, per un totale di <span id="valori-insight"><?php echo $numero_positivi ?></span> like,
-                    <span id="valori-insight"><?php echo $numero_negativi ?></span> dislike e <span id="valori-insight"><?php echo $numerocommenti ?></span> comment<?php if ($numerocommenti == 1){echo "o";}else{echo "i";}?></h3>
-                </div>
-                <div class="wrapper-insight">
-                    <h3>I post che ti sono piaciuti nell'ultimo mese:</h3>
-                    <div class='post_mese'>
-                        <?php echo $html_post_mese ?>
+                    <div class="micro-wrapper">
+                        <h4>Nell'ultimo mese hai pubblicato <span id="valori-insight"><?php echo $conta_post ?></span> post, per un totale di <span id="valori-insight"><?php echo $numero_positivi ?></span> like,
+                        <span id="valori-insight"><?php echo $numero_negativi ?></span> dislike e <span id="valori-insight"><?php echo $numerocommenti ?></span> comment<?php if ($numerocommenti == 1){echo "o";}else{echo "i";}?></h4>
                     </div>
-                </div>
-                <div class="wrapper-insight">
-                    <h3>Nella classifica dei blog più popolari, i tuoi blog sono nelle seguenti posizioni:</h3>
-                        <div class='tuoi_blog_pop'>
-                            <?php echo $html_blog_pop ?>
-                        </div>
-                </div>
-                <div class="wrapper-insight">
-                    <h3>Gli utenti che hanno interagito di più con i tuoi post, in base a:</h3></br>
+                    <div class="micro-wrapper">
+                    <h4>Gli utenti che hanno interagito di più con i tuoi post, in base a:</h4></br>
                     <div class="filtri_interazione">
                         <p>
                         <input type="radio" id="cerca_like" name="cerca_like" value="Cerca Like">
@@ -298,7 +287,20 @@ if(empty($tuoi_blog_pop)){
                         </label>
                     </p>
                     </div>
-                    <div class = 'results_interazione'><?php echo $html_utenti_attivi_positivi ?></div>
+                    <div class='results_interazione'><?php echo $html_utenti_attivi_positivi ?></div>
+                </div>
+                </div>
+                <div class="wrapper-insight">
+                        <h4>I post che ti sono piaciuti nell'ultimo mese:</h4>
+                        <div class='post_mese'>
+                            <?php echo $html_post_mese ?>
+                        </div>
+                    </div>
+                <div class="wrapper-insight">
+                    <h4>Nella classifica dei blog più popolari, i tuoi blog sono nelle seguenti posizioni:</h4>
+                        <div class='tuoi_blog_pop'>
+                            <?php echo $html_blog_pop ?>
+                        </div>
                 </div>
             </div>
 
