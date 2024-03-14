@@ -69,13 +69,15 @@ if(mysqli_num_rows($results_ultimo_mese)!=0){
     $numero_negativi = 0;
 }
 mysqli_stmt_close($stmt_ultimo_mese);
-//utenti più attivi
+
+// Utenti più attivi
+
 $stmt_utenti_attivi_commenti = mysqli_prepare($link, "SELECT utente.Username as nome, Count(*) as contacommenti FROM utente, commenta WHERE Utente.IdUtente = commenta.IdUtente AND Utente.IdUtente != ? AND IdPost IN(SELECT IdPost FROM post WHERE IdUtente = ?) GROUP BY utente.IdUtente ORDER BY contacommenti DESC");
 mysqli_stmt_bind_param($stmt_utenti_attivi_commenti, "ii", $id_utente, $id_utente);
 mysqli_stmt_execute($stmt_utenti_attivi_commenti);
 $results_utenti_attivi_commenti = mysqli_stmt_get_result($stmt_utenti_attivi_commenti);
 if(mysqli_num_rows($results_utenti_attivi_commenti)==0){
-    $html_utenti_attivi_commenti = "<p>Nessuna statistica disponibile</p>";
+    $html_utenti_attivi_commenti = "</br><p>Nessuna statistica disponibile</p>";
 }else{
     $html_utenti_attivi_commenti = "<table><tr><th>Username</th><th>Totale</th></tr>";
     while ($row = mysqli_fetch_assoc($results_utenti_attivi_commenti)) {
@@ -85,13 +87,12 @@ if(mysqli_num_rows($results_utenti_attivi_commenti)==0){
     $html_utenti_attivi_commenti.= "</table>";
 }
 
-
 $stmt_utenti_attivi_positivi = mysqli_prepare($link, "SELECT utente.Username as nome, COUNT(*) AS conta_like FROM utente, feedback, post WHERE utente.IdUtente = feedback.IdUtente AND post.IdPost = feedback.IdPost AND Utente.IdUtente != ? AND post.IdUtente = ? AND Tipo = 1 GROUP BY utente.IdUtente  ORDER BY conta_like DESC");
 mysqli_stmt_bind_param($stmt_utenti_attivi_positivi, "ii", $id_utente, $id_utente);
 mysqli_stmt_execute($stmt_utenti_attivi_positivi); 
 $results_utenti_attivi_positivi = mysqli_stmt_get_result($stmt_utenti_attivi_positivi);
 if(mysqli_num_rows($results_utenti_attivi_positivi)==0){
-    $html_utenti_attivi_positivi = "<p>Nessuna statistica disponibile</p>";
+    $html_utenti_attivi_positivi = "</br><p>Nessuna statistica disponibile</p>";
 }else{
     $html_utenti_attivi_positivi = "<table><tr><th>Username</th><th>Totale</th></tr>";
     while ($row = mysqli_fetch_assoc($results_utenti_attivi_positivi)) {
@@ -106,7 +107,7 @@ mysqli_stmt_bind_param($stmt_utenti_attivi_negativi, "ii", $id_utente,$id_utente
 mysqli_stmt_execute($stmt_utenti_attivi_negativi);
 $results_utenti_attivi_negativi = mysqli_stmt_get_result($stmt_utenti_attivi_negativi);
 if(mysqli_num_rows($results_utenti_attivi_negativi)==0){
-    $html_utenti_attivi_negativi = "<p>Nessuna statistica disponibile</p>";
+    $html_utenti_attivi_negativi = "</br><p>Nessuna statistica disponibile</p>";
 }else{
     $html_utenti_attivi_negativi = "<table><tr><th>Username</th><th>Totale</th></tr>";
     while ($row = mysqli_fetch_assoc($results_utenti_attivi_negativi)) {
@@ -196,7 +197,9 @@ if(empty($tuoi_blog_pop)){
     $html_blog_pop = "<p>Nessuno dei tuoi blog è ancora in classifica :(</p>";
 }else{
     foreach ($tuoi_blog_pop as $value) {
-        $html_blog_pop.="</br><div class='tuo_blog_pop' data-blog-id='".$value[1]."'><span id = 'valori-insight'>".$value[0]."°</span> | <img src='".$value[2]."'> ".$value[3]."</div>";
+        $html_blog_pop.="<table class='tuo_blog_pop' data-blog-id='".$value[1]."'>
+        <tr><td><p><span id='valori-insight'>".$value[0]."°</span></p></td>
+        <td><img src='".$value[2]."'><p>".$value[3]."</p></td></tr></table>";
     }
 }
 ?>
