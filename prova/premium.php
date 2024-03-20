@@ -155,7 +155,7 @@ session_start();
                             </div>
                             <div class="field">
                                 <label>CVV</label>
-                                <input type="text" name="cvv" id="cvv" placeholder="342">            
+                                <input type="text" name="cvv" id="cvv" placeholder="XYZ">            
                             </div>
                             <div class="field">
                                 <label>Nome sulla carta</label>
