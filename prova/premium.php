@@ -123,8 +123,6 @@ session_start();
                 </div>
             </nav>
 
-            <input type='button' value='Disdici' class='disdetta_premium'>
-
             <div class="grid-premium">
                 
                 <div class="piano_premium">
@@ -133,8 +131,10 @@ session_start();
                     <p>Porta la tua esperienza su <i>Bluggle</i> ad un livello superiore! Con una vasta gamma di vantaggi e funzionalità esclusive, il piano Premium ti offre un accesso privilegiato e un'esperienza senza interruzioni.
                     <p>
                         <ul>
-                            <li><b><i>More blog, more party</i>.</b> Nessun limite al numero di blog, creane quanti ne vuoi!</li>
-                            <li>Nessun limite al numero di coautori.</li>
+                            <li><b>More blogs, more party.</b> Nessun limite al numero di blog, creane quanti ne vuoi!</li>
+                            <li><b>More people, more party.</b> Nessun limite al numero di coautori dei tuoi blog, nominane quanti preferisci!</li>
+                            <li><b>Tieni d'occhio le tue statistiche.</b> Avrai a disposizione una pagina tutta tua per controllare gli insights del tuo account, come il successo dei tuoi blog o l'interazione degli altri utenti con i tuoi post.</li>
+                            <li><b>Disdici quando vuoi.</b> Puoi annullare il piano in qualsiasi momento senza costi aggiuntivi!" Puoi riformulare il tutto in modo che sia più verosimile rispetto a un sito vero?</li>
                         </ul>
                     </p>
                     </p>
