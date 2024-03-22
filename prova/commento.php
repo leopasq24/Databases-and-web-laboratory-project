@@ -3,10 +3,10 @@ include_once("connect.php");
 session_start();
 
 $operazione = $_GET['key2'];
+$id_utente = $_SESSION["session_utente"];
 
 if($operazione=="carica"){
 
-    $id_utente = $_SESSION["session_utente"];
     $id_post = $_GET['key1'];
     $output = "<div class='commenti'>";
 
@@ -86,10 +86,11 @@ if($operazione=="carica"){
         echo $output;
     }
 }else if($operazione =="elimina"){
+
     $id_commento = $_GET['key1'];
 
-    $stmt_elimina_commento= mysqli_prepare($link, "DELETE FROM commenta WHERE IdCommento=?");
-    mysqli_stmt_bind_param($stmt_elimina_commento, "i", $id_commento);
+    $stmt_elimina_commento= mysqli_prepare($link, "DELETE FROM commenta WHERE IdCommento=? AND IdUtente=?");
+    mysqli_stmt_bind_param($stmt_elimina_commento, "ii", $id_commento, $id_utente);
     if(mysqli_stmt_execute($stmt_elimina_commento)){
         echo "OK";
     }else{
@@ -99,7 +100,6 @@ if($operazione=="carica"){
 
     $conta = 0;
     $nuovi = $_GET['numero'];
-    $id_utente = $_SESSION["session_utente"];
     $id_post = $_GET['key1'];
     $output = "";
 
