@@ -167,4 +167,4 @@ if($operazione=="carica"){
     $res = array("data"=> $output, "conta" => $conta);
     echo json_encode($res);
 }
-
+?>
