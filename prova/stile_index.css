@@ -102,6 +102,9 @@ header .navbar{
 .navbar .buttons input[value~="Premium"]{
   background: linear-gradient(135deg, #ff00dd, #8b0084);
 }
+.navbar .buttons input[value~="Insight"]{
+  background: linear-gradient(135deg, #809fff, #0040ff);
+}
 .navbar .buttons input[value~="Logout"] {
   background: linear-gradient(135deg, #f0e445, #e0960b);
 }
@@ -392,6 +395,16 @@ header .grid-post .categorie .macro-categorie{
   font-size: 16px;
   width: 70%;
   margin-top:1%;
+ }
+ header .grid-post .post .nuovo-post input.campo_img_post{
+  border-radius: 0;
+  border: none;
+  background: none;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 1% 0 1% 0;
+  padding: 0;
+  transition: none;
  }
  header .grid-post .post .nuovo-post .feedback_modifica_post{
   display: none;
@@ -713,10 +726,6 @@ header .search-container:hover {
   transform: scale(0.97);
 }
 
-header button.close {
- color: red;
-}
-
 header .filtri_ricerca p{
   font-size: 15px;
   margin: 0 0 1% 43%;
@@ -747,39 +756,45 @@ header .filtri_ricerca label.selected {
   border-radius: 10px;
 }
 header .results_ricerca{
-  margin-left: 32%;
+  margin-top: 3%;
+  margin-left: 10%;
   margin-right: 32%;
   font-size: 14px;
-  max-height: 32vh;
+  max-height: 45vh;
   overflow: scroll;
   border-radius: 10px;
+  margin-bottom: 5%;
+  width: 80%;
 }
 header .results_ricerca table{
   background: white;
   border-radius: 8px;
+  width: 100%;
 }
 header .results_ricerca table tr#attributi{
-  position:sticky;
+  position: sticky;
   top: 2;
 }
 header .results_ricerca table tr#risultati{
   cursor: pointer;
-  font-size: 13.5px;
+  font-size: 16px;
 }
 header .results_ricerca table td, th{
   border-bottom: 1px solid #dcdcdc;
 }
 header .results_ricerca table td{
   text-align: center;
+  padding: 2% 2% 2% 2%;
 }
 header .results_ricerca table td span{
-  background-color: yellow;
+  background-color: #eccc43;
 }
 header .results_ricerca table th{
-  background-color:  #e7b318;
-  color: white;
-  text-shadow: 1px 1px black;
-  font-weight: 500;
+  font-size: 16px;
+  color: black;
+  background: #fff292;
+  font-weight: 600;
+  padding: 2% 2% 2% 2%;
 }
 header .results_ricerca table th:nth-child(1){
   border-radius: 10px 0px 0 0;
@@ -787,19 +802,24 @@ header .results_ricerca table th:nth-child(1){
 header .results_ricerca table th:nth-child(4){
   border-radius: 0 10px 0 0;
 }
-
 header .results_ricerca table tr#risultati td.titolo_blog, td.titolo_post{
   font-weight: 500;
+  padding: 2% 2% 2% 2%;
 }
 header .results_ricerca table tr#risultati td.descrizione_blog{
   font-style: italic;
   color:grey;
+  padding: 2% 2% 2% 2%;
 }
 header .results_ricerca .caricamento_risultati{
-  margin-left: 45%;
+  margin-left: 48%;
+}
+header .results_ricerca .caricamento_nuovi_risultati{
+  margin-left: 5%;
 }
 header .results_ricerca .nessun_risulato_ricerca{
-  margin-left: 38%;
+  margin-left: 44%;
+  font-size: 15px;
 }
 
 /* Info */
@@ -1019,6 +1039,7 @@ header .tuoi_blog{
 }
 .tuoi_blog .griglia_blog_creati{
   display:flex;
+  flex-wrap: wrap;
 }
 .tuoi_blog .griglia_blog_creati .blog{
   float:left;
@@ -1052,11 +1073,11 @@ header .tuoi_blog{
   color: grey;
 }
 .tuoi_blog .griglia_blog_creati img[src~="foto/bolle.png"]{
-  width:25%;
+  width:10%;
 }
 .tuoi_blog .griglia_blog_creati p#nessun_blog{ /*appare se non ci sono blog*/
   margin-top: 3%;
-  margin-left: 38%;
+  margin-left: 32%;
   margin-bottom: 4.8%;
   text-align: center;
   white-space: nowrap;
@@ -1064,7 +1085,9 @@ header .tuoi_blog{
   padding: 2%;
   border-radius: 10px;
 }
-
+.tuoi_blog label.error{
+  display: inline-block;
+}
 /*blog di cui sei coautore*/
 .tuoi_blog .presentazione_coautore{
   display:inline-block;
@@ -1078,6 +1101,7 @@ header .tuoi_blog{
 }
 .tuoi_blog .griglia_blog_coautore{
   display:flex;
+  flex-wrap: wrap;
   margin-top: -2%;
 }
 .tuoi_blog .griglia_blog_coautore p:nth-child(3){ /* descrizione blog */
@@ -1210,6 +1234,9 @@ header#header_tutti_i_blog .grid-post .colonna-blog p.titolo{
  margin-top:0%;
  border-radius: 15px 15px 0 0;
 }
+header#header_tutti_i_blog .grid-post .colonna-blog p.cat_blog{
+  cursor: pointer;
+ }
 header#header_tutti_i_blog .grid-post .colonna-blog p{
  margin-top:3%;
  margin-bottom:3%;
@@ -1305,7 +1332,7 @@ header#header_tutti_i_blog .grid-post .p_controllo .comandi_controllo img{
   font-weight: 400;
 }
 
-.tutti_i_blog .dati-blog p.autori, p.nomi_autori{
+.tutti_i_blog .dati-blog p.autori, p.nomi_autori, p.direttive_coautori{
   font-size:14px;
   font-weight: 400;
 }
@@ -1723,6 +1750,21 @@ div#account-settings form input[type="text"], input[type="email"], input[type="p
 div#account-settings form input[type="password"]::placeholder {
   font-size: 13px;
 }
+.disdetta_premium {
+  background: linear-gradient(135deg, #ff1414, #6b0c0c);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin-left: 10%;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
 
 input.campo_username, input.campo_email, input#campo_passw_corrente {
   margin-top: 1.5%;
@@ -2066,7 +2108,19 @@ div#account-settings .conferma_eliminazione_account{
   cursor: pointer;
   transition: all 0.3s ease;
  }
-
+ div#account-settings .conferma_eliminazione_account .ok{
+  background: linear-gradient(135deg, #83c1ff, #2e7ec0);
+  outline: none;
+  color: #f2f2f2;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 12px;
+  padding: 6px 15px;
+  border: none;
+  margin: 1% 0 1% 45%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+ }
 
 label#campo_username-error.error, label#campo_email-error.error, label#campo_passw-error.error, label#campo_conf_passw-error.error{
   color: red;
@@ -2105,6 +2159,7 @@ p#nome_categoria {
   margin-top: 1%;
   margin-left: 32%;
   text-align: center;
+  margin-bottom: 5%;
 }
 
 .tutti_i_blog img[src~="foto/bolle.png"]{
@@ -2170,6 +2225,9 @@ p#freccia_cat:hover {
 
 /* Premium */
 
+nav #menu_premium{
+  padding-right: 10.4%;
+}
 body#premium{
   height:auto;
   position:relative;
@@ -2356,20 +2414,6 @@ header#premium .grid-premium {
   transform: scale(0.97);
 }
 
-.disdetta_premium {
-  background: linear-gradient(135deg, #ff1414, #6b0c0c);
-  outline: none;
-  color: #f2f2f2;
-  font-size: 14px;
-  font-weight: 500;
-  border-radius: 12px;
-  padding: 6px 15px;
-  border: none;
-  margin: 0 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
 /* Insight */
 
 body#insight{
@@ -2410,7 +2454,7 @@ header#insight .grid-insight {
 }
 
 ul#menu_insight {
-  padding-right: 10.4%;
+  padding-right: 8.7%;
 }
 
 .wrapper-insight {
@@ -2498,6 +2542,9 @@ span#valori-insight {
   float: left;
   width: 15%;
   margin-left: 10%;
+}
+.tuo_blog_pop{
+  cursor: pointer;
 }
 .post_mese {
   font-size: 14px;
