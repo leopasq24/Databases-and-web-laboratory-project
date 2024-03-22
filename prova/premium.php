@@ -1,5 +1,12 @@
 <?php
 session_start();
+if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
+    session_unset();
+    session_destroy();
+    header("Location: registrazione.php");
+    exit;
+  }
+  $id_utente = $_SESSION["session_utente"];
 ?>
 
 <html lang="it" dir="ltr">
@@ -12,105 +19,14 @@ session_start();
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     </head>
-    <script>
-    $(document).ready(function(){
-        
-        $("form#premium").validate({
-            rules : {
-                num_carta : {
-                    required : true,
-                    formatocarta: true
-                },
-                data_scad : {
-                    required : true,
-                    datascad: true
-                },
-                cvv : {
-                    required : true,
-                    cvv: true
-                },
-                nome_carta : {
-                    required: true,
-                    nomecarta: true
-                }
-            },
-            messages : {
-                num_carta: {
-                    required: "Inserisci un numero di carta"
-                },
-                data_scad: {
-                    required: "Inserisci la data di scadenza della carta"
-                },
-                cvv: {
-                    required: "Inserisci il numero di sicurezza della carta"
-                },
-                nome_carta : {
-                    required: "Inserisci il nome del titolare della carta"
-                }
-            }
-        });
-
-        $.validator.addMethod("formatocarta", function(value, element) {
-            return /^([0-9][0-9][0-9][0-9]){4}$/.test(value);
-        }, "Formato non valido");
-
-        $.validator.addMethod("datascad", function(value, element) {
-            return /^((0[1-9])|(1[0-2]))\/(\d{2})$/.test(value);
-        }, "Formato non valido");
-        
-        $.validator.addMethod("cvv", function(value, element) {
-            return /^[0-9]{3}$/.test(value);
-        }, "Formato non valido");
-        
-        $.validator.addMethod("nomecarta", function(value, element) {
-            return /^[a-zA-Z\s]+$/.test(value);
-        }, "Inserisci solo caratteri alfabetici");
-                  
-        $("form#premium").on("submit", function(event){
-            if($(this).valid()){
-                $("#error_message").hide();
-                event.preventDefault();
-                var formData = new FormData(this);
-                $.ajax({
-                    type: "POST",
-                    url: $("form#premium").attr("action"),
-                    processData: false,
-                    contentType: false,
-                    data: formData,
-                    success: function(response){
-                        var responseObject = JSON.parse(response);
-                        if(responseObject.status === "OK"){
-                            $("form#premium").html("</br> <div class='contenuto'>" + responseObject.message + "</br> <div><button class='ok'>Ok</button>");
-                            $("form#premium .contenuto").on("click", ".ok", function(){
-                                location.replace("login.php");
-                            });
-                        } else {
-                            $("#error_message").show();
-                            $("#error_message").text(responseObject.message);
-                            $("form#premium").on("input", function(){
-                                $("#error_message").remove();
-                            });
-                        }         
-                    },
-                    error: function(xhr) {
-                        $("#error_message").after("<p class='eliminazione_error'>"+ xhr + "</p>");
-                    }
-                });
-            }
-        });
-
-        $(".disdetta_premium").on("click", function(){
-            alert("Sicuro di voler rinunciare alla tua sottoscrizione Premium? Confermando l'operazione, perderai l'accesso ai blog creati come utente Premium e tutti i dati correlati ad essi, insieme a tutti i vantaggi esclusivi inclusi nel piano.");
-        });
-
-    });
-    </script>
+    <script> var id_utente = <?php echo $id_utente ?>; </script>
+    <script src = "js/premium.js"></script>
     
     <body id="premium">
         <header id="premium">
             <nav class="navbar">
                 <div class="logo"><a href="home.php">Bluggle</a></div>
-                <ul class="menu">
+                <ul class="menu" id= "menu_premium">
                     
                     <li><a href="home.php">Home</a></li>
                     <li><a href="tutti_i_blog.php"> Tutti i Blog</a></li>
@@ -122,7 +38,6 @@ session_start();
                     <a href="logout.php"><input type="button" value="Logout"></a>
                 </div>
             </nav>
-
             <div class="grid-premium">
                 
                 <div class="piano_premium">
@@ -134,7 +49,7 @@ session_start();
                             <li><b>More blogs, more party.</b> Nessun limite al numero di blog, creane quanti ne vuoi!</li>
                             <li><b>More people, more party.</b> Nessun limite al numero di coautori dei tuoi blog, nominane quanti preferisci!</li>
                             <li><b>Tieni d'occhio le tue statistiche.</b> Avrai a disposizione una pagina tutta tua per controllare gli insights del tuo account, come il successo dei tuoi blog o l'interazione degli altri utenti con i tuoi post.</li>
-                            <li><b>Disdici quando vuoi.</b> Puoi annullare il piano in qualsiasi momento senza costi aggiuntivi!" Puoi riformulare il tutto in modo che sia più verosimile rispetto a un sito vero?</li>
+                            <li><b>Disdici quando vuoi.</b> Puoi annullare il piano in qualsiasi momento senza costi aggiuntivi dalla pagina di gestone dell'account!</li>
                         </ul>
                     </p>
                     </p>
@@ -155,7 +70,7 @@ session_start();
                             </div>
                             <div class="field">
                                 <label>CVV</label>
-                                <input type="text" name="cvv" id="cvv" placeholder="XYZ">            
+                                <input type="password" name="cvv" id="cvv" placeholder="XYZ">            
                             </div>
                             <div class="field">
                                 <label>Nome sulla carta</label>
