@@ -4,6 +4,24 @@ include_once("connect.php");
 
 $categoria = "inesistente";
 $html = "<div class='griglia_blog_creati'>";
+
+if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
+  session_unset();
+  session_destroy();
+  header("Location: registrazione.php");
+  exit;
+}
+$id_utente = $_SESSION["session_utente"];
+$stmt_premium = mysqli_prepare($link, "SELECT Premium FROM utente WHERE IdUtente=?");
+mysqli_stmt_bind_param($stmt_premium, "i", $id_utente);
+mysqli_stmt_execute($stmt_premium);
+$results_premium = mysqli_stmt_get_result($stmt_premium);
+if(mysqli_fetch_assoc($results_premium)["Premium"]==0){
+  $button = "<a href='premium.php'><input type='button' value='Premium'></a>";
+}else{
+  $button = "<a href='insight.php'><input type='button' value='Insight'></a>";
+}
+mysqli_stmt_close($stmt_premium);
     
 if (isset($_GET['id']) and is_numeric($_GET['id'])) {
   $id_categoria = $_GET['id'];
@@ -35,8 +53,8 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])) {
     mysqli_stmt_close($stmt_cat);
     mysqli_stmt_close($stmt_macrocat);
 
-    $stmt_blog_per_categoria = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente = utente.IdUtente AND blog.IdCategoria = ? ORDER BY IdBlog DESC LIMIT ?, 9");
-    mysqli_stmt_bind_param($stmt_blog_per_categoria, "ii", $id_categoria, $numeroBlog);
+    $stmt_blog_per_categoria = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente = utente.IdUtente AND (blog.IdCategoria = ? OR blog.IdCategoria IN (SELECT IdSottocategoria FROM contiene WHERE IdSopracategoria=?)) ORDER BY IdBlog DESC LIMIT ?, 9");
+    mysqli_stmt_bind_param($stmt_blog_per_categoria, "iii", $id_categoria, $id_categoria, $numeroBlog);
     mysqli_stmt_execute($stmt_blog_per_categoria);
     $query_blog_per_categoria = mysqli_stmt_get_result($stmt_blog_per_categoria);
         
@@ -79,92 +97,8 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-    <script>
-    
-    $(document).ready(function() {
-      
-      $(".griglia_blog").on("click", ".blog", function(){
-        var idBlog = $(this).data("blog-id");
-        $.ajax({
-            url: "singolo_blog.php",
-            type: "GET",
-            success: function() {
-              location.replace("singolo_blog.php?id=" + idBlog);
-            },
-            error: function(xhr) {
-              $(".blog").after("<p class='eliminazione_error'>" + xhr + "</p>");
-            }
-        });
-      });
-      
-      var numeroBlogCaricati;
-      var isMessageAppended = false;
-      function caricaBlog() {
-        var idCategoria = <?php echo $_GET["id"]?>;
-        $.ajax({
-            url: "tutte_categorie_select.php",
-            method: "GET",
-            data: { numero: numeroBlogCaricati, idCategoria: idCategoria },
-            success: function(data) {
-              if (data.trim() === "Nessun Blog") {
-                    $("#caricablog").hide();
-                    if (!isMessageAppended) {
-                        $(".griglia_blog").append("<p class='messaggio_fine'>Ops, sei arrivato in fondo!</p>");
-                        isMessageAppended = true;
-                    }
-                } else {
-                    $(".messaggio_fine").remove(); 
-                    $(".griglia_blog").append(data);
-                    numeroBlogCaricati += 9;
-                    isMessageAppended = false;
-                    $("#caricablog").show(); 
-                }
-            },
-            error: function(xhr) {
-              $("#caricablog").after("<p class='eliminazione_error'>" + xhr + "</p>");
-            }
-        });
-      }
-      $("#caricablog").on("click", function() {
-        caricaBlog();
-      });
-
-      $("p#freccia_cat").on("click", function() {
-        var freccia = $(this);
-        var idCategoria = "<?php echo $_GET['id'] ?>";
-        var titolo = freccia.closest("h2");
-        function appendiMicrocat() {
-          $.ajax({
-            url: "sottocategorie.php",
-            method: "GET",
-            data: { key1: idCategoria },
-            success: function(res) {
-                titolo.append("<div class='sottocat'>" + res + "</div>");
-                $(".sottocat p").on("click", function() {
-                  var idcat = $(this).closest(".microcat").data("cat-id");
-                  location.replace("categoria.php?id=" + idcat);
-                });
-            },
-            error: function(xhr) {
-                $("p#freccia_cat").after("<p class='eliminazione_error'>" + xhr + "</p>");
-            }
-          });
-        }
-        function rimuoviMicrocat() {
-          $(".sottocat").remove();
-        }
-        freccia.toggleClass("rotated"); 
-        if (freccia.hasClass("rotated")) {
-          freccia.css("transform", "rotate(90deg)");
-          appendiMicrocat();
-        } else {
-          freccia.css("transform", "rotate(0deg)");
-          rimuoviMicrocat();
-        }
-      });
-
-    });
-    </script>
+    <script>var id_cat = "<?php echo $_GET["id"]?>"; </script>
+    <script src = "js/categoria.js"></script>
   </head>
 <body id="body_tutti_i_blog">
   <header id="header_tutti_i_blog">
@@ -178,7 +112,7 @@ if (isset($_GET['id']) and is_numeric($_GET['id'])) {
         <li><a href="info.php">Info</a></li>
       </ul>
       <div class="buttons">
-        <input type="button" value="Premium">
+        <?php echo $button ?>
         <a href="logout.php"><input type="button" value="Logout"></a>
       </div>
     </nav>
