@@ -1,11 +1,13 @@
 <?php
 include_once("connect.php");
 session_start();
+$idutente = $_SESSION['session_utente'];
+
 if(isset($_POST["coautori"]) && isset($_POST["idblog"])){
 	$idblog=$_POST["idblog"];
 	if(trim($_POST["coautori"])==""){
-		$stmt_elimina_coautori=mysqli_prepare($link, "DELETE FROM coautore WHERE IdBlog=?");
-		mysqli_stmt_bind_param($stmt_elimina_coautori,"i",$idblog);
+		$stmt_elimina_coautori=mysqli_prepare($link, "DELETE FROM coautore, blog WHERE blog.IdBlog = coautore.IdBlog AND blog.IdBlog=? AND blog.IdUtente = ?");
+		mysqli_stmt_bind_param($stmt_elimina_coautori,"ii",$idblog, $idutente);
 		mysqli_stmt_execute($stmt_elimina_coautori);
 		echo json_encode(array('status' => 'OK', 'data' => "Nessun coautore"));
 		exit;
