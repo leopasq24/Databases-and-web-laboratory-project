@@ -42,8 +42,8 @@ if (isset($_FILES["immagine_post"]) && $_FILES["immagine_post"]["size"] > 0) {
 		}
 	}
 	if($i==0){
-		if ($_FILES["immagine_post"]["size"] > 500000) {
-  			echo "Il file caricato è troppo pesante";
+		if ($_FILES["immagine_post"]["size"] > 5000000) {
+  			echo "Il file caricato è troppo pesante (dimensione massima: 5MegaByte)";
   			$i=$i+1;
 		}
 	}
