@@ -13,6 +13,7 @@ if (isset($_GET['idCategoria'])) {
     mysqli_stmt_bind_param($stmt_tutte_categorie, "ii", $idCategoria, $numeroBlog);
     mysqli_stmt_execute($stmt_tutte_categorie);
     $query_tutte_categorie = mysqli_stmt_get_result($stmt_tutte_categorie);
+    $html = "<div class='griglia_blog_creati'>";
 
     $nessunBlog = (mysqli_num_rows($query_tutte_categorie) === 0);
     if ($nessunBlog) {
@@ -32,7 +33,7 @@ if (isset($_GET['idCategoria'])) {
             $html .= "<img src='{$src_img}' alt='{$Title}'></img>";
             $html .= "<p class='titolo_tuoi_blog'>{$Title}</p>";
             $html .= "<p class='descrizione_tuoi_blog'>{$descrizione}</p>";
-            $html .= "<p class='autore_tuoi_blog'> di <span>{$autore}</span></p>";
+            $html .= "<p class='autore_tuoi_blog'>{$autore}</p>";
             $html .= "</div>";
         }
         mysqli_stmt_close($stmt_tutte_categorie);
