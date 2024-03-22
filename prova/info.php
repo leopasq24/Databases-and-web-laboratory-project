@@ -1,5 +1,34 @@
 <?php
 session_start();
+include_once("connect.php");
+
+if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
+    session_unset();
+    session_destroy();
+    header("Location: registrazione.php");
+    exit;
+}
+
+$id_utente = $_SESSION["session_utente"];
+$username = "";
+$email = "";
+
+$stmt_info = mysqli_prepare($link, "SELECT Username, Email, Premium FROM utente WHERE IdUtente = ?");
+mysqli_stmt_bind_param($stmt_info, "i", $id_utente);
+mysqli_stmt_execute($stmt_info);
+mysqli_stmt_bind_result($stmt_info, $username, $email, $premium);
+$query_info = mysqli_stmt_get_result($stmt_info);
+while ($row = mysqli_fetch_assoc($query_info)) {
+    $username = $row['Username'];
+    $email = $row['Email'];
+    $premium = $row['Premium'];
+    if($premium==0){
+        $button = "<a href='premium.php'><input type='button' value='Premium'></a>";
+    }else{
+        $button = "<a href='insight.php'><input type='button' value='Insight'></a>";
+    }
+}
+mysqli_stmt_close($stmt_info);
 ?>
 <html lang="it" dir="ltr">
     <head>
@@ -22,7 +51,7 @@ session_start();
                     <li><a href="info.php">Info</a></li>
                 </ul>
                 <div class="buttons">
-                    <input type="button" value="Premium">
+                    <?php echo $button ?>
                     <a href="logout.php"><input type="button" value="Logout"></a>
                 </div>
             </nav>
