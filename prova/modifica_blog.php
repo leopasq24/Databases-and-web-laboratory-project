@@ -22,14 +22,14 @@ if (!isset($_SESSION["session_utente"])) {
   		$array_id_cat = mysqli_fetch_assoc($query_id_cat);
   		$id_nuova_cat = $array_id_cat["IdCategoria"];
 
-    	if(strlen($nuovo_titolo)>30){
-    		$output="<p class='errore_modifica'>Il titolo è troppo lungo(max 15 caratteri)</p>";
-    		echo $output;
-    		exit;
-    	}else if(strlen($nuova_desc)>40){
-    		$output="<p class='errore_modifica'>La descrizione è troppo lunga(max 40 caratteri)</p>";
-    		echo $output;
-    		exit;
+		  if(strlen($nuovo_titolo)>30  or strlen($nuova_desc)>40){
+            $output="<p class='errore_modifica'>Il titolo (max 15 caratteri) o la descrizione (max 40 caratteri) sono troppo lunghi! </p>";
+            echo $output;
+            exit;
+        } else if(strlen($nuovo_titolo) == 0  or strlen($nuova_desc) == 0){
+            $output="<p class='errore_modifica'>Inserire un titolo e una descrizione</p>";
+            echo $output;
+            exit;
     	}else if(isset($_FILES["campo_img"]) && $_FILES["campo_img"]["size"] > 0) {
     		$check = getimagesize($_FILES["campo_img"]["tmp_name"]);
     		if ($check == false) {
