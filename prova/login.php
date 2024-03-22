@@ -8,53 +8,7 @@ session_start();
       <link rel="stylesheet" href="stile_login.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
-      <script>
-            $(document).ready(function(){
-               $("#login").validate({
-                  rules : {
-                     username : {
-                        required: true
-                     },
-                     password : {
-                        required: true
-                     }
-                  },
-                  messages : {
-                     username: {
-                        required : "Inserire il nome utente"
-                  },
-                     password: {
-                        required: "Inserire la password"
-                     }
-                  }
-                  });
-               $("#login").on("submit", function(event){
-                     if($(this).valid()){
-                        $("#error_message").hide();
-                        event.preventDefault();
-                        var formData = new FormData(this);
-                        $.ajax({
-                           type: "POST",
-                           url: $("#login").attr("action"),
-                           processData: false,
-                           contentType: false,
-                           data: formData,
-                           success: function(data){
-                              if(data == "Primo accesso"){
-                                 location.replace("intro.php");
-                                 }
-                              else if(data == "OK"){
-                                    location.replace("home.php");                                
-                              } else{
-                                    $("#error_message").show();
-                                    $("#error_message").text(data);                                  
-                                 }         
-                              }
-                        });
-                     }
-                  });
-            });
-      </script>
+      <script src = "js/login.js"></script>
    </head>
    <body>
       <div class="grid-container">
