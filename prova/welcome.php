@@ -1,7 +1,3 @@
-<?php
-session_start();
-session_unset();
-?>
 <html lang="it">
    <head>
       <meta charset="utf-8">
