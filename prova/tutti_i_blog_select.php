@@ -16,13 +16,13 @@ if (!isset($_SESSION["session_utente"])) {
     $tipo = isset($_GET['tipo']) ? $_GET['tipo'] : "Recenti";
 
     if ($tipo === "Recenti") {
-        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente != ? AND blog.IdUtente=utente.IdUtente ORDER BY IdBlog DESC LIMIT ?, 9");
+        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente=utente.IdUtente ORDER BY IdBlog DESC LIMIT ?, 9");
     } elseif ($tipo === "Popolari") {
-        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente != ? AND blog.IdUtente=utente.IdUtente AND IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC)) LIMIT ?, 9");
+        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente=utente.IdUtente AND IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT IdPost FROM numero_feedback_positivi ORDER BY numerofeedbackpositivi DESC)) LIMIT ?, 9");
     } elseif ($tipo === "Autore") {
-        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente != ? AND blog.IdUtente=utente.IdUtente ORDER BY utente.Username ASC LIMIT ?, 9");
+        $stmt_tutti_i_blog = mysqli_prepare($link, "SELECT IdBlog, Titolo, Descrizione, Immagine, Username FROM blog, utente WHERE blog.IdUtente=utente.IdUtente ORDER BY utente.Username ASC LIMIT ?, 9");
     }
-    mysqli_stmt_bind_param($stmt_tutti_i_blog, "ii", $id_utente, $numeroBlog);
+    mysqli_stmt_bind_param($stmt_tutti_i_blog, "i", $numeroBlog);
     mysqli_stmt_execute($stmt_tutti_i_blog);
     $query_tutti_i_blog = mysqli_stmt_get_result($stmt_tutti_i_blog);
     $html = "<div class='griglia_blog_creati'>";
