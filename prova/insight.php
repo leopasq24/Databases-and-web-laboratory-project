@@ -9,7 +9,16 @@ if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
     exit;
 }
 $id_utente = $_SESSION["session_utente"];
-
+$stmt_premium = mysqli_prepare($link, "SELECT Premium FROM utente WHERE IdUtente=?");
+mysqli_stmt_bind_param($stmt_premium, "i", $id_utente);
+mysqli_stmt_execute($stmt_premium);
+$results_premium = mysqli_stmt_get_result($stmt_premium);
+if(mysqli_fetch_assoc($results_premium)["Premium"]==0){
+    session_unset();
+    session_destroy();
+    header("Location: registrazione.php");
+    exit;
+}
 // Dati dell'ultimo mese
 
 $data = date("Y-m-d");
@@ -165,7 +174,7 @@ mysqli_stmt_close($stmt_post_ultimo_mese);
 
 // Classifica blog
 
-$stmt_blog_pop = mysqli_prepare($link, "SELECT IdBlog FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT codice FROM post_popolari ORDER BY conta DESC))");
+$stmt_blog_pop = mysqli_prepare($link, "SELECT IdBlog FROM blog WHERE IdBlog IN (SELECT IdBlog FROM post WHERE IdPost IN (SELECT idPost FROM numero_feedback_positivi ORDER BY numerofeedbackpositivi DESC))");
 mysqli_stmt_execute($stmt_blog_pop);
 $result_blog_pop = mysqli_stmt_get_result($stmt_blog_pop);
 
@@ -215,39 +224,11 @@ if(empty($tuoi_blog_pop)){
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
     </head>
     <script>
-    
-    $(document).ready(function(){
-        $("p.nome_blog").on("click", function(){
-            var idBlog = $(this).data("blog-id");
-            window.location.href = "singolo_blog.php?id=" + idBlog;
-        });
-        $("img.img_blog").on("click", function(){
-            var idBlog = $(this).data("blog-id");
-            windows.location.href = "singolo_blog.php?id=" + idBlog;
-        });
-
-        $("input#cerca_like").on("click", function() {
-            $("label#cerca_like").addClass("selected");
-            $("label#cerca_dislike").removeClass("selected");
-            $("label#cerca_commenti").removeClass("selected");
-            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_positivi?>");
-        })
-        $("input#cerca_dislike").on("click", function() {
-            $("label#cerca_like").removeClass("selected");
-            $("label#cerca_dislike").addClass("selected");
-            $("label#cerca_commenti").removeClass("selected");
-            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_negativi?>");
-        })
-        $("input#cerca_commenti").on("click", function() {
-            $("label#cerca_like").removeClass("selected");
-            $("label#cerca_dislike").removeClass("selected");
-            $("label#cerca_commenti").addClass("selected");
-            $(this).closest(".filtri_interazione").siblings(".results_interazione").html("<?php echo $html_utenti_attivi_commenti?>");
-        })
-
-    });
-    
+        var utenti_attivi_positivi = "<?php echo $html_utenti_attivi_positivi?>";
+        var utenti_attivi_negativi = "<?php echo $html_utenti_attivi_negativi?>";
+        var utenti_attivi_commenti = "<?php echo $html_utenti_attivi_commenti?>";
     </script>
+    <script src ="js/insight.js"></script>
     
     <body id="insight">
         <header id="insight">
