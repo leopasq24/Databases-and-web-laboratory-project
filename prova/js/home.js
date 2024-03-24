@@ -11,6 +11,7 @@
       }
 
       $(document).ready(function() {
+        
         if (PrimaVisita()) {
           location.replace("intro.php");
         }
@@ -29,9 +30,6 @@
           if (microCategoria.hasClass("visible")) {
             freccia.css({'transform': 'rotate(90deg)'});
             $.get("sottocategorie.php", requestData, function(data) {
-              if(data=="Sessione annullata"){
-                location.replace("registrazione.php");
-              }
               microCategoria.html(data);
               microCategoria.show();
             });
