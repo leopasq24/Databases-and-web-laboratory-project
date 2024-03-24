@@ -23,12 +23,19 @@ if (!isset($_SESSION["session_utente"]) || empty($_SESSION["session_utente"])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-        var cookie = cookies[i].trim();
-        if (cookie.indexOf('visited=') === 0 ) {
-          location.replace("home.php");
+      function PrimaVisita() {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.indexOf('intro=') === 0) {
+                return false;
+            }
         }
+        document.cookie = 'intro=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/';
+        return true;
+      }
+      if (!PrimaVisita()) {
+          location.replace("home.php");
       }
       </script>
    </head>
