@@ -1,1 +1,1 @@
-Repository containing the project for the databases and web laboratory exam.
+Repository containing the project for the "databases and web laboratory" exam.
